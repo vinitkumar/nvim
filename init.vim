@@ -2,18 +2,12 @@
 " Plugins
 
 call plug#begin('~/.config/nvim/plugged')
-
-Plug 'tpope/vim-commentary'
-Plug 'w0rp/ale'
-Plug 'machakann/vim-highlightedyank'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/fzf.vim'
-Plug '/usr/local/opt/fzf'
-Plug 'rust-lang/rust.vim'
-Plug 'fatih/vim-go'
-Plug 'lifepillar/vim-solarized8'
-
-Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'w0rp/ale'
+  Plug '/usr/local/opt/fzf'
+  Plug 'junegunn/fzf.vim'
+  Plug 'machakann/vim-highlightedyank'
+  Plug 'tpope/vim-commentary'
 call plug#end()
 
 " Load Plug plugin and define the plugins to be used
@@ -24,8 +18,6 @@ source ~/.vim/parts/ui.vim
 " All autocmds are here.
 source ~/.vim/parts/autocmd.vim
 " Plugin specific tunings are here
-source ~/.vim/parts/pluginconf.vim
-source ~/.config/nvim/coc_conf.vim
 " All the mappings are done here
 source ~/.vim/parts/mappings.vim
 " some misc plugins/ functions picked/borrowed from the Internets
@@ -38,6 +30,7 @@ au! BufWritePost ~/.vim/parts/ui.vim  so %
 au! BufWritePost ~/.vim/parts/autocmd.vim  so %
 au! BufWritePost ~/.vim/parts/pluginconf.vim  so %
 au! BufWritePost ~/.vim/parts/mappings.vim  so %
+au! BufWritePost ~/.vim/parts/misc.vim  so %
 
 au! BufWritePost ~/.config/nvim/init.vim so %
 
