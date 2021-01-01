@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =0
+let g:netrw_dirhist_0='/Users/vinitkumar/.vim/autoload'
+let g:netrw_dirhist_9='/Users/vinitkumar/.vim'
+let g:netrw_dirhist_8='/Applications/Adblock Plus.app/Contents/Frameworks'
+let g:netrw_dirhist_7='/Applications/Adblock Plus.app/Contents'
+let g:netrw_dirhist_6='/Applications/Adblock Plus.app'
+let g:netrw_dirhist_5='/Applications'
+let g:netrw_dirhist_4='/Users/vinitkumar/Dropbox'
+let g:netrw_dirhist_3='/Users/vinitkumar/projects/python/divio-data'
+let g:netrw_dirhist_2='/Users/vinitkumar/projects/python/socialschools-cms-docker/src/mailinglist'
+let g:netrw_dirhist_1='/Users/vinitkumar/projects/python/limehome-assignment'
