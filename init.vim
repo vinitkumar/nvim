@@ -6,22 +6,27 @@ autocmd!
 
 " initialize plugins
 call plug#begin('~/.config/nvim/plugged')
-Plug 'tpope/vim-fugitive'
-" Plug 'zivyangll/git-blame.vim'
-Plug 'romainl/vim-cool'
 Plug 'tpope/vim-commentary'
 
- " Collection of common configurations for the Nvim LSP client
 Plug 'vimwiki/vimwiki'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim', {'branch': 'master'}
-Plug 'leafgarland/typescript-vim'
+Plug 'neovim/nvim-lspconfig'
 
-" If you want icons use one of these:
-Plug 'kyazdani42/nvim-web-devicons' " lua
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug '/usr/local/opt/fzf'
+" Plug 'junegunn/fzf.vim', {'branch': 'master'}
+Plug 'leafgarland/typescript-vim' " for .tsx
+Plug 'peitalin/vim-jsx-typescript' " for .tsx
+
 Plug 'jonathanfilip/vim-lucius'
+Plug 'preservim/tagbar'
+Plug 'mileszs/ack.vim'
+
+"telescope.vim
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 
 call plug#end()
 
@@ -116,6 +121,7 @@ set signcolumn=no
 "   preview: show more info in menu
 :set completeopt=menu,preview
 set clipboard+=unnamedplus
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " VIM-RUBY CONFIGURATION
@@ -250,10 +256,18 @@ let g:tsuquyomi_disable_quickfix = 1
 " MISC KEY MAPS
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader=","
-map <C-p> :Files<CR>
-nmap <C-b> :Buffers<CR>
-nmap <C-c> :Commits<CR>
-nmap <C-t> :Colors<CR>
+" map <C-p> :Files<CR>
+" nmap <C-b> :Buffers<CR>
+" nmap <C-c> :Commits<CR>
+" nmap <C-t> :Colors<CR>
+
+
+" Find files using Telescope command-line sugar.
+map <C-p> :Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nmap <C-b> :Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
 
 map <leader>y "*y
 " Move around splits with <c-hjkl>
@@ -714,6 +728,26 @@ endfunction
 nnoremap <leader>s :call GenerateStepID()<cr>
 nnoremap <leader>S :call ReplaceStepID()<cr>
 
+set background=dark
+" colorscheme grb-lucius
 au! BufWritePost ~/.config/nvim/init.vim so %
-" colorscheme default
 
+set background=dark
+let g:lucius_style  = 'dark'
+let g:lucius_contrast  = 'high'
+let g:lucius_contrast_bg  = 'high'
+let g:lucius_no_term_bg  = 1
+colorscheme lucius
+
+lua << EOF
+require'lspconfig'.tsserver.setup{}
+EOF
+
+
+lua << EOF
+require'lspconfig'.pyright.setup{}
+EOF
+
+lua << EOF
+require'lspconfig'.jedi_language_server.setup{}
+EOF
