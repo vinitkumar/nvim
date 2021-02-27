@@ -18,6 +18,8 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'leafgarland/typescript-vim' " for .tsx
 Plug 'peitalin/vim-jsx-typescript' " for .tsx
 
+Plug 'rizzatti/dash.vim'
+
 Plug 'jonathanfilip/vim-lucius'
 Plug 'preservim/tagbar'
 Plug 'mileszs/ack.vim'
@@ -26,6 +28,13 @@ Plug 'mileszs/ack.vim'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-lua/lsp_extensions.nvim'
+ " Autocompletion framework for built-in LSP
+Plug 'nvim-lua/completion-nvim'
+" Status in statusline
+Plug 'nvim-lua/lsp-status.nvim'
+Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'rafcamlet/nvim-luapad'
 
 
 call plug#end()
@@ -740,7 +749,15 @@ let g:lucius_no_term_bg  = 1
 colorscheme lucius
 
 lua << EOF
-require'lspconfig'.tsserver.setup{}
+require'lspconfig'.tsserver.setup{
+    -- cmd = {
+    --   "typescript-language-server",
+    --   "--stdio",
+    --   "--tsserver-log-file",
+    --   "tslog"
+    -- },
+    on_attach = on_attach,
+}
 EOF
 
 
