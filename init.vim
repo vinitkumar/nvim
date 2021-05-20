@@ -1,6 +1,3 @@
-" This is Gary Bernhardt's .vimrc file
-" vim:set ts=2 sts=2 sw=2 expandtab:
-
 " remove all existing autocmds
 autocmd!
 
@@ -35,12 +32,17 @@ Plug 'nvim-lua/completion-nvim'
 Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'}
 Plug 'kyazdani42/nvim-web-devicons' " lua
 
-Plug 'hoob3rt/lualine.nvim'
 Plug 'nvim-lua/lsp-status.nvim'
 Plug 'nvim-lua/lsp_extensions.nvim'
 Plug 'rafcamlet/nvim-luapad'
+Plug 'shaunsingh/moonlight.nvim'
+Plug 'folke/todo-comments.nvim'
 
-Plug 'overcache/NeoSolarized'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
+Plug 'junegunn/gv.vim'
+
 
 call plug#end()
 
@@ -240,28 +242,6 @@ augroup END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 :set statusline=%<%f\ (%{&ft})\ %-4(%m%)%=%-19(%3l,%02c%03V%)
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" VIM-ALE CONFIG
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:ale_linters = {'javascript': [], 'typescript': ['tsserver', 'eslint'], 'typescript.tsx': ['tsserver', 'eslint']}
-" let g:ale_fixers = {'javascript': [], 'typescript': ['prettier'], 'typescript.tsx': ['prettier']}
-" let g:ale_lint_on_text_changed = 'normal'
-" let g:ale_lint_on_insert_leave = 1
-" let g:ale_lint_delay = 0
-" let g:ale_set_quickfix = 0
-" let g:ale_set_loclist = 0
-" let g:ale_javascript_eslint_executable = 'eslint --cache'
-" nnoremap gj :ALENextWrap<cr>
-" nnoremap gk :ALEPreviousWrap<cr>
-" nnoremap g1 :ALEFirst<cr>
-" " This mapping will kill all ALE-related processes (including tsserver). It's
-" " necessary when those processes get confused. E.g., tsserver will sometimes
-" " show type errors that don't actually exist. I don't know exactly why that
-" " happens yet, but I think that it's related to renaming files.
-" nnoremap g0 :ALEStopAllLSPs<cr>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Tsuquyomi
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim-ale handles TypeScript quickfix, so tell Tsuquyomi not to do it.
 let g:tsuquyomi_disable_quickfix = 1
@@ -944,6 +924,28 @@ M.setup()
 EOF
 
 
+lua <<EOF
+-- https://github.com/nvim-telescope/telescope.nvim
+local M = {}
+
+M.setup = function()
+  require("telescope").setup({
+    defaults = {
+      file_ignore_patterns = { "target", "node_modules", "parser.c" },
+      prompt_prefix = "❯",
+      file_previewer = require("telescope.previewers").vim_buffer_cat.new,
+      grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
+    },
+  })
+
+  require("telescope").load_extension("fzy_native")
+end
+EOF
+
+lua << EOF
+require'lspconfig'.ccls.setup{}
+EOF
+
 lua << EOF
 require'lspconfig'.pyright.setup{}
 EOF
@@ -952,33 +954,55 @@ lua << EOF
 require'lspconfig'.jedi_language_server.setup{}
 EOF
 
-let g:lualine = {
-    \'options' : {
-    \  'theme' : 'gruvbox',
-    \  'section_separators' : ['', ''],
-    \  'component_separators' : ['', ''],
-    \  'icons_enabled' : v:true,
-    \},
-    \'sections' : {
-    \  'lualine_a' : [ ['mode', {'upper': v:true,},], ],
-    \  'lualine_b' : [ ['branch', {'icon': '',}, ], ],
-    \  'lualine_c' : [ ['filename', {'file_status': v:true,},], ],
-    \  'lualine_x' : [ 'encoding', 'fileformat', 'filetype' ],
-    \  'lualine_y' : [ 'progress' ],
-    \  'lualine_z' : [ 'location'  ],
-    \},
-    \'inactive_sections' : {
-    \  'lualine_a' : [  ],
-    \  'lualine_b' : [  ],
-    \  'lualine_c' : [ 'filename' ],
-    \  'lualine_x' : [ 'location' ],
-    \  'lualine_y' : [  ],
-    \  'lualine_z' : [  ],
-    \},
-    \'extensions' : [ 'fzf' ],
-    \}
+lua << EOF
+require('moonlight').set()
+EOF
 
-lua require("lualine").setup()
+
+lua << EOF
+require("todo-comments").setup {
+  {
+    signs = true, -- show icons in the signs column
+    -- keywords recognized as todo comments
+    keywords = {
+      FIX = {
+        icon = " ", -- icon used for the sign, and in search results
+        color = "error", -- can be a hex color, or a named color (see below)
+        alt = { "FIXME", "BUG", "FIXIT", "FIX", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+        -- signs = false, -- configure signs for some keywords individually
+      },
+      TODO = { icon = " ", color = "info" },
+      HACK = { icon = " ", color = "warning" },
+      WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+      PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+      NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+    },
+    -- highlighting of the line containing the todo comment
+    -- * before: highlights before the keyword (typically comment characters)
+    -- * keyword: highlights of the keyword
+    -- * after: highlights after the keyword (todo text)
+    highlight = {
+      before = "", -- "fg" or "bg" or empty
+      keyword = "wide", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
+      after = "fg", -- "fg" or "bg" or empty
+    },
+    -- list of named colors where we try to extract the guifg from the
+    -- list of hilight groups or use the hex color if hl not found as a fallback
+    colors = {
+      error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
+      warning = { "LspDiagnosticsDefaultWarning", "WarningMsg", "#FBBF24" },
+      info = { "LspDiagnosticsDefaultInformation", "#2563EB" },
+      hint = { "LspDiagnosticsDefaultHint", "#10B981" },
+      default = { "Identifier", "#7C3AED" },
+    },
+    -- regex that will be used to match keywords.
+    -- don't replace the (KEYWORDS) placeholder
+    pattern = "(KEYWORDS):",
+    -- pattern = "(KEYWORDS)", -- match without the extra colon. You'll likely get false positives
+    -- pattern = "-- (KEYWORDS):", -- only match in lua comments
+  }
+}
+EOF
 
 
 command! Diary VimwikiDiaryIndex
@@ -987,3 +1011,36 @@ augroup vimwikigroup
     " automatically update links on read diary
     autocmd BufRead,BufNewFile diary.wiki VimwikiDiaryGenerateLinks
 augroup end
+
+noremap <Leader>h :<C-u>split<CR>
+noremap <Leader>v :<C-u>vsplit<CR>
+
+"tab management, leader-t to generate a new tab and Control-t to switch
+"between them
+noremap <Leader>t :<C-u>tabnew<CR>
+nmap <C-t> :tabNext<CR>
+
+
+
+" Change these if you want
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+
+" I find the numbers disctracting
+let g:signify_sign_show_count = 0
+let g:signify_sign_show_text = 1
+
+
+" Jump though hunks
+nmap <leader>gj <plug>(signify-next-hunk)
+nmap <leader>gk <plug>(signify-prev-hunk)
+nmap <leader>gJ 9999<leader>gJ
+nmap <leader>gK 9999<leader>gk
+
+
+" If you like colors instead
+" highlight SignifySignAdd                  ctermbg=green                guibg=#00ff00
+" highlight SignifySignDelete ctermfg=black ctermbg=red    guifg=#ffffff guibg=#ff0000
+" highlight SignifySignChange ctermfg=black ctermbg=yellow guifg=#000000 guibg=#ffff00
