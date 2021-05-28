@@ -42,7 +42,9 @@ Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rhubarb'
 Plug 'junegunn/gv.vim'
-
+Plug 'eddyekofo94/gruvbox-flat.nvim'
+Plug 'hrsh7th/nvim-compe'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 call plug#end()
 
@@ -177,9 +179,10 @@ augroup vimrcEx
     \ endif
 
   "for ruby, autoindent with two spaces, always expand tabs
-  autocmd FileType ruby,haml,eruby,yaml,html,sass,cucumber set ai sw=2 sts=2 et
+  autocmd FileType ruby,haml,eruby,yaml,html,htmldjango,sass,cucumber set ai sw=2 sts=2 et
   autocmd FileType python set sw=4 sts=4 et
 
+  au FileType htmldjango setlocal expandtab sw=2 ts=2 sts=2
   autocmd! BufRead,BufNewFile *.sass setfiletype sass
 
   autocmd BufRead *.mkd  set ai formatoptions=tcroqn2 comments=n:&gt;
@@ -731,7 +734,8 @@ let g:lucius_style  = 'dark'
 let g:lucius_contrast  = 'high'
 let g:lucius_contrast_bg  = 'high'
 let g:lucius_no_term_bg  = 1
-colorscheme lucius
+set termguicolors
+colorscheme gruvbox
 
 lua << EOF
 require'lspconfig'.tsserver.setup{
@@ -954,9 +958,9 @@ lua << EOF
 require'lspconfig'.jedi_language_server.setup{}
 EOF
 
-lua << EOF
-require('moonlight').set()
-EOF
+" lua << EOF
+"  require('moonlight').set()
+" EOF
 
 
 lua << EOF
@@ -1044,3 +1048,39 @@ nmap <leader>gK 9999<leader>gk
 " highlight SignifySignAdd                  ctermbg=green                guibg=#00ff00
 " highlight SignifySignDelete ctermfg=black ctermbg=red    guifg=#ffffff guibg=#ff0000
 " highlight SignifySignChange ctermfg=black ctermbg=yellow guifg=#000000 guibg=#ffff00
+"" nvim-compe.
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.autocomplete = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.preselect = 'enable'
+let g:compe.throttle_time = 80
+let g:compe.source_timeout = 200
+let g:compe.incomplete_delay = 400
+let g:compe.max_abbr_width = 100
+let g:compe.max_kind_width = 100
+let g:compe.max_menu_width = 100
+let g:compe.documentation = v:true
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.vsnip = v:true
+let g:compe.source.ultisnips = v:true
+
+
+" treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "java" }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "Swift" },  -- list of language that will be disabled
+  },
+}
+EOF
