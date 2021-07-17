@@ -50,3 +50,6 @@ if vim.fn.filereadable('/usr/local/bin/python3') == 1 then
   -- Avoid search, speeding up start-up.
   vim.g.python3_host_prog = '/usr/local/bin/python3'
 end
+
+
+vim.api.nvim_set_keymap('n', '<C-p>', ':Telescope find_files<CR>', {noremap = true, silent = true})
