@@ -26,7 +26,7 @@ opt.splitright = true
 opt.splitbelow = true
 opt.termguicolors = true
 opt.background = "dark"
-
+opt.inccommand = "nosplit"
 
 opt.list = true
 opt.listchars      = {
