@@ -26,8 +26,8 @@ lua
 
 ### Credits
 
-My plugin is written from scratch porting my old vim config to the current state and is re-written in lua completely. It also 
+My plugin is written from scratch porting my old vim config to the current state and is re-written in lua completely. It also
 got some config and inspiration from the repos below.
 
-Greg's Config: http://github.com/wincent/wincent
-TJ's Config: http://github.com/tjdevries/config_manager
+- Greg's Config: http://github.com/wincent/wincent
+- TJ's Config: http://github.com/tjdevries/config_manager
