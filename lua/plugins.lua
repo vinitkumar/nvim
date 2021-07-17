@@ -7,7 +7,7 @@ return require('packer').startup(function()
     use 'tpope/vim-commentary'
     use 'vimwiki/vimwiki'
     use 'mileszs/ack.vim'
-    use 'chriskempson/base16-vim'
+    -- use 'chriskempson/base16-vim'
     use {'nvim-treesitter/nvim-treesitter',  run = ':TSUpdate' }
     use 'tpope/vim-fugitive'
     use 'neovim/nvim-lspconfig'
