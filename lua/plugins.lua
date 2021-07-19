@@ -16,4 +16,5 @@ return require('packer').startup(function()
     use 'nvim-telescope/telescope.nvim'
     use 'folke/todo-comments.nvim'
     use 'hrsh7th/nvim-compe'
+    use 'wincent/base16-nvim'
 end)
