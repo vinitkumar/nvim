@@ -4,6 +4,9 @@ My personal neovim configuration.
 
 ## Screenshot
 
+- Font: Source Code Pro
+- Colorscheme: default
+- Terminal: Kitty
 
 ![neovim](./neovim.png)
 
