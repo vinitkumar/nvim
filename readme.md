@@ -2,8 +2,15 @@
 
 My personal neovim configuration.
 
-## Setup & Installation
+## Screenshot
 
+- Font: Source Code Pro
+- Colorscheme: default
+- Terminal: Kitty
+
+![neovim](./neovim.png)
+
+## Setup & Installation
 
 We use [packer.nvim](https://github.com/wbthomason/packer.nvim) as package manager. We use lua for configuration.
 
