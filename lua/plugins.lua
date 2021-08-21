@@ -17,4 +17,7 @@ return require('packer').startup(function()
     use 'folke/todo-comments.nvim'
     use 'hrsh7th/nvim-compe'
     use 'vinitkumar/base16-nvim'
+    use 'yggdroot/indentline'
+    use 'arcticicestudio/nord-vim'
+    use 'romainl/vim-qf'
 end)
