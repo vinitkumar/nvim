@@ -1,6 +1,7 @@
 vim.api.nvim_set_keymap('n', '<C-p>', ':Telescope find_files<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-l>', ':Telescope git_files<CR>', {noremap = true, silent = true})
 
+vim.api.nvim_set_keymap('n', '<C-l>', ':Telescope git_files<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>t', ':<C-u>tabnew<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>h', ':<C-u>split<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>v', ':<C-u>vsplit<CR>', {noremap = true, silent=true})

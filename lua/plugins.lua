@@ -1,6 +1,5 @@
 vim.cmd [[packadd packer.nvim]]
 
-
 return require('packer').startup(function()
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
@@ -18,6 +17,4 @@ return require('packer').startup(function()
     use 'hrsh7th/nvim-compe'
     use 'vinitkumar/base16-nvim'
     use 'yggdroot/indentline'
-    use 'arcticicestudio/nord-vim'
-    use 'romainl/vim-qf'
 end)
