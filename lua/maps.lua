@@ -1,13 +1,13 @@
-vim.api.nvim_set_keymap('n', '<C-p>', ':Telescope find_files<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<C-l>', ':Telescope git_files<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-p>', ':Files<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-b>', ':Buffers<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-g>', ':GitFiles<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-l>', ':luafile %<CR>', {noremap = true, silent = true})
 
-vim.api.nvim_set_keymap('n', '<C-l>', ':Telescope git_files<CR>', {noremap = true, silent = true})
+
+vim.api.nvim_set_keymap('n', '<C-c>', ':Commits<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>t', ':<C-u>tabnew<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>h', ':<C-u>split<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>v', ':<C-u>vsplit<CR>', {noremap = true, silent=true})
-vim.api.nvim_set_keymap('n', '<C-b>', ':Telescope buffers<CR>', {noremap = true, silent=true})
-vim.api.nvim_set_keymap('n', '<C-c>', ':Telescope git_commits<CR>', {noremap = true, silent=true})
-vim.api.nvim_set_keymap('n', '<C-e>', ':Telescope lsp_document_diagnostics<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<C-t>', ':tabNext<CR>', {noremap = true, silent=true})
 
 -- Up and Down mapping

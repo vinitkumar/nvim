@@ -1,53 +1,3 @@
-require('telescope').setup{
-  defaults = {
-    vimgrep_arguments = {
-      'rg',
-      '--color=never',
-      '--no-heading',
-      '--with-filename',
-      '--line-number',
-      '--column',
-      '--smart-case'
-    },
-    prompt_prefix = "> ",
-    selection_caret = "> ",
-    entry_prefix = "  ",
-    initial_mode = "insert",
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
-    layout_strategy = "horizontal",
-    layout_config = {
-      horizontal = {
-        mirror = false,
-      },
-      vertical = {
-        mirror = false,
-      },
-    },
-    file_sorter =  require'telescope.sorters'.get_fuzzy_file,
-    file_ignore_patterns = {},
-    generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
-    path_display = shorten,
-    winblend = 0,
-    border = {},
-    borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
-    color_devicons = false,
-    use_less = true,
-    set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
-    file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
-    grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
-    qflist_previewer = require'telescope.previewers'.vim_buffer_qflist.new,
-
-    -- Developer configurations: Not meant for general override
-    buffer_previewer_maker = require'telescope.previewers'.buffer_previewer_maker
-  },
-  pickers = {
-    find_files = {
-      disable_devicons = true
-    },
-  },
-}
-
 -- LSPConfig
 local nvim_lsp = require('lspconfig')
 
@@ -118,7 +68,7 @@ require('compe').setup {
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"python", "javascript", "typescript", "c", "lua"},
+  ensure_installed = {"python", "javascript", "typescript", "c", "lua", "go"},
   ignore_install = { "java" }, -- List of parsers to ignore installing
   highlight = {
     enable = true,              -- false will disable the whole extension
@@ -126,46 +76,3 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
---
-require("todo-comments").setup {
-  {
-    signs = true, -- show icons in the signs column
-    -- keywords recognized as todo comments
-    keywords = {
-      FIX = {
-        icon = " ", -- icon used for the sign, and in search results
-        color = "error", -- can be a hex color, or a named color (see below)
-        alt = { "FIXME", "BUG", "FIXIT", "FIX", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
-        -- signs = false, -- configure signs for some keywords individually
-      },
-      TODO = { icon = " ", color = "info" },
-      HACK = { icon = " ", color = "warning" },
-      WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
-      PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-      NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
-    },
-    -- highlighting of the line containing the todo comment
-    -- * before: highlights before the keyword (typically comment characters)
-    -- * keyword: highlights of the keyword
-    -- * after: highlights after the keyword (todo text)
-    highlight = {
-      before = "", -- "fg" or "bg" or empty
-      keyword = "wide", -- "fg", "bg", "wide" or empty. (wide is the same as bg, but will also highlight surrounding characters)
-      after = "fg", -- "fg" or "bg" or empty
-    },
-    -- list of named colors where we try to extract the guifg from the
-    -- list of hilight groups or use the hex color if hl not found as a fallback
-    colors = {
-      error = { "LspDiagnosticsDefaultError", "ErrorMsg", "#DC2626" },
-      warning = { "LspDiagnosticsDefaultWarning", "WarningMsg", "#FBBF24" },
-      info = { "LspDiagnosticsDefaultInformation", "#2563EB" },
-      hint = { "LspDiagnosticsDefaultHint", "#10B981" },
-      default = { "Identifier", "#7C3AED" },
-    },
-    -- regex that will be used to match keywords.
-    -- don't replace the (KEYWORDS) placeholder
-    pattern = "(KEYWORDS):",
-    -- pattern = "(KEYWORDS)", -- match without the extra colon. You'll likely get false positives
-    -- pattern = "-- (KEYWORDS):", -- only match in lua comments
-  }
-}
