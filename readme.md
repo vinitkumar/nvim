@@ -4,8 +4,8 @@ My personal neovim configuration.
 
 ## Screenshot
 
-- Font: Source Code Pro
-- Colorscheme: default
+- Font: Go Mono
+- Colorscheme: One Dark
 - Terminal: Kitty
 
 ![neovim](./neovim.png)
