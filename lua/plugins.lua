@@ -6,7 +6,6 @@ return require('packer').startup(function()
     use 'tpope/vim-commentary'
     use '/usr/local/opt/fzf'
     use 'junegunn/fzf.vim'
-    use 'junegunn/fzf.vim'
     use 'vimwiki/vimwiki'
     use 'mileszs/ack.vim'
     -- use 'jremmen/vim-ripgrep'
