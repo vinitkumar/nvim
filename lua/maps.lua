@@ -2,6 +2,10 @@ vim.api.nvim_set_keymap('n', '<C-p>', ':Files<CR>', {noremap = true, silent = tr
 vim.api.nvim_set_keymap('n', '<C-b>', ':Buffers<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-g>', ':GitFiles<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<C-l>', ':luafile %<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>r', ':NvimTreeRefresh<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<Leader>n', ':NvimTreeFindFile<CR>', {noremap = true, silent = true})
 
 
 vim.api.nvim_set_keymap('n', '<C-c>', ':Commits<CR>', {noremap = true, silent = true})

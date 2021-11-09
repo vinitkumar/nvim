@@ -52,19 +52,40 @@ require'lspconfig'.pyright.setup{}
 vim.o.completeopt = 'menuone,noinsert'
 
 -- Compe setup
-require('compe').setup {
-  source = {
-    path = true,
-    nvim_lsp = true,
-    luasnip = true,
-    buffer = true,
-    calc = false,
-    nvim_lua = false,
-    vsnip = false,
-    ultisnips = false,
-  },
-}
+-- require('compe').setup {
+--   source = {
+--     path = true,
+--     nvim_lsp = true,
+--     luasnip = true,
+--     buffer = true,
+--     calc = false,
+--     nvim_lua = false,
+--     vsnip = false,
+--     ultisnips = false,
+--   },
+-- }
 
+local cmp = require'cmp'
+cmp.setup({
+ snippet = {
+   expand = function(args)
+     vim.fn["vsnip#anonymous"](args.body)
+   end,
+ },
+ mapping = {
+   ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+   ['<C-f>'] = cmp.mapping.scroll_docs(4),
+   ['<C-Space>'] = cmp.mapping.complete(),
+   ['<C-e>'] = cmp.mapping.close(),
+   ['<CR>'] = cmp.mapping.confirm({ select = true }),
+ },
+ sources = {
+   { name = 'nvim_lsp' },
+   { name = 'vsnip' },
+   { name = 'buffer', keyword_length = 5},
+   { name = 'path' },
+ }
+})
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
@@ -76,3 +97,53 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+
+-- following options are the default
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require'nvim-tree'.setup {
+  disable_netrw       = true,
+  hijack_netrw        = true,
+  open_on_setup       = false,
+  ignore_ft_on_setup  = {},
+  auto_close          = false,
+  open_on_tab         = false,
+  hijack_cursor       = false,
+  update_cwd          = false,
+  update_to_buf_dir   = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file = {
+    enable      = false,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+  system_open = {
+    cmd  = nil,
+    args = {}
+  },
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  view = {
+    width = 30,
+    height = 30,
+    hide_root_folder = false,
+    side = 'left',
+    auto_resize = false,
+    mappings = {
+      custom_only = false,
+      list = {}
+    }
+  }
+}

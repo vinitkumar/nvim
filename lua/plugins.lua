@@ -14,7 +14,21 @@ return require('packer').startup(function()
     use 'tpope/vim-fugitive'
     use 'neovim/nvim-lspconfig'
     use 'nvim-lua/popup.nvim'
-    use 'hrsh7th/nvim-compe'
+    -- use 'hrsh7th/nvim-compe'
+    -- switch to nvim-cmp
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-vsnip'
+
     use 'vinitkumar/base16-nvim'
+    use 'nvim-lua/plenary.nvim'
+    use 'TimUntersberger/neogit'
     use 'yggdroot/indentline'
+    use {
+      'kyazdani42/nvim-tree.lua',
+      requires = 'kyazdani42/nvim-web-devicons',
+      config = function() require'nvim-tree'.setup {} end
+    }
 end)

@@ -89,6 +89,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/indentline"
   },
+  neogit = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/neogit"
+  },
   ["nvim-compe"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-compe"
@@ -104,6 +108,10 @@ _G.packer_plugins = {
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/packer.nvim"
+  },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/plenary.nvim"
   },
   ["popup.nvim"] = {
     loaded = true,

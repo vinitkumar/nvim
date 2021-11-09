@@ -30,6 +30,7 @@ opt.splitbelow = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.inccommand = "nosplit"
+opt.completeopt="menu,menuone,noselect"
 
 opt.list = true
 opt.listchars      = {
@@ -48,7 +49,7 @@ opt.scrolloff = 3
 
 
 vim.cmd('filetype indent plugin on')
-vim.cmd('colorscheme one')
+vim.cmd('colorscheme base16-bright')
 vim.cmd('syntax on')
 vim.g.mapleader = ","
 if vim.fn.filereadable('/usr/local/bin/python3') == 1 then
