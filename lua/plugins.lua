@@ -4,8 +4,12 @@ return require('packer').startup(function()
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
     use 'tpope/vim-commentary'
-    use '/usr/local/opt/fzf'
-    use 'junegunn/fzf.vim'
+    -- use '/usr/local/opt/fzf'
+    -- use 'junegunn/fzf.vim'
+    use {
+      'nvim-telescope/telescope.nvim',
+      requires = { {'nvim-lua/plenary.nvim'} }
+    }
     use 'vimwiki/vimwiki'
     use 'mileszs/ack.vim'
     -- use 'jremmen/vim-ripgrep'
@@ -41,34 +45,13 @@ return require('packer').startup(function()
         }
       end
     }
-    use 'ful1e5/onedark.nvim'
+    use 'olimorris/onedarkpro.nvim'
     use 'EdenEast/nightfox.nvim'
     use 'folke/tokyonight.nvim'
+    use 'folke/todo-comments.nvim'
     use {
       'nvim-lualine/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true}
-    }
-    use {
-      'andersevenrud/nordic.nvim',
-      config = function()
-          -- The table used in this example contains the default settings.
-          -- Modify or remove these to your liking:
-          require('nordic').colorscheme({
-              -- Underline style used for spelling
-              -- Options: 'none', 'underline', 'undercurl'
-              underline_option = 'none',
-
-              -- Italics for certain keywords such as constructors, functions,
-              -- labels and namespaces
-              italic = true,
-
-              -- Italic styled comments
-              italic_comments = false,
-
-              -- Minimal mode: different choice of colors for Tabs and StatusLine
-              minimal_mode = false
-          })
-      end
     }
 
 end)
