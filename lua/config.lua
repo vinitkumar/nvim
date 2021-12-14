@@ -49,7 +49,7 @@ opt.scrolloff = 3
 
 
 vim.cmd('filetype indent plugin on')
-vim.cmd('colorscheme onedarkpro')
+vim.cmd('colorscheme sitruuna')
 vim.cmd('syntax on')
 vim.g.mapleader = ","
 if vim.fn.filereadable('/usr/local/bin/python3') == 1 then
