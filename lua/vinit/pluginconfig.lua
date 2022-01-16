@@ -231,3 +231,4 @@ require("todo-comments").setup {
     -- pattern = "-- (KEYWORDS):", -- only match in lua comments
   }
 }
+

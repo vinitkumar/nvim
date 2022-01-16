@@ -29,6 +29,7 @@ return require('packer').startup(function()
     use 'vinitkumar/base16-nvim'
     use 'nvim-lua/plenary.nvim'
     use 'yggdroot/indentline'
+    use "rebelot/kanagawa.nvim"
     use {
       'kyazdani42/nvim-tree.lua',
       requires = 'kyazdani42/nvim-web-devicons',
@@ -49,6 +50,7 @@ return require('packer').startup(function()
     use 'EdenEast/nightfox.nvim'
     use 'folke/tokyonight.nvim'
     use 'folke/todo-comments.nvim'
+    use 'wakatime/vim-wakatime'
     use {
       'nvim-lualine/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true}

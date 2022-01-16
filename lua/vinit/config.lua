@@ -32,6 +32,11 @@ opt.background = "dark"
 opt.inccommand = "nosplit"
 opt.completeopt="menu,menuone,noselect"
 
+
+opt.updatetime = 2000
+opt.updatecount = 0
+
+
 opt.list = true
 opt.listchars      = {
   nbsp                 = '⦸',                              -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
@@ -49,7 +54,7 @@ opt.scrolloff = 3
 
 
 vim.cmd('filetype indent plugin on')
-vim.cmd('colorscheme sitruuna')
+vim.cmd('colorscheme grb-lucius')
 vim.cmd('syntax on')
 vim.g.mapleader = ","
 if vim.fn.filereadable('/usr/local/bin/python3') == 1 then

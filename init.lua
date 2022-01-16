@@ -1,5 +1,5 @@
 -- neovim config
-require('plugins')
-require("config")
-require("pluginconf")
-require("maps")
+require('vinit.plugins')
+require("vinit.config")
+require("vinit.pluginconfig")
+require("vinit.maps")

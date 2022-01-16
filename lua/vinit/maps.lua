@@ -17,7 +17,6 @@ vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, si
 vim.api.nvim_set_keymap('n', '<Leader>r', ':NvimTreeRefresh<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>n', ':NvimTreeFindFile<CR>', {noremap = true, silent = true})
 
-
 vim.api.nvim_set_keymap('n', '<C-c>', ':Telescope git_commits<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<Leader>t', ':<C-u>tabnew<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>h', ':<C-u>split<CR>', {noremap = true, silent=true})
