@@ -50,7 +50,6 @@ return require('packer').startup(function()
     use 'EdenEast/nightfox.nvim'
     use 'folke/tokyonight.nvim'
     use 'folke/todo-comments.nvim'
-    use 'wakatime/vim-wakatime'
     use {
       'nvim-lualine/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true}
