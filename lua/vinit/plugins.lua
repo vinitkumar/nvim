@@ -26,10 +26,8 @@ return require('packer').startup(function()
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-vsnip'
 
-    use 'vinitkumar/base16-nvim'
     use 'nvim-lua/plenary.nvim'
     use 'yggdroot/indentline'
-    use "rebelot/kanagawa.nvim"
     use {
       'kyazdani42/nvim-tree.lua',
       requires = 'kyazdani42/nvim-web-devicons',
@@ -46,13 +44,24 @@ return require('packer').startup(function()
         }
       end
     }
+    -- colorschemes
+    use 'marko-cerovac/material.nvim'
     use 'olimorris/onedarkpro.nvim'
     use 'EdenEast/nightfox.nvim'
     use 'folke/tokyonight.nvim'
+    use "rebelot/kanagawa.nvim"
+    use 'vinitkumar/base16-nvim'
     use 'folke/todo-comments.nvim'
     use {
       'nvim-lualine/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
+     use({
+      'noib3/nvim-cokeline',
+      requires = 'kyazdani42/nvim-web-devicons', -- If you want devicons
+      config = function()
+        require('cokeline').setup()
+      end
+  })
 
 end)
