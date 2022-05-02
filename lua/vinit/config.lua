@@ -9,18 +9,19 @@ opt.colorcolumn = "120"
 opt.shiftwidth = 2
 opt.softtabstop = 2
 opt.autoindent = true
-opt.laststatus = 2
+opt.scrolloff = 10
 opt.showmatch = true
 opt.incsearch = true
 opt.hlsearch = true
 opt.ignorecase = true
 opt.cursorline = true
+opt.cursorcolumn = true
 opt.cmdheight = 1
 opt.mouse = "a"
 opt.showtabline = 2
 opt.winwidth = 79
 opt.shell = "zsh"
-opt.scrolloff = 10
+opt.laststatus = 3
 opt.backup = false
 opt.writebackup = false
 opt.backspace = 'indent,eol,start'
@@ -30,6 +31,7 @@ opt.splitbelow = true
 opt.termguicolors = true
 opt.background = "dark"
 opt.inccommand = "nosplit"
+opt.lazyredraw = true
 opt.completeopt="menu,menuone,noselect"
 
 
@@ -54,7 +56,8 @@ opt.scrolloff = 3
 
 
 vim.cmd('filetype indent plugin on')
-vim.cmd('colorscheme base16-bright')
+vim.cmd('colorscheme sitruuna')
+vim.cmd('highlight WinSeparator guibg=None')
 vim.cmd('syntax on')
 vim.g.mapleader = ","
 if vim.fn.filereadable('/usr/local/bin/python3') == 1 then
