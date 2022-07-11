@@ -29,7 +29,7 @@ opt.showcmd = true
 opt.splitright = true
 opt.splitbelow = true
 opt.termguicolors = false
-opt.background = "light"
+opt.background = "dark"
 opt.inccommand = "nosplit"
 opt.lazyredraw = true
 opt.completeopt="menu,menuone,noselect"
@@ -56,7 +56,6 @@ opt.scrolloff = 3
 
 
 vim.cmd('filetype indent plugin on')
-vim.cmd('colorscheme sitruuna')
 vim.cmd('highlight WinSeparator guibg=None')
 vim.cmd('syntax on')
 vim.g.mapleader = ","

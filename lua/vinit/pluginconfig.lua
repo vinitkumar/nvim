@@ -49,21 +49,8 @@ end
 require'lspconfig'.pyright.setup{}
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noinsert'
+vim.o.completeopt = 'menuone,noinsert,preview'
 
--- Compe setup
--- require('compe').setup {
---   source = {
---     path = true,
---     nvim_lsp = true,
---     luasnip = true,
---     buffer = true,
---     calc = false,
---     nvim_lua = false,
---     vsnip = false,
---     ultisnips = false,
---   },
--- }
 
 local cmp = require'cmp'
 cmp.setup({
@@ -81,6 +68,7 @@ cmp.setup({
  },
  sources = {
    { name = 'nvim_lsp' },
+   { name = 'gh_issues'},
    { name = 'vsnip' },
    { name = 'buffer', keyword_length = 5},
    { name = 'path' },
@@ -99,7 +87,7 @@ require'nvim-treesitter.configs'.setup {
 require'lualine'.setup {
   options = {
     icons_enabled = true,
-    theme = 'dracula',
+    theme = 'onedark-nvim',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {},
@@ -126,3 +114,22 @@ require'lualine'.setup {
   extensions = {}
 }
 
+
+
+require("onedark").setup({
+  function_style = "italic",
+  sidebars = {"qf", "vista_kind", "terminal", "packer"},
+
+  -- Change the "hint" color to the "orange0" color, and make the "error" color bright red
+  colors = {hint = "orange0", error = "#ff0000"},
+
+  -- Overwrite the highlight groups
+  overrides = function(c)
+    return {
+      htmlTag = {fg = c.red0, bg = "#282c34", sp = c.hint, style = "underline"},
+      DiagnosticHint = {link = "LspDiagnosticsDefaultHint"},
+      -- this will remove the highlight groups
+      TSField = {},
+    }
+  end
+})
