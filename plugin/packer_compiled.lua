@@ -69,11 +69,6 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["ayu-vim"] = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/ayu-vim",
-    url = "https://github.com/ayu-theme/ayu-vim"
-  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -109,11 +104,6 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
-  ["kanagawa.nvim"] = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/kanagawa.nvim",
-    url = "https://github.com/rebelot/kanagawa.nvim"
-  },
   ["lualine.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/lualine.nvim",
@@ -139,10 +129,10 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
-  onehalf = {
+  ["onedark.nvim"] = {
     loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/onehalf",
-    url = "https://github.com/sonph/onehalf"
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/onedark.nvim",
+    url = "https://github.com/ful1e5/onedark.nvim"
   },
   ["packer.nvim"] = {
     loaded = true,
@@ -153,11 +143,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/popup.nvim",
     url = "https://github.com/nvim-lua/popup.nvim"
-  },
-  ["summerfruit256.vim"] = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/summerfruit256.vim",
-    url = "https://github.com/felixge/summerfruit256.vim"
   },
   ["vim-commentary"] = {
     loaded = true,
