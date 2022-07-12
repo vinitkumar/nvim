@@ -77,10 +77,18 @@ cmp.setup({
 
 -- treesitter
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = {"python", "javascript", "typescript", "c", "lua", "go"},
+  ensure_installed = {"python", "javascript", "typescript", "c", "lua", "go", "yaml", 
+"json", "html", "scss"},
+  indent = {
+    enable = true,
+    disable = {},
+  },
   highlight = {
     enable = true,              -- false will disable the whole extension
   },
+  autotag = {
+    enable = true,
+  }
 }
 
 
@@ -132,4 +140,51 @@ require("onedark").setup({
       TSField = {},
     }
   end
+})
+
+
+local status, lsp_installer = pcall(require, "nvim-lsp-installer")
+if (not status) then return end
+
+-- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
+-- or if the server is already installed).
+lsp_installer.on_server_ready(function(server)
+  local opts = {}
+
+  -- (optional) Customize the options passed to the server
+  -- if server.name == "tsserver" then
+  --     opts.root_dir = function() ... end
+  -- end
+
+  -- This setup() function will take the provided server configuration and decorate it with the necessary properties
+  -- before passing it onwards to lspconfig.
+  -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+  server:setup(opts)
+end)
+
+-- LSP colors config
+require("lsp-colors").setup({
+  Error = "#db4b4b",
+  Warning = "#e0af68",
+  Information = "#0db9d7",
+  Hint = "#10B981"
+})
+
+
+require("nvim-tree").setup({
+  sort_by = "case_sensitive",
+  view = {
+    adaptive_size = true,
+    mappings = {
+      list = {
+        { key = "u", action = "dir_up" },
+      },
+    },
+  },
+  renderer = {
+    group_empty = true,
+  },
+  filters = {
+    dotfiles = true,
+  },
 })

@@ -13,6 +13,7 @@ vim.api.nvim_set_keymap('n', '<C-e>', ':Telescope diagnostics bufnr=0<CR>', {nor
 
 
 
+vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>t', ':<C-u>tabnew<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>h', ':<C-u>split<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>v', ':<C-u>vsplit<CR>', {noremap = true, silent=true})
