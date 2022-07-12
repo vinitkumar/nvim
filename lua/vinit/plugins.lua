@@ -20,6 +20,8 @@ return require('packer').startup(function()
     use 'windwp/nvim-autopairs'
     use 'hrsh7th/vim-vsnip'
     use 'ful1e5/onedark.nvim'
+    use 'davidsierradz/cmp-conventionalcommits'
+    use 'petertriho/cmp-git'
     use {
       'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
