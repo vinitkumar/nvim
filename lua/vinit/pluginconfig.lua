@@ -88,17 +88,31 @@ require'nvim-treesitter.configs'.setup {
   },
   highlight = {
     enable = true,              -- false will disable the whole extension
+    disable = {}
+  },
+  ensure_installed = {
+    "python",
+    "tsx",
+    "toml",
+    "html",
+    "css",
+    "yaml",
+    "json",
+    "scss"
   },
   autotag = {
     enable = true,
-  }
+  },
 }
 
+
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
 
 require'lualine'.setup {
   options = {
     icons_enabled = true,
-    theme = 'onedark-nvim',
+    theme = 'solarized_dark',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {},
@@ -122,7 +136,7 @@ require'lualine'.setup {
     lualine_z = {}
   },
   tabline = {},
-  extensions = {}
+  extensions = {'fugitive'}
 }
 
 
