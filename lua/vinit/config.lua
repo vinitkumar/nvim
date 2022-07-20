@@ -14,8 +14,6 @@ opt.showmatch = true
 opt.incsearch = true
 opt.hlsearch = true
 opt.ignorecase = true
-opt.cursorline = true
-opt.cursorcolumn = true
 opt.cmdheight = 1
 opt.mouse = "a"
 opt.showtabline = 2
@@ -28,15 +26,28 @@ opt.backspace = 'indent,eol,start'
 opt.showcmd = true
 opt.splitright = true
 opt.splitbelow = true
-opt.termguicolors = false
-opt.background = "dark"
-opt.inccommand = "nosplit"
-opt.lazyredraw = true
+opt.inccommand = "split"
+opt.lazyredraw = false
 opt.completeopt="menu,menuone,noselect"
 
+opt.cursorline = true
+opt.cursorline = true -- Highlight the current line
+local group = vim.api.nvim_create_augroup("CursorLineControl", { clear = true })
+local set_cursorline = function(event, value, pattern)
+  vim.api.nvim_create_autocmd(event, {
+    group = group,
+    pattern = pattern,
+    callback = function()
+      vim.opt_local.cursorline = value
+    end,
+  })
+end
+set_cursorline("WinLeave", false)
+set_cursorline("WinEnter", true)
+set_cursorline("FileType", false, "TelescopePrompt")
 
-opt.updatetime = 2000
-opt.updatecount = 0
+
+opt.clipboard = {"unnamed", "unnamedplus"} -- use the system clipboard
 
 
 opt.list = true
@@ -51,13 +62,18 @@ opt.listchars      = {
 opt.modelines = 5
 opt.number = true
 opt.pumblend = 10
-opt.relativenumber = true
+
+opt.wildoptions = "pum"
+opt.termguicolors = true
+opt.pumblend = 5
 opt.scrolloff = 3
+opt.background = "dark"
 
 
 vim.cmd('filetype indent plugin on')
 vim.cmd('highlight WinSeparator guibg=None')
 vim.cmd('syntax on')
+vim.cmd('colorscheme NeoSolarized')
 vim.g.mapleader = ","
 if vim.fn.filereadable('/usr/local/bin/python3') == 1 then
   -- Avoid search, speeding up start-up.
