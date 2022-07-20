@@ -13,7 +13,6 @@ vim.api.nvim_set_keymap('n', '<C-e>', ':Telescope diagnostics bufnr=0<CR>', {nor
 
 
 
-vim.api.nvim_set_keymap('n', '<C-n>', ':NvimTreeToggle<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>t', ':<C-u>tabnew<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>h', ':<C-u>split<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>v', ':<C-u>vsplit<CR>', {noremap = true, silent=true})
@@ -29,3 +28,6 @@ vim.api.nvim_set_keymap('n', '<Leader>dt', '<C-R>=strftime("%c")<CR>', {noremap 
 
 vim.api.nvim_set_keymap('n', '<Leader>t', ':FloatermNew<CR>', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>xt', ':FloatermToggle<CR>', {noremap = true, silent=true})
+
+-- Hover Doc settings
+vim.api.nvim_set_keymap('n', 'K', ':Lspsaga hover_doc<CR>', {noremap = true, silent=true})

@@ -7,6 +7,7 @@ return require('packer').startup(function()
     use 'tpope/vim-fugitive'
     use {'nvim-treesitter/nvim-treesitter',  run = ':TSUpdate' }
     use 'neovim/nvim-lspconfig'
+    use 'glepnir/lspsaga.nvim'
     use 'nvim-lua/popup.nvim'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
