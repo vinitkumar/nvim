@@ -28,6 +28,7 @@ opt.splitright = true
 opt.splitbelow = true
 opt.inccommand = "split"
 opt.lazyredraw = false
+opt.swapfile = false 
 opt.completeopt="menu,menuone,noselect"
 
 opt.cursorline = true
@@ -64,16 +65,16 @@ opt.number = true
 opt.pumblend = 10
 
 opt.wildoptions = "pum"
-opt.termguicolors = true
+-- opt.termguicolors = true
 opt.pumblend = 5
 opt.scrolloff = 3
-opt.background = "dark"
+opt.background = "light"
 
 
 vim.cmd('filetype indent plugin on')
 vim.cmd('highlight WinSeparator guibg=None')
 vim.cmd('syntax on')
-vim.cmd('colorscheme NeoSolarized')
+vim.cmd('colorscheme sitruuna')
 vim.g.mapleader = ","
 if vim.fn.filereadable('/usr/local/bin/python3') == 1 then
   -- Avoid search, speeding up start-up.

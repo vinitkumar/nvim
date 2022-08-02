@@ -3,6 +3,7 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function()
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+    use 'vimwiki/vimwiki'
     use 'tpope/vim-commentary'
     use 'tpope/vim-fugitive'
     use {'nvim-treesitter/nvim-treesitter',  run = ':TSUpdate' }
@@ -20,9 +21,5 @@ return require('packer').startup(function()
       'nvim-telescope/telescope.nvim', tag = '0.1.0',
     -- or                            , branch = '0.1.x',
       requires = { {'nvim-lua/plenary.nvim'} }
-    }
-    use {
-      'nvim-lualine/lualine.nvim',
-      requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
 end)

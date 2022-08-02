@@ -26,8 +26,8 @@ vim.api.nvim_set_keymap('n', '<BS>', 'gg', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>dt', '"=strftime("%c")<CR>P', {noremap = true, silent=true})
 vim.api.nvim_set_keymap('n', '<Leader>dt', '<C-R>=strftime("%c")<CR>', {noremap = true, silent=true})
 
-vim.api.nvim_set_keymap('n', '<Leader>t', ':FloatermNew<CR>', {noremap = true, silent=true})
-vim.api.nvim_set_keymap('n', '<Leader>xt', ':FloatermToggle<CR>', {noremap = true, silent=true})
+-- vim.api.nvim_set_keymap('n', '<Leader>t', ':tabnew<CR>', {noremap = true, silent=true})
+-- vim.api.nvim_set_keymap('n', '<Leader>xt', ':FloatermToggle<CR>', {noremap = true, silent=true})
 
 -- Hover Doc settings
 vim.api.nvim_set_keymap('n', 'K', ':Lspsaga hover_doc<CR>', {noremap = true, silent=true})

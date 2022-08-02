@@ -91,14 +91,49 @@ require'nvim-treesitter.configs'.setup {
     disable = {}
   },
   ensure_installed = {
-    "python",
-    "tsx",
-    "toml",
-    "html",
+        "bash",
+    "bibtex",
+    "c",
+    "c_sharp",
+    "clojure",
+    "cmake",
+    "comment",
+    "commonlisp",
+    "cpp",
     "css",
+    "dockerfile",
+    "dot",
+    "elm",
+    "go",
+    "gomod",
+    "gowork",
+    "graphql",
+    "hcl",
+    "html",
+    "http",
+    "javascript",
+    "jsdoc",
+    "jsonc",
+    "latex",
+    "llvm",
+    "lua",
+    "make",
+    "markdown",
+    "markdown_inline",
+    "ninja",
+    "python",
+    "regex",
+    "rst",
+    "ruby",
+    "rust",
+    "scala",
+    "scheme",
+    "scss",
+    "toml",
+    "tsx",
+    "typescript",
+    "vim",
     "yaml",
-    "json",
-    "scss"
   },
   autotag = {
     enable = true,
@@ -108,36 +143,6 @@ require'nvim-treesitter.configs'.setup {
 
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
-
-require'lualine'.setup {
-  options = {
-    icons_enabled = true,
-    theme = 'solarized_dark',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff',
-                  {'diagnostics', sources={'nvim_diagnostic'}}},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {'fugitive'}
-}
 
 
 local status, lsp_installer = pcall(require, "nvim-lsp-installer")
