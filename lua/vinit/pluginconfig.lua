@@ -88,62 +88,61 @@ require'nvim-treesitter.configs'.setup {
   },
   highlight = {
     enable = true,              -- false will disable the whole extension
+    disable = {}
+  },
+  ensure_installed = {
+        "bash",
+    "bibtex",
+    "c",
+    "c_sharp",
+    "clojure",
+    "cmake",
+    "comment",
+    "commonlisp",
+    "cpp",
+    "css",
+    "dockerfile",
+    "dot",
+    "elm",
+    "go",
+    "gomod",
+    "gowork",
+    "graphql",
+    "hcl",
+    "html",
+    "http",
+    "javascript",
+    "jsdoc",
+    "jsonc",
+    "latex",
+    "llvm",
+    "lua",
+    "make",
+    "markdown",
+    "markdown_inline",
+    "ninja",
+    "python",
+    "regex",
+    "rst",
+    "ruby",
+    "rust",
+    "scala",
+    "scheme",
+    "scss",
+    "toml",
+    "tsx",
+    "typescript",
+    "vim",
+    "yaml",
   },
   autotag = {
     enable = true,
-  }
+  },
 }
 
 
-require'lualine'.setup {
-  options = {
-    icons_enabled = true,
-    theme = 'onedark-nvim',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {},
-    always_divide_middle = true,
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff',
-                  {'diagnostics', sources={'nvim_diagnostic'}}},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  extensions = {}
-}
-
-
-
-require("onedark").setup({
-  function_style = "italic",
-  sidebars = {"qf", "vista_kind", "terminal", "packer"},
-
-  -- Change the "hint" color to the "orange0" color, and make the "error" color bright red
-  colors = {hint = "orange0", error = "#ff0000"},
-
-  -- Overwrite the highlight groups
-  overrides = function(c)
-    return {
-      htmlTag = {fg = c.red0, bg = "#282c34", sp = c.hint, style = "underline"},
-      DiagnosticHint = {link = "LspDiagnosticsDefaultHint"},
-      -- this will remove the highlight groups
-      TSField = {},
-    }
-  end
-})
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
 
 
 local status, lsp_installer = pcall(require, "nvim-lsp-installer")
@@ -192,88 +191,15 @@ require("nvim-tree").setup({
   },
 })
 
+local saga = require 'lspsaga'
 
-
-local format = require("cmp_git.format")
-local sort = require("cmp_git.sort")
-
-require("cmp_git").setup({
-    -- defaults
-    filetypes = { "gitcommit", "octo" },
-    remotes = { "upstream", "origin" }, -- in order of most to least prioritized
-    enableRemoteUrlRewrites = false, -- enable git url rewrites, see https://git-scm.com/docs/git-config#Documentation/git-config.txt-urlltbasegtinsteadOf
-    git = {
-        commits = {
-            limit = 100,
-            sort_by = sort.git.commits,
-            format = format.git.commits,
-        },
-    },
-    github = {
-        issues = {
-            fields = { "title", "number", "body", "updatedAt", "state" },
-            filter = "all", -- assigned, created, mentioned, subscribed, all, repos
-            limit = 100,
-            state = "open", -- open, closed, all
-            sort_by = sort.github.issues,
-            format = format.github.issues,
-        },
-        mentions = {
-            limit = 100,
-            sort_by = sort.github.mentions,
-            format = format.github.mentions,
-        },
-        pull_requests = {
-            fields = { "title", "number", "body", "updatedAt", "state" },
-            limit = 100,
-            state = "open", -- open, closed, merged, all
-            sort_by = sort.github.pull_requests,
-            format = format.github.pull_requests,
-        },
-    },
-    trigger_actions = {
-        {
-            debug_name = "git_commits",
-            trigger_character = ":",
-            action = function(sources, trigger_char, callback, params, git_info)
-                return sources.git:get_commits(callback, params, trigger_char)
-            end,
-        },
-        {
-            debug_name = "gitlab_issues",
-            trigger_character = "#",
-            action = function(sources, trigger_char, callback, params, git_info)
-                return sources.gitlab:get_issues(callback, git_info, trigger_char)
-            end,
-        },
-        {
-            debug_name = "gitlab_mentions",
-            trigger_character = "@",
-            action = function(sources, trigger_char, callback, params, git_info)
-                return sources.gitlab:get_mentions(callback, git_info, trigger_char)
-            end,
-        },
-        {
-            debug_name = "gitlab_mrs",
-            trigger_character = "!",
-            action = function(sources, trigger_char, callback, params, git_info)
-                return sources.gitlab:get_merge_requests(callback, git_info, trigger_char)
-            end,
-        },
-        {
-            debug_name = "github_issues_and_pr",
-            trigger_character = "#",
-            action = function(sources, trigger_char, callback, params, git_info)
-                return sources.github:get_issues_and_prs(callback, git_info, trigger_char)
-            end,
-        },
-        {
-            debug_name = "github_mentions",
-            trigger_character = "@",
-            action = function(sources, trigger_char, callback, params, git_info)
-                return sources.github:get_mentions(callback, git_info, trigger_char)
-            end,
-        },
-    },
+saga.init_lsp_saga {
+  error_sign = '',
+  warn_sign = '',
+  hint_sign = '',
+  infor_sign = '',
+  border_style = "round",
+  code_action_prompt = {
+    enable = false
   }
-)
+}
