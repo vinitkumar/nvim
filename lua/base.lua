@@ -22,6 +22,9 @@ vim.opt.hlsearch = true
 
 vim.opt.wrap = false -- No Wrap lines
 
+vim.opt.swapfile = false 
+vim.opt.backup = false
+vim.opt.writebackup = false
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.backspace = { 'start', 'eol', 'indent' }
