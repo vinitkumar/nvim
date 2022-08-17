@@ -84,11 +84,6 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
-  ["colorbuddy.nvim"] = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/colorbuddy.nvim",
-    url = "https://github.com/tjdevries/colorbuddy.nvim"
-  },
   ["git.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/git.nvim",
@@ -129,11 +124,6 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
-  ["neosolarized.nvim"] = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/neosolarized.nvim",
-    url = "https://github.com/svrana/neosolarized.nvim"
-  },
   ["null-ls.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
@@ -143,6 +133,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-autopairs",
     url = "https://github.com/windwp/nvim-autopairs"
+  },
+  ["nvim-base16"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-base16",
+    url = "https://github.com/RRethy/nvim-base16"
   },
   ["nvim-bufferline.lua"] = {
     loaded = true,
