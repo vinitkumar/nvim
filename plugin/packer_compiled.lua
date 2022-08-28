@@ -69,11 +69,6 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  LuaSnip = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/LuaSnip",
-    url = "https://github.com/L3MON4D3/LuaSnip"
-  },
   ["cmp-buffer"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/cmp-buffer",
@@ -84,6 +79,13 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
+  ["command-t"] = {
+    config = { "\27LJ\2\n>\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\21wincent.commandt\frequire\0" },
+    loaded = true,
+    needs_bufread = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/opt/command-t",
+    url = "https://github.com/wincent/command-t"
+  },
   ["git.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/git.nvim",
@@ -93,6 +95,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
+  },
+  ["gruvbox.nvim"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
+    url = "https://github.com/ellisonleao/gruvbox.nvim"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -207,6 +214,17 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Setup for: command-t
+time([[Setup for command-t]], true)
+try_loadstring("\27LJ\2\nE\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\blua$CommandTPreferredImplementation\6g\bvim\0", "setup", "command-t")
+time([[Setup for command-t]], false)
+time([[packadd for command-t]], true)
+vim.cmd [[packadd command-t]]
+time([[packadd for command-t]], false)
+-- Config for: command-t
+time([[Config for command-t]], true)
+try_loadstring("\27LJ\2\n>\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\21wincent.commandt\frequire\0", "config", "command-t")
+time([[Config for command-t]], false)
 if should_profile then save_profiles() end
 
 end)

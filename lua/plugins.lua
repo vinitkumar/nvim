@@ -21,7 +21,7 @@ packer.startup(function(use)
   use 'williamboman/mason-lspconfig.nvim'
 
   use 'glepnir/lspsaga.nvim' -- LSP UIs
-  use 'L3MON4D3/LuaSnip'
+  -- use 'L3MON4D3/LuaSnip'
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
@@ -43,5 +43,17 @@ packer.startup(function(use)
   use 'lewis6991/gitsigns.nvim'
   use 'dinhhuy258/git.nvim' -- For git blame & browse
 	use 'tpope/vim-commentary'
+	use "ellisonleao/gruvbox.nvim"
+	-- use 'wincent/command-t'
+	use {
+		'wincent/command-t',
+		run = 'cd lua/wincent/commandt/lib && make',
+		setup = function ()
+			vim.g.CommandTPreferredImplementation = 'lua'
+		end,
+		config = function()
+			require('wincent.commandt').setup()
+		end,
+	}
 end)
 
