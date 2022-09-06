@@ -22,7 +22,7 @@ vim.opt.hlsearch = true
 
 vim.opt.wrap = false -- No Wrap lines
 
-vim.opt.swapfile = false 
+vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.shiftwidth = 2
@@ -40,3 +40,4 @@ vim.api.nvim_create_autocmd("InsertLeave", {
   pattern = '*',
   command = "set nopaste"
 })
+
