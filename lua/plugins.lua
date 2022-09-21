@@ -8,11 +8,9 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-	use 'RRethy/nvim-base16'	
   use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
-  use 'hrsh7th/cmp-buffer' -- nvim-cmp source for buffer words
   use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
   use 'hrsh7th/nvim-cmp' -- Completion
   use 'neovim/nvim-lspconfig' -- LSP
@@ -31,29 +29,26 @@ packer.startup(function(use)
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
   use 'windwp/nvim-ts-autotag'
-  use 'norcalli/nvim-colorizer.lua'
   use 'folke/zen-mode.nvim'
   use({
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,
   })
   use 'akinsho/nvim-bufferline.lua'
-  -- use 'github/copilot.vim'
 
   use 'lewis6991/gitsigns.nvim'
   use 'dinhhuy258/git.nvim' -- For git blame & browse
-	use 'tpope/vim-commentary'
-	use 'morhetz/gruvbox'
+  use 'tpope/vim-commentary'
 	-- use 'wincent/command-t'
 	use {
-		'wincent/command-t',
-		run = 'cd lua/wincent/commandt/lib && make',
-		setup = function ()
-			vim.g.CommandTPreferredImplementation = 'lua'
-		end,
-		config = function()
-			require('wincent.commandt').setup()
-		end,
+			'wincent/command-t',
+			run = 'cd lua/wincent/commandt/lib && make',
+			setup = function ()
+							vim.g.CommandTPreferredImplementation = 'lua'
+			end,
+			config = function()
+							require('wincent.commandt').setup()
+			end,
 	}
 end)
 
