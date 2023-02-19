@@ -86,20 +86,10 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/opt/command-t",
     url = "https://github.com/wincent/command-t"
   },
-  ["git.nvim"] = {
+  ["copilot.vim"] = {
     loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/git.nvim",
-    url = "https://github.com/dinhhuy258/git.nvim"
-  },
-  ["gitsigns.nvim"] = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
-    url = "https://github.com/lewis6991/gitsigns.nvim"
-  },
-  gruvbox = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/gruvbox",
-    url = "https://github.com/morhetz/gruvbox"
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/copilot.vim",
+    url = "https://github.com/github/copilot.vim"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -130,6 +120,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
+  },
+  ["nightfox.nvim"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nightfox.nvim",
+    url = "https://github.com/EdenEast/nightfox.nvim"
   },
   ["null-ls.nvim"] = {
     loaded = true,
@@ -171,15 +166,16 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
-  onehalf = {
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/onehalf",
-    url = "https://github.com/sonph/onehalf"
-  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
+  },
+  ["perfanno.nvim"] = {
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rperfanno\frequire\0" },
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/perfanno.nvim",
+    url = "https://github.com/t-troebst/perfanno.nvim"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -201,6 +197,16 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/vim-commentary",
     url = "https://github.com/tpope/vim-commentary"
   },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-rst"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/vim-rst",
+    url = "https://github.com/habamax/vim-rst"
+  },
   ["zen-mode.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/zen-mode.nvim",
@@ -216,6 +222,10 @@ time([[Setup for command-t]], false)
 time([[packadd for command-t]], true)
 vim.cmd [[packadd command-t]]
 time([[packadd for command-t]], false)
+-- Config for: perfanno.nvim
+time([[Config for perfanno.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rperfanno\frequire\0", "config", "perfanno.nvim")
+time([[Config for perfanno.nvim]], false)
 -- Config for: command-t
 time([[Config for command-t]], true)
 try_loadstring("\27LJ\2\n>\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\21wincent.commandt\frequire\0", "config", "command-t")

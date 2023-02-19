@@ -16,7 +16,9 @@ packer.startup(function(use)
   use 'neovim/nvim-lspconfig' -- LSP
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
   use 'williamboman/mason.nvim'
+	use 'EdenEast/nightfox.nvim'
   use 'williamboman/mason-lspconfig.nvim'
+	use 'habamax/vim-rst'
 
   use 'glepnir/lspsaga.nvim' -- LSP UIs
   -- use 'L3MON4D3/LuaSnip'
@@ -28,6 +30,8 @@ packer.startup(function(use)
   use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
+  use 'tpope/vim-fugitive'
+
   use 'windwp/nvim-ts-autotag'
   use 'folke/zen-mode.nvim'
   use({
@@ -36,9 +40,8 @@ packer.startup(function(use)
   })
   use 'akinsho/nvim-bufferline.lua'
 
-  use 'lewis6991/gitsigns.nvim'
-  use 'dinhhuy258/git.nvim' -- For git blame & browse
   use 'tpope/vim-commentary'
+	use 'github/copilot.vim'
 	-- use 'wincent/command-t'
 	use {
 			'wincent/command-t',
@@ -48,6 +51,13 @@ packer.startup(function(use)
 			end,
 			config = function()
 							require('wincent.commandt').setup()
+			end,
+	}
+	use {
+			't-troebst/perfanno.nvim',
+			run = 'cd lua/wincent/commandt/lib && make',
+			config = function()
+				require("perfanno").setup()
 			end,
 	}
 end)
