@@ -79,17 +79,20 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
     url = "https://github.com/hrsh7th/cmp-nvim-lsp"
   },
-  ["command-t"] = {
-    config = { "\27LJ\2\n>\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\21wincent.commandt\frequire\0" },
-    loaded = true,
-    needs_bufread = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/opt/command-t",
-    url = "https://github.com/wincent/command-t"
-  },
   ["copilot.vim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/copilot.vim",
     url = "https://github.com/github/copilot.vim"
+  },
+  edge = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/edge",
+    url = "https://github.com/sainnhe/edge"
+  },
+  ["gruvbox-material"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/gruvbox-material",
+    url = "https://github.com/sainnhe/gruvbox-material"
   },
   ["lspkind-nvim"] = {
     loaded = true,
@@ -151,6 +154,12 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     url = "https://github.com/neovim/nvim-lspconfig"
   },
+  ["nvim-tree.lua"] = {
+    config = { "\27LJ\2\n;\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14nvim-tree\frequire\0" },
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
+    url = "https://github.com/nvim-tree/nvim-tree.lua"
+  },
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
@@ -170,12 +179,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
-  },
-  ["perfanno.nvim"] = {
-    config = { "\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rperfanno\frequire\0" },
-    loaded = true,
-    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/perfanno.nvim",
-    url = "https://github.com/t-troebst/perfanno.nvim"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -215,21 +218,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Setup for: command-t
-time([[Setup for command-t]], true)
-try_loadstring("\27LJ\2\nE\0\0\2\0\4\0\0056\0\0\0009\0\1\0'\1\3\0=\1\2\0K\0\1\0\blua$CommandTPreferredImplementation\6g\bvim\0", "setup", "command-t")
-time([[Setup for command-t]], false)
-time([[packadd for command-t]], true)
-vim.cmd [[packadd command-t]]
-time([[packadd for command-t]], false)
--- Config for: perfanno.nvim
-time([[Config for perfanno.nvim]], true)
-try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rperfanno\frequire\0", "config", "perfanno.nvim")
-time([[Config for perfanno.nvim]], false)
--- Config for: command-t
-time([[Config for command-t]], true)
-try_loadstring("\27LJ\2\n>\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\21wincent.commandt\frequire\0", "config", "command-t")
-time([[Config for command-t]], false)
+-- Config for: nvim-tree.lua
+time([[Config for nvim-tree.lua]], true)
+try_loadstring("\27LJ\2\n;\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\14nvim-tree\frequire\0", "config", "nvim-tree.lua")
+time([[Config for nvim-tree.lua]], false)
 
 _G._packer.inside_compile = false
 if _G._packer.needs_bufread == true then

@@ -16,8 +16,9 @@ keymap.set('n', '<CR>', 'G', { noremap = true, silent = true })
 keymap.set('n', '<BS>', 'gg', { noremap = true, silent = true })
 
 
-keymap.set('n', '<C-p>', ':CommandTGit<CR>', { noremap = true, silent = true })
-keymap.set('n', '<C-b>', ':CommandTBuffer<CR>', { noremap = true, silent = true })
-keymap.set('n', '<C-l>', ':CommandTGit<CR>', { noremap = true, silent = true })
+keymap.set('n', '<C-p>', ':Telescope find_files<CR>', { noremap = true, silent = true })
+keymap.set('n', '<C-b>', ':Telescope buffers<CR>', { noremap = true, silent = true })
+-- keymap.set('n', '<C-l>', ':CommandTGit<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-c>', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-e>', ':Telescope diagnostics bufnr=0<CR>', { noremap = true, silent = true })
+keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })

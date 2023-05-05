@@ -27,11 +27,12 @@ packer.startup(function(use)
     run = ':TSUpdate'
   }
   use 'kyazdani42/nvim-web-devicons' -- File icons
-  use 'nvim-telescope/telescope.nvim'
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-fugitive'
 
+	use 'sainnhe/edge'
+	use 'sainnhe/gruvbox-material'
   use 'windwp/nvim-ts-autotag'
   use 'folke/zen-mode.nvim'
   use({
@@ -42,23 +43,38 @@ packer.startup(function(use)
 
   use 'tpope/vim-commentary'
 	use 'github/copilot.vim'
-	-- use 'wincent/command-t'
 	use {
-			'wincent/command-t',
-			run = 'cd lua/wincent/commandt/lib && make',
-			setup = function ()
-							vim.g.CommandTPreferredImplementation = 'lua'
-			end,
-			config = function()
-							require('wincent.commandt').setup()
-			end,
+  'nvim-telescope/telescope.nvim', tag = '0.1.1',
+	-- or                            , branch = '0.1.x',
+		requires = { {'nvim-lua/plenary.nvim'} }
 	}
 	use {
-			't-troebst/perfanno.nvim',
-			run = 'cd lua/wincent/commandt/lib && make',
+			'nvim-tree/nvim-tree.lua',
+			requires = {
+				'nvim-tree/nvim-web-devicons', -- optional
+			},
 			config = function()
-				require("perfanno").setup()
-			end,
-	}
+				require("nvim-tree").setup {}
+			end
+		}
+
+	-- -- use 'wincent/command-t'
+	-- use {
+	-- 		'wincent/command-t',
+	-- 		run = 'cd lua/wincent/commandt/lib && make',
+	-- 		setup = function ()
+	-- 						vim.g.CommandTPreferredImplementation = 'lua'
+	-- 		end,
+	-- 		config = function()
+	-- 						require('wincent.commandt').setup()
+	-- 		end,
+	-- }
+	-- use {
+	-- 		't-troebst/perfanno.nvim',
+	-- 		run = 'cd lua/wincent/commandt/lib && make',
+	-- 		config = function()
+	-- 			require("perfanno").setup()
+	-- 		end,
+	-- }
 end)
 
