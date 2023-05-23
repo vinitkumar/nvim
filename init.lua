@@ -25,7 +25,7 @@ packer.startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
-	use 'nvim-treesitter/nvim-treesitter-context'
+  use 'nvim-treesitter/nvim-treesitter-context'
   use 'kyazdani42/nvim-web-devicons' -- File icons
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
@@ -42,7 +42,7 @@ packer.startup(function(use)
   use 'tpope/vim-commentary'
   use 'github/copilot.vim'
   use {
-    'nvim-telescope/telescope.nvim', 
+    'nvim-telescope/telescope.nvim',
     tag = '0.1.1',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
@@ -53,17 +53,17 @@ packer.startup(function(use)
     },
     config = function()
       require("nvim-tree").setup {
-				sort_by = "case_sensitive",
-				view = {
-					width = 30,
-				},
-				renderer = {
-					group_empty = true,
-				},
-				filters = {
-					dotfiles = true,
-				},
-			}
+        sort_by = "case_sensitive",
+        view = {
+          width = 30,
+        },
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = true,
+        },
+      }
     end
   }
 
@@ -121,7 +121,7 @@ vim.opt.termguicolors = true
 vim.opt.winblend = 0 -- adds pseudo transparency to a floating window
 vim.opt.wildoptions = 'pum'
 vim.opt.background = 'dark'
-vim.cmd('colorscheme edge')
+vim.cmd('colorscheme peachpuff')
 require("nvim-tree").setup()
 
 
@@ -143,7 +143,6 @@ keymap.set('n', '<BS>', 'gg', { noremap = true, silent = true })
 
 keymap.set('n', '<C-p>', ':Telescope find_files<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-b>', ':Telescope buffers<CR>', { noremap = true, silent = true })
--- keymap.set('n', '<C-l>', ':CommandTGit<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-c>', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-e>', ':Telescope diagnostics bufnr=0<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
@@ -212,3 +211,25 @@ null_ls.setup({
     null_ls.builtins.diagnostics.fish
   }
 })
+
+
+function StripTrailingWhitespace()
+  if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
+    vim.cmd('normal! mz')
+    vim.cmd('normal! Hmy')
+    if vim.bo.filetype == 'mail' then
+      -- Preserve space after e-mail signature separator
+      vim.cmd('%s/\\(^--\\)\\@<!\\s\\+$//e')
+    else
+      vim.cmd('%s/\\s\\+$//e')
+    end
+    vim.cmd('normal! \'yz<Enter>')
+    vim.cmd('normal! `z')
+  end
+end
+
+vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
+-- Show space and tab characters
+vim.o.list = true
+vim.o.listchars = 'tab:▸ ,trail:·,nbsp:␣'
+
