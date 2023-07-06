@@ -9,7 +9,7 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  use 'nvim-lualine/lualine.nvim' -- Statusline
+  -- use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
   use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
@@ -17,10 +17,9 @@ packer.startup(function(use)
   use 'neovim/nvim-lspconfig' -- LSP
   use 'jose-elias-alvarez/null-ls.nvim' -- Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
   use 'williamboman/mason.nvim'
-  use 'EdenEast/nightfox.nvim'
   use 'williamboman/mason-lspconfig.nvim'
-  use 'habamax/vim-rst'
   use 'glepnir/lspsaga.nvim' -- LSP UIs
+  use "rebelot/kanagawa.nvim"
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
@@ -30,17 +29,16 @@ packer.startup(function(use)
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-fugitive'
-  use 'sainnhe/edge'
-  use 'sainnhe/gruvbox-material'
+  use { "catppuccin/nvim", as = "catppuccin" }
   use 'windwp/nvim-ts-autotag'
-  use 'folke/zen-mode.nvim'
-  use({
-    "iamcco/markdown-preview.nvim",
-    run = function() vim.fn["mkdp#util#install"]() end,
-  })
-  use 'akinsho/nvim-bufferline.lua'
   use 'tpope/vim-commentary'
-  use 'github/copilot.vim'
+  use {
+    'github/copilot.vim',
+    config = function ()
+      vim.g.copilot_enabled = false
+    end
+  }
+  use 'mhinz/vim-startify'
   use {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.1',
@@ -75,7 +73,7 @@ vim.scriptencoding = 'utf-8'
 vim.opt.encoding = 'utf-8'
 vim.opt.fileencoding = 'utf-8'
 
-vim.wo.number = true
+vim.wo.number = false
 vim.opt.title = true
 vim.opt.autoindent = true
 vim.opt.smarttab = true
@@ -95,7 +93,9 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.shiftwidth = 2
+vim.opt.expandtab = true  -- expand tabs into spaces
 vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
 vim.opt.backspace = { 'start', 'eol', 'indent' }
 vim.opt.path:append { '**' } -- Finding files - Search down into subfolders
 vim.opt.wildignore:append { '*/node_modules/*' }
@@ -103,6 +103,8 @@ vim.opt.wildignore:append { '*/node_modules/*' }
 -- Undercurl
 vim.cmd([[let &t_Cs = "\e[4:3m"]])
 vim.cmd([[let &t_Ce = "\e[4:0m"]])
+
+vim.api.nvim_command('autocmd VimResized * :wincmd =')
 
 -- Turn off paste mode when leaving insert
 vim.api.nvim_create_autocmd("InsertLeave", {
@@ -120,9 +122,58 @@ vim.opt.cursorline = true
 vim.opt.termguicolors = true
 vim.opt.winblend = 0 -- adds pseudo transparency to a floating window
 vim.opt.wildoptions = 'pum'
-vim.opt.background = 'dark'
-vim.cmd('colorscheme peachpuff')
+
+function switchBackgroundAndColorScheme()
+  local m = vim.fn.system("defaults read -g AppleInterfaceStyle")
+  m = m:gsub("%s+", "") -- trim whitespace
+  if m == "Dark" then
+    kanagawaTheme()
+    vim.cmd("colorscheme kanagawa")
+    vim.o.background = "dark"
+  else
+    vim.cmd("colorscheme catppuccin-latte")
+    vim.o.background = "light"
+  end
+end
+
+vim.cmd('autocmd FocusGained,BufEnter * lua switchBackgroundAndColorScheme()')
+
+function kanagawaTheme()
+  require('kanagawa').setup({
+      compile = false,             -- enable compiling the colorscheme
+      undercurl = true,            -- enable undercurls
+      commentStyle = { italic = true },
+      functionStyle = {},
+      keywordStyle = { italic = true},
+      statementStyle = { bold = true },
+      typeStyle = {},
+      transparent = false,         -- do not set background color
+      dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
+      terminalColors = true,       -- define vim.g.terminal_color_{0,17}
+      colors = {                   -- add/modify theme and palette colors
+          palette = {},
+          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+      },
+      overrides = function(colors) -- add/modify highlights
+          return {}
+      end,
+      theme = "wave",              -- Load "wave" theme when 'background' option is not set
+      background = {               -- map the value of 'background' option to a theme
+          dark = "wave",           -- try "dragon" !
+          light = "lotus"
+      },
+  })
+end
+
+-- setup must be called before loading
+
+
 require("nvim-tree").setup()
+-- require('lualine').setup {
+--   options = {
+--     theme = 'auto'
+--   }
+-- }
 
 
 
@@ -231,5 +282,4 @@ end
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
 -- Show space and tab characters
 vim.o.list = true
-vim.o.listchars = 'tab:▸ ,trail:·,nbsp:␣'
-
+vim.o.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
