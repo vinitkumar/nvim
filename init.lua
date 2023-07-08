@@ -25,7 +25,6 @@ packer.startup(function(use)
     run = ':TSUpdate'
   }
   use 'nvim-treesitter/nvim-treesitter-context'
-  use 'kyazdani42/nvim-web-devicons' -- File icons
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-fugitive'
@@ -46,9 +45,6 @@ packer.startup(function(use)
   }
   use {
     'nvim-tree/nvim-tree.lua',
-    requires = {
-      'nvim-tree/nvim-web-devicons', -- optional
-    },
     config = function()
       require("nvim-tree").setup {
         sort_by = "case_sensitive",
@@ -128,7 +124,7 @@ function switchBackgroundAndColorScheme()
   m = m:gsub("%s+", "") -- trim whitespace
   if m == "Dark" then
     kanagawaTheme()
-    vim.cmd("colorscheme kanagawa")
+    vim.cmd("colorscheme catppuccin-macchiato")
     vim.o.background = "dark"
   else
     vim.cmd("colorscheme catppuccin-latte")
