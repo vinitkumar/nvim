@@ -43,6 +43,8 @@ packer.startup(function(use)
     tag = '0.1.1',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
+  use 'norcalli/nvim-colorizer.lua'
+  use { 'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua' }
   use {
     'nvim-tree/nvim-tree.lua',
     config = function()
@@ -60,7 +62,6 @@ packer.startup(function(use)
       }
     end
   }
-
 end)
 
 vim.cmd("autocmd!")
