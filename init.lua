@@ -164,7 +164,6 @@ end
 
 -- setup must be called before loading
 
-
 require("nvim-tree").setup()
 -- require('lualine').setup {
 --   options = {
