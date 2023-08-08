@@ -9,7 +9,6 @@ vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
   use 'wbthomason/packer.nvim'
-  -- use 'nvim-lualine/lualine.nvim' -- Statusline
   use 'nvim-lua/plenary.nvim' -- Common utilities
   use 'onsails/lspkind-nvim' -- vscode-like pictograms
   use 'hrsh7th/cmp-nvim-lsp' -- nvim-cmp source for neovim's built-in LSP
@@ -28,15 +27,15 @@ packer.startup(function(use)
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-fugitive'
-  use { "catppuccin/nvim", as = "catppuccin" }
   use 'windwp/nvim-ts-autotag'
   use 'tpope/vim-commentary'
   use {
     'github/copilot.vim',
     config = function ()
-      vim.g.copilot_enabled = false
+      vim.g.copilot_enabled = true
     end
   }
+  use 'RRethy/nvim-base16'
   use 'mhinz/vim-startify'
   use {
     'nvim-telescope/telescope.nvim',
@@ -44,24 +43,6 @@ packer.startup(function(use)
     requires = { {'nvim-lua/plenary.nvim'} }
   }
   use 'norcalli/nvim-colorizer.lua'
-  use { 'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua' }
-  use {
-    'nvim-tree/nvim-tree.lua',
-    config = function()
-      require("nvim-tree").setup {
-        sort_by = "case_sensitive",
-        view = {
-          width = 30,
-        },
-        renderer = {
-          group_empty = true,
-        },
-        filters = {
-          dotfiles = true,
-        },
-      }
-    end
-  }
 end)
 
 vim.cmd("autocmd!")
@@ -70,7 +51,7 @@ vim.scriptencoding = 'utf-8'
 vim.opt.encoding = 'utf-8'
 vim.opt.fileencoding = 'utf-8'
 
-vim.wo.number = false
+vim.wo.number = true
 vim.opt.title = true
 vim.opt.autoindent = true
 vim.opt.smarttab = true
@@ -120,20 +101,21 @@ vim.opt.termguicolors = true
 vim.opt.winblend = 0 -- adds pseudo transparency to a floating window
 vim.opt.wildoptions = 'pum'
 
-function switchBackgroundAndColorScheme()
-  local m = vim.fn.system("defaults read -g AppleInterfaceStyle")
-  m = m:gsub("%s+", "") -- trim whitespace
-  if m == "Dark" then
-    kanagawaTheme()
-    vim.cmd("colorscheme catppuccin-macchiato")
-    vim.o.background = "dark"
-  else
-    vim.cmd("colorscheme catppuccin-latte")
-    vim.o.background = "light"
-  end
-end
+-- We are going to use a random base16-colorscheme for some days, So commenting this out
+-- function switchBackgroundAndColorScheme()
+--   local m = vim.fn.system("defaults read -g AppleInterfaceStyle")
+--   m = m:gsub("%s+", "") -- trim whitespace
+--   if m == "Dark" then
+--     kanagawaTheme()
+--     vim.cmd("colorscheme catppuccin-macchiato")
+--     vim.o.background = "dark"
+--   else
+--     vim.cmd("colorscheme catppuccin-latte")
+--     vim.o.background = "light"
+--   end
+-- end
 
-vim.cmd('autocmd FocusGained,BufEnter * lua switchBackgroundAndColorScheme()')
+-- vim.cmd('autocmd FocusGained,BufEnter * lua switchBackgroundAndColorScheme()')
 
 function kanagawaTheme()
   require('kanagawa').setup({
@@ -161,16 +143,6 @@ function kanagawaTheme()
       },
   })
 end
-
--- setup must be called before loading
-
-require("nvim-tree").setup()
--- require('lualine').setup {
---   options = {
---     theme = 'auto'
---   }
--- }
-
 
 
 vim.g.mapleader = ","
@@ -277,5 +249,223 @@ end
 
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
 -- Show space and tab characters
-vim.o.list = true
-vim.o.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
+vim.opt.list = true
+vim.opt.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
+
+
+-- Get base16 themes from colorscheme files
+
+-- List of available base16 themes
+local themes = {
+  '3024',
+  'apathy',
+  'apprentice',
+  'ashes',
+  'atelier-cave',
+  'atelier-cave-light',
+  'atelier-dune',
+  'atelier-dune-light',
+  'atelier-estuary',
+  'atelier-estuary-light',
+  'atelier-forest',
+  'atelier-forest-light',
+  'atelier-heath',
+  'atelier-heath-light',
+  'atelier-lakeside',
+  'atelier-lakeside-light',
+  'atelier-plateau',
+  'atelier-plateau-light',
+  'atelier-savanna',
+  'atelier-savanna-light',
+  'atelier-seaside',
+  'atelier-seaside-light',
+  'atelier-sulphurpool',
+  'atelier-sulphurpool-light',
+  'atlas',
+  'ayu-dark',
+  'ayu-light',
+  'ayu-mirage',
+  'bespin',
+  'black-metal',
+  'black-metal-bathory',
+  'black-metal-burzum',
+  'black-metal-dark-funeral',
+  'black-metal-gorgoroth',
+  'black-metal-immortal',
+  'black-metal-khold',
+  'black-metal-marduk',
+  'black-metal-mayhem',
+  'black-metal-nile',
+  'black-metal-venom',
+  'blueforest',
+  'blueish',
+  'brewer',
+  'bright',
+  'brogrammer',
+  'brushtrees',
+  'brushtrees-dark',
+  'catppuccin',
+  'catppuccin-frappe',
+  'catppuccin-latte',
+  'catppuccin-macchiato',
+  'catppuccin-mocha',
+  'chalk',
+  'circus',
+  'classic-dark',
+  'classic-light',
+  'codeschool',
+  'colors',
+  'cupcake',
+  'cupertino',
+  'da-one-black',
+  'da-one-gray',
+  'da-one-ocean',
+  'da-one-paper',
+  'da-one-sea',
+  'da-one-white',
+  'danqing',
+  'darcula',
+  'darkmoss',
+  'darktooth',
+  'darkviolet',
+  'decaf',
+  'default-dark',
+  'default-light',
+  'dirtysea',
+  'dracula',
+  'edge-dark',
+  'edge-light',
+  'eighties',
+  'embers',
+  'emil',
+  'equilibrium-dark',
+  'equilibrium-gray-dark',
+  'equilibrium-gray-light',
+  'equilibrium-light',
+  'espresso',
+  'eva',
+  'eva-dim',
+  'evenok-dark',
+  'everforest',
+  'flat',
+  'framer',
+  'fruit-soda',
+  'gigavolt',
+  'github',
+  'google-dark',
+  'google-light',
+  'gotham',
+  'grayscale-dark',
+  'grayscale-light',
+  'greenscreen',
+  'gruber',
+  'gruvbox-dark-hard',
+  'gruvbox-dark-medium',
+  'gruvbox-dark-pale',
+  'gruvbox-dark-soft',
+  'gruvbox-light-hard',
+  'gruvbox-light-medium',
+  'gruvbox-light-soft',
+  'gruvbox-material-dark-hard',
+  'gruvbox-material-dark-medium',
+  'gruvbox-material-dark-soft',
+  'gruvbox-material-light-hard',
+  'gruvbox-material-light-medium',
+  'gruvbox-material-light-soft',
+  'hardcore',
+  'harmonic-dark',
+  'harmonic-light',
+  'heetch',
+  'heetch-light',
+  'helios',
+  'hopscotch',
+  'horizon-dark',
+  'horizon-light',
+  'horizon-terminal-dark',
+  'horizon-terminal-light',
+  'human',
+  'humanoid-dark',
+	'humanoid-light',
+	'ia-dark',
+	'ia-light',
+	'icy',
+	'irblack',
+	'isotope',
+	'kanagawa',
+	'katy',
+	'kimber',
+	'lime',
+	'macintosh',
+	'marrakesh',
+	'materia',
+	'material',
+	'material-darker',
+	'material-lighter',
+	'material-palenight',
+	'material-vivid',
+	'mellow-purple',
+	'mexico-light',
+	'mocha',
+	'monokai',
+	'mountain',
+	'nebula',
+	'nord',
+	'nova',
+	'ocean',
+	'oceanicnext',
+	'one-light',
+	'onedark',
+	'outrun-dark',
+	'pandora',
+	'papercolor-dark',
+	'papercolor-light',
+	'paraiso',
+	'pasque',
+	'phd',
+	'pico',
+	'pinky',
+	'pop',
+	'porple',
+	'primer-dark',
+	'primer-dark-dimmed',
+	'primer-light',
+	'purpledream',
+	'qualia',
+	'railscasts',
+	'rebecca',
+	'rose-pine',
+	'rose-pine-dawn',
+	'rose-pine-moon',
+	'sagelight',
+	'sakura',
+	'sandcastle',
+	'seti',
+	'shades-of-purple',
+	'shadesmear-dark',
+	'shadesmear-light',
+	'shapeshifter',
+	'silk-dark',
+	'silk-light',
+	'snazzy',
+	'solarflare',
+	'solarflare-light',
+	'solarized-dark',
+	'solarized-light',
+	'spaceduck',
+	'spacemacs',
+	'standardized-dark',
+	'standardized-light',
+	'stella',
+	'still-alive',
+	'summercamp',
+	'summerfruit-dark'
+}
+
+
+
+-- Pick random theme
+math.randomseed(os.time())
+local theme = themes[math.random(#themes)]
+
+-- Load colorscheme
+vim.cmd('colorscheme base16-'..theme)
