@@ -28,6 +28,7 @@ packer.startup(function(use)
   use 'windwp/nvim-autopairs'
   use 'tpope/vim-fugitive'
   use 'windwp/nvim-ts-autotag'
+  use 'folke/zen-mode.nvim'
   use 'tpope/vim-commentary'
   use {
     'github/copilot.vim',
@@ -147,6 +148,7 @@ end
 vim.g.mapleader = ","
 local keymap = vim.keymap
 
+keymap.set('n', '<Leader>z', ':ZenMode<CR>', { noremap = true, silent = true })
 -- split settings
 keymap.set('n', '<Leader>h', ':<C-u>split<CR>', { noremap = true, silent = true })
 keymap.set('n', '<Leader>v', ':<C-u>vsplit<CR>', { noremap = true, silent = true })
