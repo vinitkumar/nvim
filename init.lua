@@ -26,6 +26,7 @@ packer.startup(function(use)
   use 'nvim-treesitter/nvim-treesitter-context'
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'windwp/nvim-autopairs'
+  use { 'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua' }
   use 'tpope/vim-fugitive'
   use 'windwp/nvim-ts-autotag'
   use 'folke/zen-mode.nvim'
@@ -36,6 +37,7 @@ packer.startup(function(use)
       vim.g.copilot_enabled = true
     end
   }
+  -- makes nvim lua stuff much better
   use 'RRethy/nvim-base16'
   use 'mhinz/vim-startify'
   use {
@@ -162,12 +164,14 @@ keymap.set('n', '<CR>', 'G', { noremap = true, silent = true })
 keymap.set('n', '<BS>', 'gg', { noremap = true, silent = true })
 
 keymap.set('n', '<C-p>', ':Telescope find_files<CR>', { noremap = true, silent = true })
+keymap.set('n', '<Leader>lg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-b>', ':Telescope buffers<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-c>', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-e>', ':Telescope diagnostics bufnr=0<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
 
 vim.opt.clipboard:append { 'unnamedplus' }
+
 
 local nvim_lsp = require('lspconfig')
 
@@ -218,6 +222,17 @@ for _, lsp in ipairs(servers) do
 end
 
 require'lspconfig'.pyright.setup{}
+
+
+-- setup cody from sourcegraph
+-- Sourcegraph configuration. All keys are optional
+require("sg").setup {
+  -- Pass your own custom attach function
+  --    If you do not pass your own attach function, then the following maps are provide:
+  --        - gd -> goto definition
+  --        - gr -> goto references
+  on_attach = your_custom_lsp_attach_function
+}
 
 
 local status, null_ls = pcall(require, "null-ls")
