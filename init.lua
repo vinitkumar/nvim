@@ -5,6 +5,11 @@ if (not status) then
   return
 end
 
+
+if vim.loader then
+  vim.loader.enable()
+end
+
 vim.cmd [[packadd packer.nvim]]
 
 packer.startup(function(use)
@@ -18,31 +23,30 @@ packer.startup(function(use)
   use 'williamboman/mason.nvim'
   use 'williamboman/mason-lspconfig.nvim'
   use 'glepnir/lspsaga.nvim' -- LSP UIs
-  use "rebelot/kanagawa.nvim"
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate'
   }
   use 'nvim-treesitter/nvim-treesitter-context'
-  use 'nvim-telescope/telescope-file-browser.nvim'
-  use 'windwp/nvim-autopairs'
-  use { 'sourcegraph/sg.nvim', run = 'nvim -l build/init.lua' }
+  use 'vimwiki/vimwiki'
   use 'tpope/vim-fugitive'
-  use 'windwp/nvim-ts-autotag'
-  use 'folke/zen-mode.nvim'
   use 'tpope/vim-commentary'
-  use {
-    'github/copilot.vim',
-    config = function ()
-      vim.g.copilot_enabled = true
-    end
-  }
   -- makes nvim lua stuff much better
-  use 'RRethy/nvim-base16'
+
+  use({
+         "hinell/lsp-timeout.nvim",
+        requires={ "neovim/nvim-lspconfig" },
+        setup = function()
+            vim.g["lsp-timeout-config"] = {
+                -- ...
+            }
+        end
+  })
+  use 'gruvbox-community/gruvbox'
   use 'mhinz/vim-startify'
   use {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
+    tag = '0.1.4',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
   use 'norcalli/nvim-colorizer.lua'
@@ -75,8 +79,8 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.shiftwidth = 2
 vim.opt.expandtab = true  -- expand tabs into spaces
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
 vim.opt.backspace = { 'start', 'eol', 'indent' }
 vim.opt.path:append { '**' } -- Finding files - Search down into subfolders
 vim.opt.wildignore:append { '*/node_modules/*' }
@@ -108,44 +112,15 @@ function switchBackgroundAndColorScheme()
   local m = vim.fn.system("defaults read -g AppleInterfaceStyle")
   m = m:gsub("%s+", "") -- trim whitespace
   if m == "Dark" then
-    kanagawaTheme()
-    vim.cmd("colorscheme base16-gruvbox-material-dark-hard")
+    vim.cmd("colorscheme gruvbox")
     vim.o.background = "dark"
   else
-    vim.cmd("colorscheme base16-gruvbox-material-light-medium")
+    vim.cmd("colorscheme gruvbox")
     vim.o.background = "light"
   end
 end
 
 vim.cmd('autocmd FocusGained,BufEnter * lua switchBackgroundAndColorScheme()')
-
-function kanagawaTheme()
-  require('kanagawa').setup({
-      compile = false,             -- enable compiling the colorscheme
-      undercurl = true,            -- enable undercurls
-      commentStyle = { italic = true },
-      functionStyle = {},
-      keywordStyle = { italic = true},
-      statementStyle = { bold = true },
-      typeStyle = {},
-      transparent = false,         -- do not set background color
-      dimInactive = false,         -- dim inactive window `:h hl-NormalNC`
-      terminalColors = true,       -- define vim.g.terminal_color_{0,17}
-      colors = {                   -- add/modify theme and palette colors
-          palette = {},
-          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
-      },
-      overrides = function(colors) -- add/modify highlights
-          return {}
-      end,
-      theme = "wave",              -- Load "wave" theme when 'background' option is not set
-      background = {               -- map the value of 'background' option to a theme
-          dark = "wave",           -- try "dragon" !
-          light = "lotus"
-      },
-  })
-end
-
 
 vim.g.mapleader = ","
 local keymap = vim.keymap
@@ -164,7 +139,7 @@ keymap.set('n', '<CR>', 'G', { noremap = true, silent = true })
 keymap.set('n', '<BS>', 'gg', { noremap = true, silent = true })
 
 keymap.set('n', '<C-p>', ':Telescope find_files<CR>', { noremap = true, silent = true })
-keymap.set('n', '<Leader>lg', ':Telescope live_grep<CR>', { noremap = true, silent = true })
+keymap.set('n', '<Leader>g', ':Telescope live_grep<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-b>', ':Telescope buffers<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-c>', ':Telescope git_commits<CR>', { noremap = true, silent = true })
 keymap.set('n', '<C-e>', ':Telescope diagnostics bufnr=0<CR>', { noremap = true, silent = true })
@@ -224,17 +199,6 @@ end
 require'lspconfig'.pyright.setup{}
 
 
--- setup cody from sourcegraph
--- Sourcegraph configuration. All keys are optional
-require("sg").setup {
-  -- Pass your own custom attach function
-  --    If you do not pass your own attach function, then the following maps are provide:
-  --        - gd -> goto definition
-  --        - gr -> goto references
-  on_attach = your_custom_lsp_attach_function
-}
-
-
 local status, null_ls = pcall(require, "null-ls")
 if (not status) then return end
 
@@ -262,6 +226,14 @@ function StripTrailingWhitespace()
     vim.cmd('normal! `z')
   end
 end
+
+-- Define the Grep command
+vim.cmd([[
+  command! -complete=dir -nargs=+ Grep silent grep <args>
+        \| redraw!
+        \| copen
+]])
+
 
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
 vim.cmd('au BufRead,BufNewFile *.pique setfiletype pique')
