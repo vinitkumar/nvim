@@ -43,7 +43,6 @@ packer.startup(function(use)
         end
   })
   use 'gruvbox-community/gruvbox'
-  use 'mhinz/vim-startify'
   use {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.4',
