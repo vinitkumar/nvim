@@ -76,6 +76,7 @@ vim.opt.wildmode = longest,list
 vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 vim.opt.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
+vim.opt.updatetime = 300
 
 
 -- Custom utils written by me
@@ -240,10 +241,43 @@ keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
 keymap.set('n', '<leader>gd', '<Plug>(coc-definition)')
 keymap.set('n', '<leader>gy', '<Plug>(coc-type-definition)')
 keymap.set('n', '<leader>gd', '<Plug>(coc-references)')
+keymap.set('n', '<leader>gi', '<Plug>(coc-implementation)')
 keymap.set('n', '<leader>h', ':<C-u>split<CR>')
 keymap.set('n', '<leader>v', ':<C-u>vsplit<CR>')
+keymap.set('n', '<leader>t', ':<C-u>tabnew<CR>')
 keymap.set('n', '<CR>', 'G')
 keymap.set('n', '<BS>', 'gg')
 keymap.set('n', '<j>', 'gj')
 keymap.set('n', '<k>', 'gk')
 
+
+local function check_back_space()
+    local col = vim.fn.col('.') - 1
+    return col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') ~= nil
+end
+
+local opts = { silent = true, noremap = true, expr = true, replace_keycodes = false }
+
+keymap.set("i", "<Tab>",
+    function()
+        if vim.fn['coc#pum#visible']() == 1 then
+            return vim.fn['coc#pum#next'](1)
+        end
+        if check_back_space() then
+            return vim.fn['coc#refresh']()
+        end
+        return "<Tab>"
+    end
+    , opts)
+keymap.set("i", "<S-Tab>", function()
+        if vim.fn['coc#pum#visible']() == 1 then
+            return vim.fn['coc#pum#prev'](1)
+        end
+        return "<S-Tab>"
+end, opts)
+keymap.set("i", "<CR>", function()
+        if vim.fn['coc#pum#visible']() == 1 then
+            return vim.fn['coc#pum#confirm']();
+        end
+       return "\r"
+end, opts)
