@@ -233,3 +233,17 @@ local keymap = vim.keymap
 
 
 keymap.set('n', '<C-p>', ':Files<CR>')
+keymap.set('n', '<C-b>', ':Buffers<CR>')
+keymap.set('n', '<C-c>', ':Commits<CR>')
+keymap.set('n', '<C-t>', ':tabNext<CR>')
+keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
+keymap.set('n', '<leader>gd', '<Plug>(coc-definition)')
+keymap.set('n', '<leader>gy', '<Plug>(coc-type-definition)')
+keymap.set('n', '<leader>gd', '<Plug>(coc-references)')
+keymap.set('n', '<leader>h', ':<C-u>split<CR>')
+keymap.set('n', '<leader>v', ':<C-u>vsplit<CR>')
+keymap.set('n', '<CR>', 'G')
+keymap.set('n', '<BS>', 'gg')
+keymap.set('n', '<j>', 'gj')
+keymap.set('n', '<k>', 'gk')
+
