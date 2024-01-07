@@ -21,6 +21,7 @@ packer.startup(function (use)
   use 'tpope/vim-commentary'
   -- colorsheme
   use 'p00f/alabaster.nvim'
+  use 'gruvbox-community/gruvbox'
 end)
 
 
