@@ -18,10 +18,13 @@ packer.startup(function (use)
   use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
   use 'vimwiki/vimwiki'
   use 'tpope/vim-fugitive'
+  use 'lewis6991/gitsigns.nvim'
   use 'tpope/vim-commentary'
+  use 'navarasu/onedark.nvim'
   -- colorsheme
   use 'p00f/alabaster.nvim'
   use 'gruvbox-community/gruvbox'
+  use 'rose-pine/neovim'
 end)
 
 
@@ -85,8 +88,15 @@ function switchBackgroundAndColorScheme()
   local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
-    vim.cmd('colorscheme gruvbox')
+    -- vim.cmd('colorscheme gruvbox')
+    -- vim.opt.background = 'dark'
+    -- local onedark = require('onedark');
+    -- onedark.setup {
+    --   style = 'warm'
+    -- }
+    vim.cmd('colorscheme rose-pine')
     vim.opt.background = 'dark'
+  -- onedark.load();
   else
     vim.cmd('colorscheme peachpuff')
     vim.opt.background = 'light'
@@ -111,6 +121,7 @@ end
 -- AutoCMDs to run our custom commands
 vim.cmd('autocmd FocusGained,BufEnter * lua switchBackgroundAndColorScheme()')
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
+vim.cmd("autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'")
 
 
 -- AutoCMDs for file and tabstops
@@ -246,6 +257,9 @@ keymap.set('n', '<leader>gi', '<Plug>(coc-implementation)')
 keymap.set('n', '<leader>h', ':<C-u>split<CR>')
 keymap.set('n', '<leader>v', ':<C-u>vsplit<CR>')
 keymap.set('n', '<leader>t', ':<C-u>tabnew<CR>')
+keymap.set('n', '<leader>dt', 'i<C-r>=strftime("%c")<CR>', { noremap = true, silent = true })
+
+
 keymap.set('n', '<CR>', 'G')
 keymap.set('n', '<BS>', 'gg')
 keymap.set('n', '<j>', 'gj')
@@ -282,3 +296,59 @@ keymap.set("i", "<CR>", function()
         end
        return "\r"
 end, opts)
+
+
+-- Git signs
+local status_ok, gitsigns = pcall(require, "gitsigns")
+if not status_ok then
+  return
+end
+
+gitsigns.setup({
+  signs = {
+    add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+    change = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+    delete = { hl = "GitSignsDelete", text = "契", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    topdelete = { hl = "GitSignsDelete", text = "契", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    changedelete = {
+      hl = "GitSignsChange",
+      text = "▎",
+      numhl = "GitSignsChangeNr",
+      linehl = "GitSignsChangeLn",
+    },
+  },
+  signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+  numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir = {
+    interval = 1000,
+    follow_files = true,
+  },
+  attach_to_untracked = true,
+  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+    delay = 1000,
+    ignore_whitespace = false,
+  },
+  current_line_blame_formatter_opts = {
+    relative_time = false,
+  },
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  max_file_length = 40000,
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = "single",
+    style = "minimal",
+    relative = "cursor",
+    row = 0,
+    col = 1,
+  },
+  yadm = {
+    enable = false,
+  },
+})
