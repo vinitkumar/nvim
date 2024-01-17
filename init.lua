@@ -79,7 +79,10 @@ vim.opt.winblend = 0
 vim.opt.wildmode = longest,list
 vim.opt.wildoptions = 'pum'
 vim.opt.list = true
-vim.opt.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
+-- vim.opt.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
+vim.opt.listchars = {
+  eol = ""
+}
 vim.opt.updatetime = 300
 
 
@@ -237,6 +240,9 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.api.nvim_command('silent wa')
   end
 })
+
+
+vim.fn.setenv('FZF_DEFAULT_COMMAND', 'rg --files --hidden')
 
 -- Mapping
 -- We start mapping here
