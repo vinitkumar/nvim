@@ -19,6 +19,8 @@ packer.startup(function (use)
   use 'vimwiki/vimwiki'
   use 'tpope/vim-fugitive'
   use 'lewis6991/gitsigns.nvim'
+  use 'junegunn/goyo.vim'
+  use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
   use 'navarasu/onedark.nvim'
   -- colorsheme
@@ -79,10 +81,6 @@ vim.opt.winblend = 0
 vim.opt.wildmode = longest,list
 vim.opt.wildoptions = 'pum'
 vim.opt.list = true
--- vim.opt.listchars = 'tab:› ,eol:¬,trail:⋅,nbsp:␣'
-vim.opt.listchars = {
-  eol = ""
-}
 vim.opt.updatetime = 300
 
 
@@ -261,6 +259,7 @@ keymap.set('n', '<leader>gy', '<Plug>(coc-type-definition)')
 keymap.set('n', '<leader>gd', '<Plug>(coc-references)')
 keymap.set('n', '<leader>gi', '<Plug>(coc-implementation)')
 keymap.set('n', '<leader>h', ':<C-u>split<CR>')
+keymap.set('n', '<leader>z', ':<C-u>Goyo<CR>')
 keymap.set('n', '<leader>v', ':<C-u>vsplit<CR>')
 keymap.set('n', '<leader>t', ':<C-u>tabnew<CR>')
 keymap.set('n', '<leader>dt', 'i<C-r>=strftime("%c")<CR>', { noremap = true, silent = true })
