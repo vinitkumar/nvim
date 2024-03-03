@@ -18,15 +18,15 @@ packer.startup(function (use)
   use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
   use 'vimwiki/vimwiki'
   use 'tpope/vim-fugitive'
-  use 'lewis6991/gitsigns.nvim'
   use 'junegunn/goyo.vim'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
-  use 'navarasu/onedark.nvim'
-  -- colorsheme
-  use 'p00f/alabaster.nvim'
   use 'gruvbox-community/gruvbox'
   use 'rose-pine/neovim'
+  use 'github/copilot.vim'
+  use 'itchyny/lightline.vim'
+  use 'rmehri01/onenord.nvim'
+  use {'luisiacc/gruvbox-baby', branch = 'main'}
 end)
 
 
@@ -89,17 +89,10 @@ function switchBackgroundAndColorScheme()
   local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
-    -- vim.cmd('colorscheme gruvbox')
-    -- vim.opt.background = 'dark'
-    -- local onedark = require('onedark');
-    -- onedark.setup {
-    --   style = 'warm'
-    -- }
-    vim.cmd('colorscheme rose-pine')
+    vim.cmd('colorscheme onenord')
     vim.opt.background = 'dark'
-  -- onedark.load();
   else
-    vim.cmd('colorscheme peachpuff')
+    vim.cmd('colorscheme gruvbox')
     vim.opt.background = 'light'
   end
 end
