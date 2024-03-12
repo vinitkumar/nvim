@@ -21,12 +21,9 @@ packer.startup(function (use)
   use 'junegunn/goyo.vim'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
-  use 'gruvbox-community/gruvbox'
   use 'rose-pine/neovim'
   use 'github/copilot.vim'
   use 'itchyny/lightline.vim'
-  use 'rmehri01/onenord.nvim'
-  use {'luisiacc/gruvbox-baby', branch = 'main'}
 end)
 
 
@@ -83,20 +80,6 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 vim.opt.updatetime = 300
 
-
--- Custom utils written by me
-function switchBackgroundAndColorScheme()
-  local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
-  mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
-  if mac_ui_mode == 'Dark' then
-    vim.cmd('colorscheme onenord')
-    vim.opt.background = 'dark'
-  else
-    vim.cmd('colorscheme gruvbox')
-    vim.opt.background = 'light'
-  end
-end
-
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
     vim.cmd('normal! mz')
@@ -112,8 +95,40 @@ function StripTrailingWhitespace()
   end
 end
 
+
+-- Custom utils written by me
+function SwitchBackgroundAndColorScheme()
+  -- We want the background to change based on the system's UI mode
+  -- Works with MacOS only at the moment
+  local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
+  mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
+  if mac_ui_mode == 'Dark' then
+    vim.opt.background = 'dark'
+  else
+    vim.opt.background = 'light'
+  end
+end
+
+function RandomColorscheme()
+    -- Get list of available colorschemes
+    -- Seeding is required, otherwise the randomness is not so random
+    math.randomseed(os.time())
+    local colorschemes = vim.fn.globpath(vim.o.runtimepath, 'colors/*.vim', false, true)
+
+    -- Choose a random colorscheme
+    local random_index = math.random(#colorschemes)
+    local random_colorscheme = vim.fn.fnamemodify(colorschemes[random_index], ':t:r')
+
+    -- Apply the chosen colorscheme
+    vim.cmd('colorscheme ' .. random_colorscheme)
+end
+
+-- Call the RandomColorscheme function when Vim starts up
+
+
 -- AutoCMDs to run our custom commands
-vim.cmd('autocmd FocusGained,BufEnter * lua switchBackgroundAndColorScheme()')
+vim.cmd('autocmd VimEnter * lua RandomColorscheme()')
+vim.cmd('autocmd FocusGained,BufEnter * lua SwitchBackgroundAndColorScheme()')
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
 vim.cmd("autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'")
 
