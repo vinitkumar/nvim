@@ -16,14 +16,22 @@ packer.startup(function (use)
   use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
   use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
-  use 'vimwiki/vimwiki'
   use 'tpope/vim-fugitive'
   use 'junegunn/goyo.vim'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
-  use 'rose-pine/neovim'
   use 'github/copilot.vim'
   use 'itchyny/lightline.vim'
+  use({ 'kepano/flexoki-neovim', as = 'flexoki' })
+  use 'liuchengxu/space-vim-dark'
+  -- colorshemes
+  use 'catppuccin/nvim'
+  use 'ellisonleao/gruvbox.nvim'
+  use 'rebelot/kanagawa.nvim'
+  use 'AlexvZyl/nordic.nvim'
+  use 'rose-pine/neovim'
+  use 'folke/tokyonight.nvim'
+  use 'sainnhe/everforest'
 end)
 
 
@@ -112,11 +120,34 @@ end
 function RandomColorscheme()
     -- Get list of available colorschemes
     -- Seeding is required, otherwise the randomness is not so random
-    math.randomseed(os.time())
-    local colorschemes = vim.fn.globpath(vim.o.runtimepath, 'colors/*.vim', false, true)
+    math.randomseed(os.time() + vim.fn.getpid())
+    local colorschemes = {
+      'catppuccin',
+      'catppuccin-latte',
+      'catppuccin-mocha',
+      'catppuccin-frappe',
+      'catppuccin-macchiato',
+      'gruvbox',
+      'gruvbox8',
+      'kanagawa',
+      'kanagawa-wave',
+      'kanagawa-lotus',
+      'kanagawa-dragon',
+      'nordic',
+      'rosepine',
+      'rosepine_dawn',
+      'rosepine_moon',
+      'tokyonight',
+      'tokyonight-day',
+      'tokyonight-moon',
+      'tokyonight-night',
+      'tokyonight-storm',
+      'everforest',
+    }
+    -- local colorschemes = vim.fn.globpath(vim.o.runtimepath, 'colors/*.vim', false, true)
 
     -- Choose a random colorscheme
-    local random_index = math.random(#colorschemes)
+    local random_index = math.random(1, #colorschemes)
     local random_colorscheme = vim.fn.fnamemodify(colorschemes[random_index], ':t:r')
 
     -- Apply the chosen colorscheme
