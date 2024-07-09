@@ -32,7 +32,12 @@ packer.startup(function (use)
   use 'rose-pine/neovim'
   use 'folke/tokyonight.nvim'
   use 'sainnhe/everforest'
+  use {
+    'gruvbox-community/gruvbox',
+    commit = '143a3b8'
+  }
 end)
+-- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
 
 -- vim base config
