@@ -23,18 +23,11 @@ packer.startup(function (use)
   use 'github/copilot.vim'
   use 'itchyny/lightline.vim'
   use({ 'kepano/flexoki-neovim', as = 'flexoki' })
-  use 'liuchengxu/space-vim-dark'
-  -- colorshemes
-  use 'catppuccin/nvim'
-  use 'ellisonleao/gruvbox.nvim'
-  use 'rebelot/kanagawa.nvim'
-  use 'AlexvZyl/nordic.nvim'
   use 'rose-pine/neovim'
   use 'folke/tokyonight.nvim'
-  use 'sainnhe/everforest'
   use {
-    'gruvbox-community/gruvbox',
-    commit = '143a3b8'
+      'uloco/bluloco.nvim',
+      requires = { 'rktjmp/lush.nvim' }
   }
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
@@ -117,53 +110,68 @@ function SwitchBackgroundAndColorScheme()
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
+    vim.cmd('colorscheme rosepine')
   else
     vim.opt.background = 'light'
+    vim.cmd('colorscheme rosepine_moon')
   end
 end
 
-function RandomColorscheme()
-    -- Get list of available colorschemes
-    -- Seeding is required, otherwise the randomness is not so random
-    math.randomseed(os.time() + vim.fn.getpid())
-    local colorschemes = {
-      'catppuccin',
-      'catppuccin-latte',
-      'catppuccin-mocha',
-      'catppuccin-frappe',
-      'catppuccin-macchiato',
-      'gruvbox',
-      'gruvbox8',
-      'kanagawa',
-      'kanagawa-wave',
-      'kanagawa-lotus',
-      'kanagawa-dragon',
-      'nordic',
-      'rosepine',
-      'rosepine_dawn',
-      'rosepine_moon',
-      'tokyonight',
-      'tokyonight-day',
-      'tokyonight-moon',
-      'tokyonight-night',
-      'tokyonight-storm',
-      'everforest',
-    }
-    -- local colorschemes = vim.fn.globpath(vim.o.runtimepath, 'colors/*.vim', false, true)
 
-    -- Choose a random colorscheme
-    local random_index = math.random(1, #colorschemes)
-    local random_colorscheme = vim.fn.fnamemodify(colorschemes[random_index], ':t:r')
+require("bluloco").setup({
+  style = "auto",               -- "auto" | "dark" | "light"
+  transparent = true,
+  italics = true,
+  terminal = vim.fn.has("gui_running") == 1, -- bluoco colors are enabled in gui terminals per default.
+  guicursor   = true,
+})
 
-    -- Apply the chosen colorscheme
-    vim.cmd('colorscheme ' .. random_colorscheme)
-end
+vim.opt.termguicolors = true
+vim.cmd('colorscheme bluloco')
+
+-- function RandomColorscheme()
+--     -- Get list of available colorschemes
+--     -- Seeding is required, otherwise the randomness is not so random
+--     math.randomseed(os.time() + vim.fn.getpid())
+--     local colorschemes = {
+--       'catppuccin',
+--       'catppuccin-latte',
+--       'catppuccin-mocha',
+--       'catppuccin-frappe',
+--       'catppuccin-macchiato',
+--       'gruvbox',
+--       'gruvbox8',
+--       'kanagawa',
+--       'kanagawa-wave',
+--       'kanagawa-lotus',
+--       'kanagawa-dragon',
+--       'nordic',
+--       'rosepine',
+--       'rosepine_dawn',
+--       'rosepine_moon',
+--       'tokyonight',
+--       'tokyonight-day',
+--       'tokyonight-moon',
+--       'tokyonight-night',
+--       'tokyonight-storm',
+--       'everforest',
+--       'nightfox',
+--     }
+--     -- local colorschemes = vim.fn.globpath(vim.o.runtimepath, 'colors/*.vim', false, true)
+
+--     -- Choose a random colorscheme
+--     local random_index = math.random(1, #colorschemes)
+--     local random_colorscheme = vim.fn.fnamemodify(colorschemes[random_index], ':t:r')
+
+--     -- Apply the chosen colorscheme
+--     vim.cmd('colorscheme ' .. random_colorscheme)
+-- end
 
 -- Call the RandomColorscheme function when Vim starts up
 
 
 -- AutoCMDs to run our custom commands
-vim.cmd('autocmd VimEnter * lua RandomColorscheme()')
+-- vim.cmd('autocmd VimEnter * lua RandomColorscheme()')
 vim.cmd('autocmd FocusGained,BufEnter * lua SwitchBackgroundAndColorScheme()')
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
 vim.cmd("autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'")
@@ -290,6 +298,7 @@ vim.fn.setenv('FZF_DEFAULT_COMMAND', 'rg --files --hidden')
 -- We start mapping here
 
 vim.g.mapleader = ","
+vim.g.lightline = { colorscheme = "dayfox" } -- Or the name of colorscheme you use
 local keymap = vim.keymap
 
 
