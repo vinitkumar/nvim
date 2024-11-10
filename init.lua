@@ -26,6 +26,7 @@ packer.startup(function (use)
   use 'rose-pine/neovim'
   use 'folke/tokyonight.nvim'
   use 'polirritmico/monokai-nightasty.nvim'
+  use '0xstepit/flow.nvim'
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
@@ -83,6 +84,17 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 vim.opt.updatetime = 300
 
+-- vim colorscheme flow setup
+require("flow").setup{
+    dark_theme = true, -- Set the theme with dark background.
+    high_contrast = false, -- Make the dark background darker or the light background lighter.
+    transparent = false, -- Set transparent background.
+    fluo_color = "pink", -- Color used as fluo. Available values are pink, yellow, orange, or green.
+    mode = "base", -- Mode of the colors. Available values are: dark, bright, desaturate, or base.
+    aggressive_spell = false, -- Use colors for spell check.
+}
+
+
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
     vim.cmd('normal! mz')
@@ -114,7 +126,7 @@ end
 
 local opts = {}
 require("monokai-nightasty").load(opts)
-vim.cmd("colorscheme tokyonight")
+vim.cmd("colorscheme flow")
 
 vim.cmd('autocmd FocusGained,BufEnter * lua SwitchBackgroundAndColorScheme()')
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
