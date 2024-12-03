@@ -27,9 +27,47 @@ packer.startup(function (use)
   use 'folke/tokyonight.nvim'
   use 'polirritmico/monokai-nightasty.nvim'
   use '0xstepit/flow.nvim'
+  use 'rizzatti/dash.vim'
+  use 'nvim-lua/plenary.nvim'
+  use 'epwalsh/obsidian.nvim'
+  use { "ibhagwan/fzf-lua",
+      -- optional for icon support
+      requires = { "nvim-tree/nvim-web-devicons" }
+      -- or if using mini.icons/mini.nvim
+      -- requires = { "echasnovski/mini.icons" }
+  }
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
+-- Obsidian Nvim config
+
+require("obsidian").setup({
+  workspaces = {
+    {
+      name = "personal",
+      path = "/Users/vinitkumar/Documents/docs/promobi-docs",
+    }
+  },
+  picker = {
+    -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
+    name = "fzf-lua",
+    -- Optional, configure key mappings for the picker. These are the defaults.
+    -- Not all pickers support all mappings.
+    note_mappings = {
+      -- Create a new note from your query.
+      new = "<C-x>",
+      -- Insert a link to the selected note.
+      insert_link = "<C-l>",
+    },
+    tag_mappings = {
+      -- Add tag(s) to current note.
+      tag_note = "<C-x>",
+      -- Insert a tag at the current location.
+      insert_tag = "<C-l>",
+    },
+  },
+
+})
 
 -- vim base config
 
@@ -57,6 +95,9 @@ vim.opt.inccommand = 'split'
 vim.opt.hlsearch = true
 vim.opt.wrap = true
 
+
+-- conceal level
+vim.opt.conceallevel = 1
 -- swap
 vim.opt.swapfile = false
 vim.opt.backup = false
