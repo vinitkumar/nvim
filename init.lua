@@ -20,14 +20,11 @@ packer.startup(function (use)
   use 'junegunn/goyo.vim'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
-  use 'github/copilot.vim'
   use 'itchyny/lightline.vim'
   use({ 'kepano/flexoki-neovim', as = 'flexoki' })
   use 'rose-pine/neovim'
-  use 'folke/tokyonight.nvim'
-  use 'polirritmico/monokai-nightasty.nvim'
-  use '0xstepit/flow.nvim'
   use 'rizzatti/dash.vim'
+  use 'fatih/vim-go'
   use 'nvim-lua/plenary.nvim'
   use 'epwalsh/obsidian.nvim'
   use { "ibhagwan/fzf-lua",
@@ -79,6 +76,10 @@ vim.opt.encoding = 'utf-8'
 vim.opt.fileencoding = 'utf-8'
 
 
+-- clipboard
+vim.opt.clipboard = 'unnamedplus'
+
+
 -- indent
 vim.opt.title = true
 vim.opt.autoindent = true
@@ -125,16 +126,6 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 vim.opt.updatetime = 300
 
--- vim colorscheme flow setup
-require("flow").setup{
-    dark_theme = true, -- Set the theme with dark background.
-    high_contrast = false, -- Make the dark background darker or the light background lighter.
-    transparent = false, -- Set transparent background.
-    fluo_color = "pink", -- Color used as fluo. Available values are pink, yellow, orange, or green.
-    mode = "base", -- Mode of the colors. Available values are: dark, bright, desaturate, or base.
-    aggressive_spell = false, -- Use colors for spell check.
-}
-
 
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
@@ -156,6 +147,7 @@ end
 function SwitchBackgroundAndColorScheme()
   -- We want the background to change based on the system's UI mode
   -- Works with MacOS only at the moment
+  vim.cmd.colorscheme('gruvbox')
   local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
@@ -163,11 +155,10 @@ function SwitchBackgroundAndColorScheme()
   else
     vim.opt.background = 'light'
   end
+
 end
 
 local opts = {}
-require("monokai-nightasty").load(opts)
-vim.cmd("colorscheme flow")
 
 vim.cmd('autocmd FocusGained,BufEnter * lua SwitchBackgroundAndColorScheme()')
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
@@ -295,11 +286,12 @@ vim.fn.setenv('FZF_DEFAULT_COMMAND', 'rg --files --hidden')
 -- We start mapping here
 
 vim.g.mapleader = ","
-vim.g.lightline = { colorscheme = "dayfox" } -- Or the name of colorscheme you use
+vim.g.lightline = { colorscheme = "16color" } -- Or the name of colorscheme you use
 local keymap = vim.keymap
 
 
 keymap.set('n', '<C-p>', ':Files<CR>')
+keymap.set('n', '<C-f>', ':Files<CR>')
 keymap.set('n', '<C-b>', ':Buffers<CR>')
 keymap.set('n', '<C-c>', ':Commits<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
