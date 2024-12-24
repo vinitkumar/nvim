@@ -33,6 +33,17 @@ packer.startup(function (use)
       -- or if using mini.icons/mini.nvim
       -- requires = { "echasnovski/mini.icons" }
   }
+  use({
+      "kdheepak/lazygit.nvim",
+      requires = {
+          "nvim-telescope/telescope.nvim",
+          "nvim-lua/plenary.nvim",
+      },
+      config = function()
+          require("telescope").load_extension("lazygit")
+      end,
+  })
+  use 'github/copilot.vim'
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
