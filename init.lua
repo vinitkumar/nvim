@@ -25,13 +25,11 @@ packer.startup(function (use)
   use 'rose-pine/neovim'
   use 'rizzatti/dash.vim'
   use 'fatih/vim-go'
+  use 'wincent/base16-nvim'
   use 'nvim-lua/plenary.nvim'
   use 'epwalsh/obsidian.nvim'
   use { "ibhagwan/fzf-lua",
-      -- optional for icon support
       requires = { "nvim-tree/nvim-web-devicons" }
-      -- or if using mini.icons/mini.nvim
-      -- requires = { "echasnovski/mini.icons" }
   }
   use({
       "kdheepak/lazygit.nvim",
@@ -158,7 +156,7 @@ end
 function SwitchBackgroundAndColorScheme()
   -- We want the background to change based on the system's UI mode
   -- Works with MacOS only at the moment
-  vim.cmd.colorscheme('gruvbox')
+  vim.cmd.colorscheme('base16-bright')
   local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
@@ -297,7 +295,7 @@ vim.fn.setenv('FZF_DEFAULT_COMMAND', 'rg --files --hidden')
 -- We start mapping here
 
 vim.g.mapleader = ","
-vim.g.lightline = { colorscheme = "16color" } -- Or the name of colorscheme you use
+vim.g.lightline = { colorscheme = "ayu_dark" } -- Or the name of colorscheme you use
 local keymap = vim.keymap
 
 
