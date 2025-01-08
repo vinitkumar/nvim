@@ -26,6 +26,23 @@ packer.startup(function (use)
     'nvim-lualine/lualine.nvim',
     requires = { 'nvim-tree/nvim-web-devicons', opt = true }
   }
+  use({
+      "kdheepak/lazygit.nvim",
+      requires = {
+          "nvim-telescope/telescope.nvim",
+          "nvim-lua/plenary.nvim",
+      },
+      config = function()
+          require("telescope").load_extension("lazygit")
+      end,
+  })
+  use 'github/copilot.vim'
+  use {
+    "tinted-theming/tinted-vim",
+    config = function()
+      vim.cmd.colorscheme 'base16-bright'
+    end,
+  }
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
