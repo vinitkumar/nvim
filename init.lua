@@ -16,22 +16,72 @@ packer.startup(function (use)
   use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
   use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
-  use 'tpope/vim-fugitive'
   use 'junegunn/goyo.vim'
   use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
-  use 'github/copilot.vim'
-  use 'itchyny/lightline.vim'
-  use({ 'kepano/flexoki-neovim', as = 'flexoki' })
   use 'rose-pine/neovim'
-  use 'folke/tokyonight.nvim'
-  use 'polirritmico/monokai-nightasty.nvim'
-  use '0xstepit/flow.nvim'
+  use 'epwalsh/obsidian.nvim'
+  use 'nvim-lua/plenary.nvim'
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
 
--- vim base config
+
+require("obsidian").setup({
+    workspaces = {
+      {
+        name = "personal",
+        path = "~/Documents/knowledge-base",
+      },
+    },
+})
+
+-- lualine setup
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    always_show_tabline = true,
+    globalstatus = false,
+    refresh = {
+      statusline = 100,
+      tabline = 100,
+      winbar = 100,
+    }
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+}
 
 vim.wo.number = true
 vim.wo.relativenumber = true
@@ -50,6 +100,79 @@ vim.opt.breakindent = true
 vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
 vim.opt.shell = 'zsh'
+
+
+vim.opt.foldlevelstart = 99 -- start unfolded
+vim.opt.foldmethod = 'indent' -- not as cool as syntax, but faster
+vim.opt.foldtext = 'v:lua.wincent.foldtext()'
+vim.opt.formatoptions = vim.opt.formatoptions + 'j' -- remove comment leader when joining comment lines
+vim.opt.formatoptions = vim.opt.formatoptions + 'n' -- smart auto-indenting inside numbered lists
+vim.opt.guifont = 'Source Code Pro Light:h13'
+vim.opt.hidden = true -- allows you to hide buffers with unsaved changes without being prompted
+vim.opt.inccommand = 'split' -- live preview of :s results
+vim.opt.ignorecase = true -- ignore case in searches
+vim.opt.joinspaces = false -- don't autoinsert two spaces after '.', '?', '!' for join command
+vim.opt.laststatus = 2 -- always show status line
+vim.opt.lazyredraw = true -- don't bother updating screen during macro playback
+vim.opt.linebreak = true -- wrap long lines at characters in 'breakat'
+vim.opt.list = true -- show whitespace
+vim.opt.listchars = {
+  nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
+  extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
+  precedes = '«', -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
+  tab = '▷⋯', -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + MIDLINE HORIZONTAL ELLIPSIS (U+22EF, UTF-8: E2 8B AF)
+  trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
+}
+
+
+vim.opt.modelines = 5 -- scan this many lines looking for modeline
+vim.opt.number = true -- show line numbers in gutter
+vim.opt.pumheight = 20 -- max number of lines to show in pop-up menu
+vim.opt.relativenumber = true -- show relative numbers in gutter
+vim.opt.scrolloff = 3 -- start scrolling 3 lines before edge of viewport
+
+
+vim.opt.shell = 'sh' -- shell to use for `!`, `:!`, `system()` etc.
+vim.opt.shiftround = false -- don't always indent by multiple of shiftwidth
+vim.opt.shiftwidth = 2 -- spaces per tab (when shifting)
+vim.opt.shortmess = vim.opt.shortmess + 'A' -- ignore annoying swapfile messages
+vim.opt.shortmess = vim.opt.shortmess + 'I' -- no splash screen
+vim.opt.shortmess = vim.opt.shortmess + 'O' -- file-read message overwrites previous
+vim.opt.shortmess = vim.opt.shortmess + 'T' -- truncate non-file messages in middle
+vim.opt.shortmess = vim.opt.shortmess + 'W' -- don't echo "[w]"/"[written]" when writing
+vim.opt.shortmess = vim.opt.shortmess + 'a' -- use abbreviations in messages eg. `[RO]` instead of `[readonly]`
+vim.opt.shortmess = vim.opt.shortmess + 'c' -- completion messages
+vim.opt.shortmess = vim.opt.shortmess + 'o' -- overwrite file-written messages
+vim.opt.shortmess = vim.opt.shortmess + 't' -- truncate file messages at start
+vim.opt.showbreak = '↳ ' -- DOWNWARDS ARROW WITH TIP RIGHTWARDS (U+21B3, UTF-8: E2 86 B3)
+vim.opt.showcmd = false -- don't show extra info at end of command line
+vim.opt.sidescroll = 0 -- sidescroll in jumps because terminals are slow
+vim.opt.sidescrolloff = 3 -- same as scrolloff, but for columns
+vim.opt.smartcase = true -- don't ignore case in searches if uppercase characters present
+vim.opt.smarttab = true -- <tab>/<BS> indent/dedent in leading whitespace
+vim.opt.spellcapcheck = '' -- don't check for capital letters at start of sentence
+vim.opt.splitbelow = true -- open horizontal splits below current window
+vim.opt.splitright = true -- open vertical splits to the right of the current window
+vim.opt.suffixes = vim.opt.suffixes - '.h' -- don't sort header files at lower priority
+vim.opt.swapfile = false -- don't create swap files
+vim.opt.switchbuf = 'usetab' -- try to reuse windows/tabs when switching buffers
+vim.opt.synmaxcol = 200 -- don't bother syntax highlighting long lines
+vim.opt.tabstop = 2 -- spaces per tab
+vim.opt.termguicolors = true -- use guifg/guibg instead of ctermfg/ctermbg in terminal
+vim.opt.textwidth = 80 -- automatically hard wrap at 80 columns
+
+
+vim.opt.updatetime = 2000 -- CursorHold interval
+vim.opt.updatecount = 0 -- update swapfiles every 80 typed chars
+vim.opt.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load}view`)
+vim.opt.virtualedit = 'block' -- allow cursor to move where there is no text in visual block mode
+vim.opt.visualbell = true -- stop annoying beeping for non-error errors
+vim.opt.whichwrap = 'b,h,l,s,<,>,[,],~' -- allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
+vim.opt.wildcharm = 26 -- ('<C-z>') substitute for 'wildchar' (<Tab>) in macros
+vim.opt.wildignore = vim.opt.wildignore + '*.o,*.rej,*.so' -- patterns to ignore during file-navigation
+vim.opt.wildmenu = true -- show options as list when switching buffers etc
+vim.opt.wildmode = 'longest:full,full' -- shell-like autocomplete to unambiguous portion
+vim.opt.writebackup = false -- don't keep backups after writing
 
 
 -- search
@@ -82,17 +205,6 @@ vim.opt.winblend = 0
 vim.opt.wildmode = longest,list
 vim.opt.wildoptions = 'pum'
 vim.opt.list = true
-vim.opt.updatetime = 300
-
--- vim colorscheme flow setup
-require("flow").setup{
-    dark_theme = true, -- Set the theme with dark background.
-    high_contrast = false, -- Make the dark background darker or the light background lighter.
-    transparent = false, -- Set transparent background.
-    fluo_color = "pink", -- Color used as fluo. Available values are pink, yellow, orange, or green.
-    mode = "base", -- Mode of the colors. Available values are: dark, bright, desaturate, or base.
-    aggressive_spell = false, -- Use colors for spell check.
-}
 
 
 function StripTrailingWhitespace()
@@ -119,14 +231,14 @@ function SwitchBackgroundAndColorScheme()
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
+    vim.cmd("colorscheme base16-bright")
   else
     vim.opt.background = 'light'
+    vim.cmd("colorscheme gruvbox8_soft")
   end
 end
 
 local opts = {}
-require("monokai-nightasty").load(opts)
-vim.cmd("colorscheme flow")
 
 vim.cmd('autocmd FocusGained,BufEnter * lua SwitchBackgroundAndColorScheme()')
 vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
@@ -254,7 +366,6 @@ vim.fn.setenv('FZF_DEFAULT_COMMAND', 'rg --files --hidden')
 -- We start mapping here
 
 vim.g.mapleader = ","
-vim.g.lightline = { colorscheme = "dayfox" } -- Or the name of colorscheme you use
 local keymap = vim.keymap
 
 
