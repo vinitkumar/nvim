@@ -43,19 +43,23 @@ packer.startup(function (use)
       vim.cmd.colorscheme 'base16-bright'
     end,
   }
+  -- evaluation phase, might be on it's way out
+  use 'duane9/nvim-rg'
+  use 'echasnovski/mini.nvim'
+
 end)
 -- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
 
 
 
-require("obsidian").setup({
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/Documents/knowledge-base",
-      },
-    },
-})
+-- require("obsidian").setup({
+--     workspaces = {
+--       {
+--         name = "personal",
+--         path = "~/Documents/knowledge-base",
+--       },
+--     },
+-- })
 
 -- lualine setup
 require('lualine').setup {
@@ -118,6 +122,8 @@ vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
 vim.opt.shell = 'zsh'
 
+-- clipboad
+vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.foldlevelstart = 99 -- start unfolded
 vim.opt.foldmethod = 'indent' -- not as cool as syntax, but faster
@@ -391,6 +397,7 @@ keymap.set('n', '<C-b>', ':Buffers<CR>')
 keymap.set('n', '<C-c>', ':Commits<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
+keymap.set('n', '<C-g>', ':LazyGit<CR>')
 keymap.set('n', '<leader>gd', '<Plug>(coc-definition)')
 keymap.set('n', '<leader>gy', '<Plug>(coc-type-definition)')
 keymap.set('n', '<leader>gd', '<Plug>(coc-references)')
