@@ -94,6 +94,16 @@ _G.packer_plugins = {
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
+  ["mini.nvim"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/mini.nvim",
+    url = "https://github.com/echasnovski/mini.nvim"
+  },
+  ["nvim-rg"] = {
+    loaded = true,
+    path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/nvim-rg",
+    url = "https://github.com/duane9/nvim-rg"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/Users/vinitkumar/.local/share/nvim/site/pack/packer/start/packer.nvim",
