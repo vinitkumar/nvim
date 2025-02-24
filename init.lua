@@ -16,26 +16,7 @@ packer.startup(function (use)
   use 'junegunn/fzf'
   use 'junegunn/fzf.vim'
   use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
-  use 'junegunn/goyo.vim'
-  use 'airblade/vim-gitgutter'
   use 'tpope/vim-commentary'
-  use 'rose-pine/neovim'
-  use 'epwalsh/obsidian.nvim'
-  use 'nvim-lua/plenary.nvim'
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-  }
-  use({
-      "kdheepak/lazygit.nvim",
-      requires = {
-          "nvim-telescope/telescope.nvim",
-          "nvim-lua/plenary.nvim",
-      },
-      config = function()
-          require("telescope").load_extension("lazygit")
-      end,
-  })
   use 'github/copilot.vim'
   use {
     "tinted-theming/tinted-vim",
@@ -44,61 +25,6 @@ packer.startup(function (use)
     end,
   }
 end)
--- /Users/vinitkumar/Library/Mobile\ Documents/iCloud~md~obsidian/Documents/LocalMind/
-
-
-
-require("obsidian").setup({
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/Documents/knowledge-base",
-      },
-    },
-})
-
--- lualine setup
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
-    disabled_filetypes = {
-      statusline = {},
-      winbar = {},
-    },
-    ignore_focus = {},
-    always_divide_middle = true,
-    always_show_tabline = true,
-    globalstatus = false,
-    refresh = {
-      statusline = 100,
-      tabline = 100,
-      winbar = 100,
-    }
-  },
-  sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {'filename'},
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
-    lualine_y = {},
-    lualine_z = {}
-  },
-  tabline = {},
-  winbar = {},
-  inactive_winbar = {},
-  extensions = {}
-}
 
 vim.wo.number = true
 vim.wo.relativenumber = true
@@ -494,3 +420,4 @@ gitsigns.setup({
     enable = false,
   },
 })
+
