@@ -2,7 +2,7 @@
 
 ![nvim-current](./nvim-current.png)
 
-This config is written as a direct port of my .vimrc in lua.
+It is a minimal nvim config only based on a single file `init.lua` and colors directory containing some colorschemes that I like
 
 It contains minimum amount of plugin:
 - Fzf for navigation
