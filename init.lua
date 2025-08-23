@@ -43,7 +43,6 @@ require("lazy").setup({
 })
 
 
-
 vim.wo.number = true
 vim.wo.relativenumber = true
 
