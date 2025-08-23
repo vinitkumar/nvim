@@ -1,47 +1,34 @@
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
+local status, packer = pcall(require, 'packer')
+if (not status) then
+    print('Packer is not installed')
+    return
 end
-vim.opt.rtp:prepend(lazypath)
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = ","
-vim.g.maplocalleader = "\\"
+if vim.loader then
+    vim.loader.enable()
+end
 
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
-    -- add your plugins here
-    {'wbthomason/packer.nvim'},
-    {'junegunn/fzf'},
-    {'junegunn/fzf.vim'},
-    {{'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}},
-    {'tpope/vim-commentary'},
-    {'github/copilot.vim'},
-    {'duane9/nvim-rg'},
-    {'vinitkumar/oscura-vim'},
-    {'craftzdog/solarized-osaka.nvim'},
-  },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
-  -- automatically check for plugin updates
-  checker = { enabled = true },
-})
+-- load the required useins
+vim.cmd [[ packadd packer.nvim]]
 
+packer.startup(function (use)
+  use 'wbthomason/packer.nvim'
+  use 'junegunn/fzf'
+  use 'junegunn/fzf.vim'
+  use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
+  use 'tpope/vim-commentary'
+  use 'github/copilot.vim'
+  use {
+    "tinted-theming/tinted-vim",
+    config = function()
+      vim.cmd.colorscheme 'base16-bright'
+    end,
+  }
+  -- evaluation phase, might be on it's way out
+  use 'duane9/nvim-rg'
+  use 'echasnovski/mini.nvim'
+
+end)
 
 vim.wo.number = true
 vim.wo.relativenumber = true
@@ -122,7 +109,6 @@ vim.opt.synmaxcol = 200 -- don't bother syntax highlighting long lines
 vim.opt.tabstop = 2 -- spaces per tab
 vim.opt.termguicolors = true -- use guifg/guibg instead of ctermfg/ctermbg in terminal
 vim.opt.textwidth = 80 -- automatically hard wrap at 80 columns
-vim.opt.signcolumn = 'yes' -- always show sign column
 
 
 vim.opt.updatetime = 2000 -- CursorHold interval
@@ -170,7 +156,6 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 
 
-
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
     vim.cmd('normal! mz')
@@ -195,10 +180,10 @@ function SwitchBackgroundAndColorScheme()
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
-    vim.cmd("colorscheme solarized-osaka")
+    vim.cmd("colorscheme base16-bright")
   else
     vim.opt.background = 'light'
-    vim.cmd("colorscheme ambvlight")
+    vim.cmd("colorscheme gruvbox8_soft")
   end
 end
 
@@ -214,6 +199,21 @@ vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
   pattern = '*.md',
   command = 'set filetype=markdown sts=4 shiftwidth=4',
 })
+
+vim.api.nvim_create_autocmd({'BufHidden', 'FocusLost', 'WinLeave', 'CursorHold'}, {
+  pattern = '*',
+  callback = function()
+    if vim.bo.buftype == '' and vim.fn.filereadable(vim.fn.expand('%:p')) == 1 then
+      vim.cmd('silent lockmarks update ++p')
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({'BufReadPost', 'BufNewFile'}, {
+  pattern = {'*.md', '*.txt', 'COMMIT_EDITMSG'},
+  command = 'set wrap linebreak nolist spell spelllang=en_us complete+=kspell',
+})
+
 
 vim.api.nvim_create_autocmd({'BufReadPost','BufNewFile'}, {
   pattern = {'*.md','*.txt','COMMIT_EDITMSG'},
@@ -386,4 +386,60 @@ keymap.set("i", "<CR>", function()
         end
        return "\r"
 end, opts)
+
+
+-- Git signs
+local status_ok, gitsigns = pcall(require, "gitsigns")
+if not status_ok then
+  return
+end
+
+gitsigns.setup({
+  signs = {
+    add = { hl = "GitSignsAdd", text = "▎", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
+    change = { hl = "GitSignsChange", text = "▎", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+    delete = { hl = "GitSignsDelete", text = "契", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    topdelete = { hl = "GitSignsDelete", text = "契", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
+    changedelete = {
+      hl = "GitSignsChange",
+      text = "▎",
+      numhl = "GitSignsChangeNr",
+      linehl = "GitSignsChangeLn",
+    },
+  },
+  signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
+  numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
+  linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+  word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+  watch_gitdir = {
+    interval = 1000,
+    follow_files = true,
+  },
+  attach_to_untracked = true,
+  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+    delay = 1000,
+    ignore_whitespace = false,
+  },
+  current_line_blame_formatter_opts = {
+    relative_time = false,
+  },
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  max_file_length = 40000,
+  preview_config = {
+    -- Options passed to nvim_open_win
+    border = "single",
+    style = "minimal",
+    relative = "cursor",
+    row = 0,
+    col = 1,
+  },
+  yadm = {
+    enable = false,
+  },
+})
 
