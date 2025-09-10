@@ -20,16 +20,21 @@ packer.startup(function (use)
   use 'github/copilot.vim'
   use 'duane9/nvim-rg'
   use 'vinitkumar/oscura-vim'
-  use 'craftzdog/solarized-osaka.nvim'
-
+  use 'nvim-tree/nvim-tree.lua'
+  use 'vinitkumar/monokai-pro-vim'
 end)
 
 vim.wo.number = true
 vim.wo.relativenumber = true
 
+
 vim.scriptencoding = 'utf-8'
 vim.opt.encoding = 'utf-8'
 vim.opt.fileencoding = 'utf-8'
+
+
+vim.g.loaded_netrw  = 1
+vim.g.loaded_netrwPlugin = 1
 
 
 -- indent
@@ -151,6 +156,8 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 
 
+require("nvim-tree").setup()
+
 
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
@@ -176,10 +183,10 @@ function SwitchBackgroundAndColorScheme()
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
-    vim.cmd("colorscheme solarized-osaka")
+    vim.cmd("colorscheme monokai-pro-ristretto")
   else
     vim.opt.background = 'light'
-    vim.cmd("colorscheme ambvlight")
+    vim.cmd("colorscheme oscura-dusk-light")
   end
 end
 
@@ -316,7 +323,7 @@ local keymap = vim.keymap
 
 keymap.set('n', '<C-p>', ':Files<CR>')
 keymap.set('n', '<C-b>', ':Buffers<CR>')
-keymap.set('n', '<C-c>', ':Commits<CR>')
+keymap.set('n', '<C-c>', ':NvimTreeToggle<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
 keymap.set('n', '<C-g>', ':LazyGit<CR>')
