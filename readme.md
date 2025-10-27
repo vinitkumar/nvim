@@ -1,6 +1,6 @@
 ## NeoVim
 
-![nvim-current](./nvim-current.png)
+![nvim-current](./nvim.png)
 
 It is a minimal nvim config only based on a single file `init.lua` and colors directory containing some colorschemes that I like
 

@@ -1,54 +1,96 @@
--- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-  local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-  if vim.v.shell_error ~= 0 then
-    vim.api.nvim_echo({
-      { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-      { out, "WarningMsg" },
-      { "\nPress any key to exit..." },
-    }, true, {})
-    vim.fn.getchar()
-    os.exit(1)
-  end
-end
-vim.opt.rtp:prepend(lazypath)
+packer = require('packer')
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = ","
-vim.g.maplocalleader = "\\"
+packer.startup(function (use)
+  use 'wbthomason/packer.nvim'
+  use 'junegunn/fzf'
+  use 'junegunn/fzf.vim'
+  use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
+  use 'tpope/vim-commentary'
+  use 'github/copilot.vim'
+  use 'duane9/nvim-rg'
+  use 'vinitkumar/oscura-vim'
+  use 'nvim-tree/nvim-tree.lua'
+  use 'vinitkumar/monokai-pro-vim'
+  use 'dmmulroy/tsc.nvim'
+  use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
+end)
 
--- Setup lazy.nvim
-require("lazy").setup({
-  spec = {
-    -- add your plugins here
-    {'wbthomason/packer.nvim'},
-    {'junegunn/fzf'},
-    {'junegunn/fzf.vim'},
-    {{'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}},
-    {'tpope/vim-commentary'},
-    {'github/copilot.vim'},
-    {'duane9/nvim-rg'},
-    {'vinitkumar/oscura-vim'},
-    {'craftzdog/solarized-osaka.nvim'},
+
+-- setup typescript
+require('tsc').setup()
+
+
+
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    always_show_tabline = true,
+    globalstatus = false,
+    refresh = {
+      statusline = 1000,
+      tabline = 1000,
+      winbar = 1000,
+      refresh_time = 16, -- ~60fps
+      events = {
+        'WinEnter',
+        'BufEnter',
+        'BufWritePost',
+        'SessionLoadPost',
+        'FileChangedShellPost',
+        'VimResized',
+        'Filetype',
+        'CursorMoved',
+        'CursorMovedI',
+        'ModeChanged',
+      },
+    }
   },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
-  -- automatically check for plugin updates
-  checker = { enabled = true },
-})
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+}
 
 
 vim.wo.number = true
 vim.wo.relativenumber = true
 
+
 vim.scriptencoding = 'utf-8'
 vim.opt.encoding = 'utf-8'
 vim.opt.fileencoding = 'utf-8'
+
+
+vim.g.loaded_netrw  = 1
+vim.g.loaded_netrwPlugin = 1
 
 
 -- indent
@@ -170,6 +212,8 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 
 
+require("nvim-tree").setup()
+
 
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
@@ -195,10 +239,10 @@ function SwitchBackgroundAndColorScheme()
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
-    vim.cmd("colorscheme solarized-osaka")
+    vim.cmd("colorscheme monokai-pro-ristretto")
   else
     vim.opt.background = 'light'
-    vim.cmd("colorscheme ambvlight")
+    vim.cmd("colorscheme oscura-dusk-light")
   end
 end
 
@@ -335,7 +379,7 @@ local keymap = vim.keymap
 
 keymap.set('n', '<C-p>', ':Files<CR>')
 keymap.set('n', '<C-b>', ':Buffers<CR>')
-keymap.set('n', '<C-c>', ':Commits<CR>')
+keymap.set('n', '<C-c>', ':NvimTreeToggle<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
 keymap.set('n', '<C-g>', ':LazyGit<CR>')
