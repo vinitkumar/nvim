@@ -11,25 +11,23 @@ packer.startup(function (use)
   use 'vinitkumar/oscura-vim'
   use 'nvim-tree/nvim-tree.lua'
   use 'vinitkumar/monokai-pro-vim'
-  use 'dmmulroy/tsc.nvim'
   use {
       'nvim-lualine/lualine.nvim',
       requires = { 'nvim-tree/nvim-web-devicons', opt = true }
   }
+  use 'sainnhe/everforest'
+  use 'lukas-reineke/indent-blankline.nvim'
+
 end)
 
-
--- setup typescript
-require('tsc').setup()
+require("ibl").setup()
 
 
 
 require('lualine').setup {
   options = {
     icons_enabled = true,
-    theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    theme = 'everforest',
     disabled_filetypes = {
       statusline = {},
       winbar = {},
@@ -239,7 +237,9 @@ function SwitchBackgroundAndColorScheme()
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
-    vim.cmd("colorscheme monokai-pro-ristretto")
+    vim.cmd("colorscheme everforest")
+    vim.cmd("let g:everforest_background = 'soft'")
+    vim.cmd("let g:everforest_better_performance = 1")
   else
     vim.opt.background = 'light'
     vim.cmd("colorscheme oscura-dusk-light")
