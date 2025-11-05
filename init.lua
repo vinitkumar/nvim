@@ -1,26 +1,42 @@
-packer = require('packer')
+-- Bootstrap lazy.nvim
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-packer.startup(function (use)
-  use 'wbthomason/packer.nvim'
-  use 'junegunn/fzf'
-  use 'junegunn/fzf.vim'
-  use {'neoclide/coc.nvim', branch = 'master', run = 'npm ci'}
-  use 'tpope/vim-commentary'
-  use 'github/copilot.vim'
-  use 'duane9/nvim-rg'
-  use 'vinitkumar/oscura-vim'
-  use 'nvim-tree/nvim-tree.lua'
-  use 'vinitkumar/monokai-pro-vim'
-  use {
-      'nvim-lualine/lualine.nvim',
-      requires = { 'nvim-tree/nvim-web-devicons', opt = true }
-  }
-  use 'sainnhe/everforest'
-  use 'lukas-reineke/indent-blankline.nvim'
+-- Setup lazy.nvim
+require("lazy").setup({
+  'junegunn/fzf',
+  { 'junegunn/fzf.vim', cmd = { 'Files', 'Buffers', 'Rg' } },
+  { 'neoclide/coc.nvim', branch = 'master', build = 'npm ci', event = 'BufReadPre' },
+  { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } } } },
+  { 'github/copilot.vim', event = 'InsertEnter' },
+  'duane9/nvim-rg',
+  'vinitkumar/oscura-vim',
+  { 'nvim-tree/nvim-tree.lua', cmd = 'NvimTreeToggle' },
+  'vinitkumar/monokai-pro-vim',
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    event = 'VeryLazy'
+  },
+  'sainnhe/everforest',
+  { 'lukas-reineke/indent-blankline.nvim', event = 'BufReadPost' },
+})
 
-end)
-
-require("ibl").setup()
+-- Defer non-critical setup
+vim.defer_fn(function()
+  require("ibl").setup()
+  require("nvim-tree").setup()
+end, 0)
 
 
 
@@ -35,24 +51,9 @@ require('lualine').setup {
     ignore_focus = {},
     always_divide_middle = true,
     always_show_tabline = true,
-    globalstatus = false,
+    globalstatus = true,
     refresh = {
       statusline = 1000,
-      tabline = 1000,
-      winbar = 1000,
-      refresh_time = 16, -- ~60fps
-      events = {
-        'WinEnter',
-        'BufEnter',
-        'BufWritePost',
-        'SessionLoadPost',
-        'FileChangedShellPost',
-        'VimResized',
-        'Filetype',
-        'CursorMoved',
-        'CursorMovedI',
-        'ModeChanged',
-      },
     }
   },
   sections = {
@@ -210,9 +211,6 @@ vim.opt.wildoptions = 'pum'
 vim.opt.list = true
 
 
-require("nvim-tree").setup()
-
-
 function StripTrailingWhitespace()
   if not vim.bo.binary and vim.bo.filetype ~= 'diff' then
     vim.cmd('normal! mz')
@@ -230,11 +228,14 @@ end
 
 
 -- Custom utils written by me
+local current_bg = nil
 function SwitchBackgroundAndColorScheme()
   -- We want the background to change based on the system's UI mode
   -- Works with MacOS only at the moment
   local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
   mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
+  if mac_ui_mode == current_bg then return end
+  current_bg = mac_ui_mode
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
     vim.cmd("colorscheme everforest")
@@ -298,50 +299,6 @@ vim.api.nvim_create_autocmd({'BufNewFile','BufReadPost'}, {
   pattern = {'*.yaml','*.yml'},
   command = 'set filetype=yaml',
 })
-vim.api.nvim_create_autocmd({'BufNewFile' ,'BufRead'}, {
-  pattern = "*.md",
-  command = "set filetype=markdown sts=4 shiftwidth=4",
-})
-
-vim.api.nvim_create_autocmd({"BufReadPost","BufNewFile"}, {
-  pattern = {"*.md","*.txt","COMMIT_EDITMSG"},
-  command = "set wrap linebreak nolist spell spelllang=en_us complete+=kspell",
-})
-
-vim.api.nvim_create_autocmd({"BufReadPost","BufNewFile"}, {
-  pattern = {".html","*.txt","*.md","*.adoc"},
-  command = "set spell spelllang=en_us",
-})
-
-vim.api.nvim_create_autocmd({"BufWinEnter","FileType"}, {
-  pattern = {"*.md","*.wiki"},
-  command = "colorscheme naysayer88",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "gitcommit",
-  command = "setlocal spell textwidth=72",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "javascript",
-  command = "setlocal expandtab sw=2 ts=2 sts=2",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = {"typescript","json","c","html","htmldjango"},
-  command = "setlocal expandtab sw=2 ts=2 sts=2",
-})
-
-vim.api.nvim_create_autocmd({"BufNewFile","BufReadPost"}, {
-  pattern = "*.tsx",
-  command = "set filetype=typescript.tsx",
-})
-
-vim.api.nvim_create_autocmd({"BufNewFile","BufReadPost"}, {
-  pattern = {"*.yaml","*.yml"},
-  command = "set filetype=yaml",
-})
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "yaml",
@@ -352,18 +309,6 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "typescript",
   callback = function()
     vim.api.nvim_command("silent wa")
-  end
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'yaml',
-  command = 'setlocal ts=2 sts=2 sw=2 expandtab',
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'typescript',
-  callback = function()
-    vim.api.nvim_command('silent wa')
   end
 })
 
@@ -430,4 +375,3 @@ keymap.set("i", "<CR>", function()
         end
        return "\r"
 end, opts)
-
