@@ -1,6 +1,6 @@
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -14,8 +14,20 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Setup lazy.nvim
 require("lazy").setup({
-  'junegunn/fzf',
-  { 'junegunn/fzf.vim', cmd = { 'Files', 'Buffers', 'Rg' } },
+  {
+    'dmtrKovalenko/fff.nvim',
+    build = function()
+      require("fff.download").download_or_build_binary()
+    end,
+    lazy = false,
+    keys = {
+      {
+        "ff",
+        function() require('fff').find_files() end,
+        desc = 'FFFind files',
+      }
+    }
+  },
   { 'neoclide/coc.nvim', branch = 'master', build = 'npm ci', event = 'BufReadPre' },
   { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } } } },
   { 'github/copilot.vim', event = 'InsertEnter' },
@@ -30,6 +42,7 @@ require("lazy").setup({
   },
   'sainnhe/everforest',
   { 'lukas-reineke/indent-blankline.nvim', event = 'BufReadPost' },
+  { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' },
 })
 
 -- Defer non-critical setup
@@ -163,9 +176,9 @@ vim.opt.smartindent = true
 vim.opt.breakindent = true
 vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
-vim.opt.shell = 'zsh'
+vim.opt.shell = 'sh'
 
--- clipboad
+-- clipboard
 vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.foldlevelstart = 99 -- start unfolded
@@ -178,10 +191,8 @@ vim.opt.hidden = true -- allows you to hide buffers with unsaved changes without
 vim.opt.inccommand = 'split' -- live preview of :s results
 vim.opt.ignorecase = true -- ignore case in searches
 vim.opt.joinspaces = false -- don't autoinsert two spaces after '.', '?', '!' for join command
-vim.opt.laststatus = 2 -- always show status line
 vim.opt.lazyredraw = true -- don't bother updating screen during macro playback
 vim.opt.linebreak = true -- wrap long lines at characters in 'breakat'
-vim.opt.list = true -- show whitespace
 vim.opt.listchars = {
   nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
   extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
@@ -190,15 +201,12 @@ vim.opt.listchars = {
   trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
 }
 
-
 vim.opt.modelines = 5 -- scan this many lines looking for modeline
 vim.opt.number = true -- show line numbers in gutter
 vim.opt.pumheight = 20 -- max number of lines to show in pop-up menu
 vim.opt.relativenumber = true -- show relative numbers in gutter
 vim.opt.scrolloff = 3 -- start scrolling 3 lines before edge of viewport
 
-
-vim.opt.shell = 'sh' -- shell to use for `!`, `:!`, `system()` etc.
 vim.opt.shiftround = false -- don't always indent by multiple of shiftwidth
 vim.opt.shiftwidth = 2 -- spaces per tab (when shifting)
 vim.opt.shortmess = vim.opt.shortmess + 'A' -- ignore annoying swapfile messages
@@ -215,7 +223,6 @@ vim.opt.showcmd = false -- don't show extra info at end of command line
 vim.opt.sidescroll = 0 -- sidescroll in jumps because terminals are slow
 vim.opt.sidescrolloff = 3 -- same as scrolloff, but for columns
 vim.opt.smartcase = true -- don't ignore case in searches if uppercase characters present
-vim.opt.smarttab = true -- <tab>/<BS> indent/dedent in leading whitespace
 vim.opt.spellcapcheck = '' -- don't check for capital letters at start of sentence
 vim.opt.splitbelow = true -- open horizontal splits below current window
 vim.opt.splitright = true -- open vertical splits to the right of the current window
@@ -227,8 +234,6 @@ vim.opt.tabstop = 2 -- spaces per tab
 vim.opt.termguicolors = true -- use guifg/guibg instead of ctermfg/ctermbg in terminal
 vim.opt.textwidth = 80 -- automatically hard wrap at 80 columns
 vim.opt.signcolumn = 'yes' -- always show sign column
-
-
 vim.opt.updatetime = 2000 -- CursorHold interval
 vim.opt.updatecount = 0 -- update swapfiles every 80 typed chars
 vim.opt.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load}view`)
@@ -237,41 +242,22 @@ vim.opt.visualbell = true -- stop annoying beeping for non-error errors
 vim.opt.whichwrap = 'b,h,l,s,<,>,[,],~' -- allow <BS>/h/l/<Left>/<Right>/<Space>, ~ to cross line boundaries
 vim.opt.wildcharm = 26 -- ('<C-z>') substitute for 'wildchar' (<Tab>) in macros
 vim.opt.wildignore = vim.opt.wildignore + '*.o,*.rej,*.so' -- patterns to ignore during file-navigation
+vim.opt.wildignore:append { '*/node_modules/*' }
 vim.opt.wildmenu = true -- show options as list when switching buffers etc
 vim.opt.wildmode = 'longest:full,full' -- shell-like autocomplete to unambiguous portion
 vim.opt.writebackup = false -- don't keep backups after writing
 
-
--- search
-vim.opt.inccommand = 'split'
-vim.opt.hlsearch = true
-vim.opt.wrap = true
-
--- swap
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.writebackup = false
-
--- tabs and spaces
-vim.opt.showmode = true
-vim.opt.shiftwidth = 2
-vim.opt.showtabline = 2
-vim.opt.expandtab = true
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
-vim.opt.backspace = { 'start', 'eol', 'indent' }
-
-
--- don't read node_modules path
-vim.opt.wildignore:append { '*/node_modules/*' }
-
 -- UI
 vim.opt.cursorline = true
-vim.opt.termguicolors = true
-vim.opt.winblend = 0
-vim.opt.wildmode = longest,list
+vim.opt.backup = false
+vim.opt.showmode = true
+vim.opt.showtabline = 2
+vim.opt.expandtab = true
+vim.opt.softtabstop = 2
+vim.opt.backspace = { 'start', 'eol', 'indent' }
+vim.opt.hlsearch = true
+vim.opt.wrap = true
 vim.opt.wildoptions = 'pum'
-vim.opt.list = true
 
 
 function StripTrailingWhitespace()
@@ -375,8 +361,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 
-vim.fn.setenv('FZF_DEFAULT_COMMAND', 'rg --files --hidden')
-
 -- Mapping
 -- We start mapping here
 
@@ -384,15 +368,15 @@ vim.g.mapleader = ","
 local keymap = vim.keymap
 
 
-keymap.set('n', '<C-p>', ':Files<CR>')
-keymap.set('n', '<C-b>', ':Buffers<CR>')
+
+keymap.set('n', '<C-p>', function() require('fff').find_files() end, { desc = 'Find files' })
 keymap.set('n', '<C-c>', ':NvimTreeToggle<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
 keymap.set('n', '<C-g>', ':LazyGit<CR>')
 keymap.set('n', '<leader>gd', '<Plug>(coc-definition)')
 keymap.set('n', '<leader>gy', '<Plug>(coc-type-definition)')
-keymap.set('n', '<leader>gd', '<Plug>(coc-references)')
+keymap.set('n', '<leader>gr', '<Plug>(coc-references)')
 keymap.set('n', '<leader>gi', '<Plug>(coc-implementation)')
 keymap.set('n', '<leader>h', ':<C-u>split<CR>')
 keymap.set('n', '<leader>z', ':<C-u>Goyo<CR>')
