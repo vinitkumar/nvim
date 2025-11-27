@@ -1,5 +1,5 @@
 {
-  "coc.nvim": { "branch": "master", "commit": "096b85580955e9a0bff698f4b53715ff08aa1c3f" },
+  "coc.nvim": { "branch": "master", "commit": "5af156b2bff6933e190ac1cd9c7e72bba72c0211" },
   "copilot.vim": { "branch": "release", "commit": "f89e977c87180519ba3b942200e3d05b17b1e2fc" },
   "everforest": { "branch": "master", "commit": "484dd560dccb2d2842685c441ad2b54a54ffef1b" },
   "fff.nvim": { "branch": "main", "commit": "65aeacf9e2c663c9af2b1003727aa25acac96db4" },

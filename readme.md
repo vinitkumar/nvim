@@ -5,7 +5,7 @@
 It is a minimal nvim config only based on a single file `init.lua` and colors directory containing some colorschemes that I like
 
 It contains minimum amount of plugin:
-- Fzf for navigation
+- fff.nvim for navigation
 - Coc for completion and integration with LSP
 - Fugitive and Commentary for Git and Commenting
 
