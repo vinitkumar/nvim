@@ -1,8 +1,8 @@
 {
-  "coc.nvim": { "branch": "master", "commit": "dd98b95baba7e14289af619c20ca21f10509ebef" },
+  "coc.nvim": { "branch": "master", "commit": "ea88358fd4d105b683e6cf15bea4dc4e3d83bb48" },
   "copilot.vim": { "branch": "release", "commit": "f89e977c87180519ba3b942200e3d05b17b1e2fc" },
   "everforest": { "branch": "master", "commit": "b10ed9a8b37d6b7448908be98ff8f58f550adc48" },
-  "fff.nvim": { "branch": "feat/implement-buffers-support", "commit": "a827bc6ad30313beb6241c663b558ef7e91ed1a6" },
+  "fff.nvim": { "branch": "feat/implement-buffers-support", "commit": "034b5d637a227a63257d465bfb75a90a6760f388" },
   "indent-blankline.nvim": { "branch": "master", "commit": "005b56001b2cb30bfa61b7986bc50657816ba4ba" },
   "lazy.nvim": { "branch": "main", "commit": "85c7ff3711b730b4030d03144f6db6375044ae82" },
   "lazygit.nvim": { "branch": "main", "commit": "2305deed25bc61b866d5d39189e9105a45cf1cfb" },
