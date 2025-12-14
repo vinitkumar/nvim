@@ -15,7 +15,8 @@ vim.opt.rtp:prepend(lazypath)
 -- Setup lazy.nvim
 require("lazy").setup({
   {
-    'dmtrKovalenko/fff.nvim',
+    'vinitkumar/fff.nvim',
+    branch = 'feat/implement-buffers-support',
     build = function()
       require("fff.download").download_or_build_binary()
     end,
@@ -25,7 +26,12 @@ require("lazy").setup({
         "ff",
         function() require('fff').find_files() end,
         desc = 'FFFind files',
-      }
+      },
+      {
+        "<leader>b",
+        function() require('fff').buffers() end,
+        desc = 'FFF Buffers',
+      },
     }
   },
   { 'neoclide/coc.nvim', branch = 'master', build = 'npm ci', event = 'BufReadPre' },
@@ -179,14 +185,15 @@ vim.opt.laststatus = 2
 vim.opt.shell = 'sh'
 
 -- clipboard
-vim.opt.clipboard = 'unnamedplus'
+vim.opt.clipboard = { "unnamed", "unnamedplus" }
+
 
 vim.opt.foldlevelstart = 99 -- start unfolded
 vim.opt.foldmethod = 'indent' -- not as cool as syntax, but faster
 vim.opt.foldtext = 'v:lua.wincent.foldtext()'
 vim.opt.formatoptions = vim.opt.formatoptions + 'j' -- remove comment leader when joining comment lines
 vim.opt.formatoptions = vim.opt.formatoptions + 'n' -- smart auto-indenting inside numbered lists
-vim.opt.guifont = 'Source Code Pro Light:h13'
+vim.opt.guifont = 'PragmataPro Regular:h18'
 vim.opt.hidden = true -- allows you to hide buffers with unsaved changes without being prompted
 vim.opt.inccommand = 'split' -- live preview of :s results
 vim.opt.ignorecase = true -- ignore case in searches
@@ -370,6 +377,7 @@ local keymap = vim.keymap
 
 
 keymap.set('n', '<C-p>', function() require('fff').find_files() end, { desc = 'Find files' })
+keymap.set('n', '<C-b>', function() require('fff').buffers() end, { desc = 'Find files' })
 keymap.set('n', '<C-c>', ':NvimTreeToggle<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
@@ -421,3 +429,12 @@ keymap.set("i", "<CR>", function()
         end
        return "\r"
 end, opts)
+
+
+vim.lsp.config("sorbet", {
+  cmd = { "srb", "tc", "--lsp" },
+  filetypes = { "ruby" },
+  root_markers = { "Gemfile", ".git" },
+})
+vim.lsp.enable("sorbet")
+
