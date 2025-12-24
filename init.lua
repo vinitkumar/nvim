@@ -36,7 +36,6 @@ require("lazy").setup({
   },
   { 'neoclide/coc.nvim', branch = 'master', build = 'npm ci', event = 'BufReadPre' },
   { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } } } },
-  { 'github/copilot.vim', event = 'InsertEnter' },
   'duane9/nvim-rg',
   'vinitkumar/oscura-vim',
   { 'nvim-tree/nvim-tree.lua', cmd = 'NvimTreeToggle' },
