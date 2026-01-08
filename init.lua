@@ -17,9 +17,7 @@ require("lazy").setup({
   {
     'vinitkumar/fff.nvim',
     branch = 'feat/implement-buffers-support',
-    build = function()
-      require("fff.download").download_or_build_binary()
-    end,
+    build = "cargo build --release",
     lazy = false,
     keys = {
       {
@@ -34,6 +32,19 @@ require("lazy").setup({
       },
     }
   },
+  {
+		"dmmulroy/tsc.nvim",
+		lazy = true,
+		ft = { "typescript", "typescriptreact" },
+		config = function()
+			require("tsc").setup({
+				bin_name = "tsgo",
+				auto_open_qflist = true,
+				pretty_errors = false,
+				flags = "--noEmit --pretty false",
+			})
+		end,
+	},
   { 'neoclide/coc.nvim', branch = 'master', build = 'npm ci', event = 'BufReadPre' },
   { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } } } },
   'duane9/nvim-rg',
@@ -436,4 +447,15 @@ vim.lsp.config("sorbet", {
   root_markers = { "Gemfile", ".git" },
 })
 vim.lsp.enable("sorbet")
+
+-- OCaml LSP configuration
+local opam_switch_prefix = vim.fn.system("opam var prefix"):gsub('\n', '')
+local ocamllsp_bin = opam_switch_prefix .. "/bin/ocamllsp"
+
+vim.lsp.config("ocamllsp", {
+  cmd = { ocamllsp_bin },
+  filetypes = { "ocaml", "ocamlinterface" },
+  root_markers = { ".opam", "dune-project", ".git" },
+})
+vim.lsp.enable("ocamllsp")
 
