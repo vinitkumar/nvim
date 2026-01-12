@@ -1,16 +1,17 @@
 {
+  "amp.nvim": { "branch": "main", "commit": "3b9ad5ef0328de1b35cc9bfa723a37db5daf9434" },
   "coc.nvim": { "branch": "master", "commit": "f8619ffb888569f0d56b0f2d23b22c3fac6d5081" },
   "everforest": { "branch": "master", "commit": "b90025cc84dbb9c46df5a2ae540d3f01cf85af74" },
-  "fff.nvim": { "branch": "feat/implement-buffers-support", "commit": "40632741df2011f005652aa70bb462bafb39ec34" },
+  "fff.nvim": { "branch": "feat/implement-buffers-support", "commit": "51a8168f5efeb4e8a74ab261012b7498acf01921" },
   "indent-blankline.nvim": { "branch": "master", "commit": "005b56001b2cb30bfa61b7986bc50657816ba4ba" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lazygit.nvim": { "branch": "main", "commit": "a04ad0dbc725134edbee3a5eea29290976695357" },
   "lualine.nvim": { "branch": "master", "commit": "47f91c416daef12db467145e16bed5bbfe00add8" },
   "monokai-pro-vim": { "branch": "main", "commit": "ddc860b653a83ece1e927213b9e7a46ab706a8ca" },
   "nvim-rg": { "branch": "main", "commit": "27c9ca583d05a73048186dc3048b26428ef21753" },
-  "nvim-tree.lua": { "branch": "master", "commit": "b8b44b6a2494d086a9177251a119f9daec6cace8" },
-  "nvim-web-devicons": { "branch": "master", "commit": "6788013bb9cb784e606ada44206b0e755e4323d7" },
+  "nvim-tree.lua": { "branch": "master", "commit": "a0db8bf7d6488b1dcd9cb5b0dfd6684a1e14f769" },
+  "nvim-web-devicons": { "branch": "master", "commit": "803353450c374192393f5387b6a0176d0972b848" },
   "oscura-vim": { "branch": "main", "commit": "6efc7c9202db4deb0c49401ddfb43f21a7699f12" },
-  "tsc.nvim": { "branch": "main", "commit": "eecf551d69bf683603c77bd31a031873261d0147" },
+  "tsc.nvim": { "branch": "main", "commit": "eef9e2a14726c0fd6886acc47cd914c1b3b0f9f0" },
   "vim-commentary": { "branch": "master", "commit": "64a654ef4a20db1727938338310209b6a63f60c9" }
 }

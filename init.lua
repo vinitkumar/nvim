@@ -59,6 +59,12 @@ require("lazy").setup({
   'sainnhe/everforest',
   { 'lukas-reineke/indent-blankline.nvim', event = 'BufReadPost' },
   { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' },
+  {
+    "sourcegraph/amp.nvim",
+    branch = "main",
+    lazy = false,
+    opts = { auto_start = true, log_level = "info" },
+  }
 })
 
 -- Defer non-critical setup
@@ -203,7 +209,19 @@ vim.opt.foldmethod = 'indent' -- not as cool as syntax, but faster
 vim.opt.foldtext = 'v:lua.wincent.foldtext()'
 vim.opt.formatoptions = vim.opt.formatoptions + 'j' -- remove comment leader when joining comment lines
 vim.opt.formatoptions = vim.opt.formatoptions + 'n' -- smart auto-indenting inside numbered lists
-vim.opt.guifont = 'PragmataPro Regular:h18'
+vim.opt.guifont = 'JetBrains Mono:h18'
+
+if vim.g.neovide then
+  vim.o.guifont = "JetBrains Mono:h14"
+
+  -- Optional but sensible Neovide tuning
+  vim.g.neovide_scale_factor = 1.0
+  vim.g.neovide_refresh_rate = 120
+  vim.g.neovide_cursor_animation_length = 0.05
+  vim.g.neovide_cursor_trail_size = 0.8
+end
+
+
 vim.opt.hidden = true -- allows you to hide buffers with unsaved changes without being prompted
 vim.opt.inccommand = 'split' -- live preview of :s results
 vim.opt.ignorecase = true -- ignore case in searches
@@ -459,4 +477,3 @@ vim.lsp.config("ocamllsp", {
   root_markers = { ".opam", "dune-project", ".git" },
 })
 vim.lsp.enable("ocamllsp")
-
