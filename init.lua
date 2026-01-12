@@ -20,16 +20,6 @@ require("lazy").setup({
     build = "cargo build --release",
     lazy = false,
     keys = {
-      {
-        "ff",
-        function() require('fff').find_files() end,
-        desc = 'FFFind files',
-      },
-      {
-        "<leader>b",
-        function() require('fff').buffers() end,
-        desc = 'FFF Buffers',
-      },
     }
   },
   {
@@ -407,6 +397,7 @@ local keymap = vim.keymap
 
 keymap.set('n', '<C-p>', function() require('fff').find_files() end, { desc = 'Find files' })
 keymap.set('n', '<C-b>', function() require('fff').buffers() end, { desc = 'Find files' })
+keymap.set('n', '<C-h>', function() require('fff').git_files() end, { desc = 'Find Git files for Commit' })
 keymap.set('n', '<C-c>', ':NvimTreeToggle<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
