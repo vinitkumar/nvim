@@ -9,9 +9,9 @@
   "lualine.nvim": { "branch": "master", "commit": "47f91c416daef12db467145e16bed5bbfe00add8" },
   "monokai-pro-vim": { "branch": "main", "commit": "ddc860b653a83ece1e927213b9e7a46ab706a8ca" },
   "nvim-rg": { "branch": "main", "commit": "27c9ca583d05a73048186dc3048b26428ef21753" },
-  "nvim-tree.lua": { "branch": "master", "commit": "a0db8bf7d6488b1dcd9cb5b0dfd6684a1e14f769" },
+  "nvim-tree.lua": { "branch": "master", "commit": "ca8d82fff26cb12ced239713e3222f4a9dcd0da0" },
   "nvim-web-devicons": { "branch": "master", "commit": "803353450c374192393f5387b6a0176d0972b848" },
   "oscura-vim": { "branch": "main", "commit": "6efc7c9202db4deb0c49401ddfb43f21a7699f12" },
-  "tsc.nvim": { "branch": "main", "commit": "eef9e2a14726c0fd6886acc47cd914c1b3b0f9f0" },
+  "tsc.nvim": { "branch": "main", "commit": "e083bcf1e54bc3af7df92b33235efb334e8c782c" },
   "vim-commentary": { "branch": "master", "commit": "64a654ef4a20db1727938338310209b6a63f60c9" }
 }

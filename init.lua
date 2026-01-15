@@ -313,8 +313,8 @@ function SwitchBackgroundAndColorScheme()
   if mac_ui_mode == 'Dark' then
     vim.opt.background = 'dark'
     vim.cmd("colorscheme sorbet")
-    vim.cmd("let g:everforest_background = 'soft'")
-    vim.cmd("let g:everforest_better_performance = 1")
+    -- vim.cmd("let g:everforest_background = 'soft'")
+    -- vim.cmd("let g:everforest_better_performance = 1")
   else
     vim.opt.background = 'light'
     vim.cmd("colorscheme gruvbox8_soft")
