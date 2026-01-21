@@ -1,3 +1,7 @@
+-- Set leader key BEFORE loading plugins
+vim.g.mapleader = ","
+vim.g.maplocalleader = ","
+
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -39,7 +43,6 @@ require("lazy").setup({
   { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } } } },
   'duane9/nvim-rg',
   'vinitkumar/oscura-vim',
-  { 'nvim-tree/nvim-tree.lua', cmd = 'NvimTreeToggle' },
   'vinitkumar/monokai-pro-vim',
   {
     'nvim-lualine/lualine.nvim',
@@ -47,21 +50,132 @@ require("lazy").setup({
     event = 'VeryLazy'
   },
   'sainnhe/everforest',
-  { 'lukas-reineke/indent-blankline.nvim', event = 'BufReadPost' },
+  {
+    'lukas-reineke/indent-blankline.nvim',
+    event = 'BufReadPost',
+    main = 'ibl',
+    opts = {},
+  },
+  {
+    'nvim-tree/nvim-tree.lua',
+    cmd = 'NvimTreeToggle',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {},
+  },
   { 'kdheepak/lazygit.nvim', cmd = 'LazyGit' },
   {
     "sourcegraph/amp.nvim",
     branch = "main",
     lazy = false,
     opts = { auto_start = true, log_level = "info" },
-  }
-})
+  },
 
--- Defer non-critical setup
-vim.defer_fn(function()
-  require("ibl").setup()
-  require("nvim-tree").setup()
-end, 0)
+  -- Treesitter for syntax highlighting
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    event = { 'BufReadPost', 'BufNewFile' },
+    config = function()
+      vim.treesitter.language.register('markdown', 'markdown_inline')
+      -- ensure parsers are installed
+      local ensure = {
+        'lua', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'python',
+        'ruby', 'go', 'rust', 'c', 'cpp', 'json', 'yaml', 'html', 'css',
+        'markdown', 'markdown_inline', 'bash', 'ocaml',
+      }
+      for _, lang in ipairs(ensure) do
+        pcall(function() vim.treesitter.start(0, lang) end)
+      end
+    end,
+  },
+
+  -- Treesitter textobjects - disabled until updated for new treesitter API
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-textobjects',
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  -- },
+
+  -- nvim-ufo for better folding
+  {
+    'kevinhwang91/nvim-ufo',
+    dependencies = { 'kevinhwang91/promise-async' },
+    event = 'BufReadPost',
+    opts = {
+      provider_selector = function()
+        return { 'treesitter', 'indent' }
+      end,
+    },
+    init = function()
+      vim.o.foldcolumn = '1'
+      vim.o.foldlevel = 99
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end,
+    keys = {
+      { 'zR', function() require('ufo').openAllFolds() end, desc = 'Open all folds' },
+      { 'zM', function() require('ufo').closeAllFolds() end, desc = 'Close all folds' },
+      { 'zK', function() require('ufo').peekFoldedLinesUnderCursor() end, desc = 'Peek fold' },
+    },
+  },
+
+  -- Harpoon for quick file navigation
+  {
+    'ThePrimeagen/harpoon',
+    branch = 'harpoon2',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local harpoon = require('harpoon')
+      harpoon:setup()
+
+      vim.keymap.set('n', '<leader>ha', function() harpoon:list():add() end, { desc = 'Harpoon add' })
+      vim.keymap.set('n', '<leader>ho', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end, { desc = 'Harpoon menu' })
+      vim.keymap.set('n', '<leader>1', function() harpoon:list():select(1) end, { desc = 'Harpoon 1' })
+      vim.keymap.set('n', '<leader>2', function() harpoon:list():select(2) end, { desc = 'Harpoon 2' })
+      vim.keymap.set('n', '<leader>3', function() harpoon:list():select(3) end, { desc = 'Harpoon 3' })
+      vim.keymap.set('n', '<leader>4', function() harpoon:list():select(4) end, { desc = 'Harpoon 4' })
+      vim.keymap.set('n', '<leader>5', function() harpoon:list():select(5) end, { desc = 'Harpoon 5' })
+    end,
+  },
+
+  -- Spectre for project-wide find/replace
+  {
+    'nvim-pack/nvim-spectre',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    cmd = 'Spectre',
+    keys = {
+      { '<leader>S', function() require('spectre').toggle() end, desc = 'Toggle Spectre' },
+      { '<leader>sw', function() require('spectre').open_visual({ select_word = true }) end, desc = 'Search word' },
+      { '<leader>sw', function() require('spectre').open_visual() end, mode = 'v', desc = 'Search selection' },
+    },
+    opts = {},
+  },
+
+  -- Leap for fast motion
+  {
+    'ggandor/leap.nvim',
+    keys = {
+      { 's', '<Plug>(leap-forward-to)', mode = { 'n', 'x', 'o' }, desc = 'Leap forward' },
+      { 'S', '<Plug>(leap-backward-to)', mode = { 'n', 'x', 'o' }, desc = 'Leap backward' },
+      { 'gs', '<Plug>(leap-from-window)', mode = { 'n', 'x', 'o' }, desc = 'Leap from window' },
+    },
+  },
+
+  -- nvim-surround for surrounding text
+  {
+    'kylechui/nvim-surround',
+    version = '*',
+    event = 'VeryLazy',
+    opts = {},
+  },
+
+  -- fidget.nvim for LSP progress notifications
+  {
+    'j-hui/fidget.nvim',
+    event = 'LspAttach',
+    opts = {},
+  },
+})
 
 
 -- Bubbles config for lualine
@@ -195,8 +309,8 @@ vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 
 vim.opt.foldlevelstart = 99 -- start unfolded
-vim.opt.foldmethod = 'indent' -- not as cool as syntax, but faster
-vim.opt.foldtext = 'v:lua.wincent.foldtext()'
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.formatoptions = vim.opt.formatoptions + 'j' -- remove comment leader when joining comment lines
 vim.opt.formatoptions = vim.opt.formatoptions + 'n' -- smart auto-indenting inside numbered lists
 vim.opt.guifont = 'JetBrains Mono:h18'
@@ -303,94 +417,129 @@ end
 
 -- Custom utils written by me
 local current_bg = nil
-function SwitchBackgroundAndColorScheme()
-  -- We want the background to change based on the system's UI mode
-  -- Works with MacOS only at the moment
-  local mac_ui_mode = vim.fn.system('defaults read -g AppleInterfaceStyle')
-  mac_ui_mode = mac_ui_mode:gsub('%s+', '') -- trim whitespace
-  if mac_ui_mode == current_bg then return end
-  current_bg = mac_ui_mode
-  if mac_ui_mode == 'Dark' then
-    vim.opt.background = 'dark'
-    vim.cmd("colorscheme sorbet")
-    -- vim.cmd("let g:everforest_background = 'soft'")
-    -- vim.cmd("let g:everforest_better_performance = 1")
+
+local function macos_is_dark()
+  local out = vim.fn.system('defaults read -g AppleInterfaceStyle 2>/dev/null')
+  out = (out or ''):gsub('%s+', '')
+  return out == 'Dark'
+end
+
+local function switch_background_and_colorscheme()
+  local dark = macos_is_dark()
+  local bg = dark and 'dark' or 'light'
+  if bg == current_bg then return end
+  current_bg = bg
+
+  vim.opt.background = bg
+  if dark then
+    vim.cmd.colorscheme('sorbet')
   else
-    vim.opt.background = 'light'
-    vim.cmd("colorscheme gruvbox8_soft")
+    vim.cmd.colorscheme('gruvbox8_soft')
   end
 end
 
-local opts = {}
+-- Create autogroup for all user autocmds
+local user_augroup = vim.api.nvim_create_augroup('user_autocmds', { clear = true })
 
-vim.cmd('autocmd FocusGained,BufEnter * lua SwitchBackgroundAndColorScheme()')
-vim.cmd('autocmd BufWritePre * lua StripTrailingWhitespace()')
-vim.cmd("autocmd BufNewFile ~/vimwiki/diary/*.wiki :silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'")
-
-
--- AutoCMDs for file and tabstops
-vim.api.nvim_create_autocmd({'BufNewFile', 'BufRead'}, {
-  pattern = '*.md',
-  command = 'set filetype=markdown sts=4 shiftwidth=4',
+vim.api.nvim_create_autocmd({ 'FocusGained', 'BufEnter' }, {
+  group = user_augroup,
+  callback = switch_background_and_colorscheme,
 })
 
-vim.api.nvim_create_autocmd({'BufReadPost','BufNewFile'}, {
-  pattern = {'*.md','*.txt','COMMIT_EDITMSG'},
-  command = 'set wrap linebreak nolist spell spelllang=en_us complete+=kspell',
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = user_augroup,
+  callback = StripTrailingWhitespace,
 })
 
-vim.api.nvim_create_autocmd({'BufReadPost','BufNewFile'}, {
-  pattern = {'.html','*.txt','*.md','*.adoc'},
-  command = 'set spell spelllang=en_us',
-})
-
-vim.api.nvim_create_autocmd({'BufWinEnter','FileType'}, {
-  pattern = {'*.md','*.wiki'},
-  command = 'colorscheme naysayer88',
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'gitcommit',
-  command = 'setlocal spell textwidth=72',
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'javascript',
-  command = 'setlocal expandtab sw=2 ts=2 sts=2',
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = {'typescript','json','c','html','htmldjango'},
-  command = 'setlocal expandtab sw=2 ts=2 sts=2',
-})
-
-vim.api.nvim_create_autocmd({'BufNewFile','BufReadPost'}, {
-  pattern = '*.tsx',
-  command = 'set filetype=typescript.tsx',
-})
-
-vim.api.nvim_create_autocmd({'BufNewFile','BufReadPost'}, {
-  pattern = {'*.yaml','*.yml'},
-  command = 'set filetype=yaml',
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "yaml",
-  command = "setlocal ts=2 sts=2 sw=2 expandtab",
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "typescript",
+vim.api.nvim_create_autocmd('BufNewFile', {
+  group = user_augroup,
+  pattern = vim.fn.expand('~') .. '/vimwiki/diary/*.wiki',
   callback = function()
-    vim.api.nvim_command("silent wa")
-  end
+    vim.cmd("silent 0r !~/.vim/bin/generate-vimwiki-diary-template '%'")
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  group = user_augroup,
+  pattern = '*.md',
+  callback = function()
+    vim.bo.filetype = 'markdown'
+    vim.bo.softtabstop = 4
+    vim.bo.shiftwidth = 4
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile' }, {
+  group = user_augroup,
+  pattern = { '*.md', '*.txt', 'COMMIT_EDITMSG' },
+  callback = function()
+    vim.wo.wrap = true
+    vim.wo.linebreak = true
+    vim.wo.list = false
+    vim.wo.spell = true
+    vim.bo.spelllang = 'en_us'
+    vim.opt_local.complete:append('kspell')
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufNewFile' }, {
+  group = user_augroup,
+  pattern = { '.html', '*.txt', '*.md', '*.adoc' },
+  callback = function()
+    vim.wo.spell = true
+    vim.bo.spelllang = 'en_us'
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = user_augroup,
+  pattern = 'gitcommit',
+  callback = function()
+    vim.wo.spell = true
+    vim.bo.textwidth = 72
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = user_augroup,
+  pattern = { 'javascript', 'typescript', 'json', 'c', 'html', 'htmldjango' },
+  callback = function()
+    vim.bo.expandtab = true
+    vim.bo.shiftwidth = 2
+    vim.bo.tabstop = 2
+    vim.bo.softtabstop = 2
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufReadPost' }, {
+  group = user_augroup,
+  pattern = '*.tsx',
+  callback = function()
+    vim.bo.filetype = 'typescript.tsx'
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufReadPost' }, {
+  group = user_augroup,
+  pattern = { '*.yaml', '*.yml' },
+  callback = function()
+    vim.bo.filetype = 'yaml'
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = user_augroup,
+  pattern = 'yaml',
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.softtabstop = 2
+    vim.bo.shiftwidth = 2
+    vim.bo.expandtab = true
+  end,
 })
 
 
--- Mapping
--- We start mapping here
-
-vim.g.mapleader = ","
+-- Keymaps
 local keymap = vim.keymap
 
 
