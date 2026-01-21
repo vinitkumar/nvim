@@ -1,6 +1,17 @@
+-- Enable Lua module caching for faster startup (nvim 0.9+)
+if vim.loader then
+  vim.loader.enable()
+end
+
 -- Set leader key BEFORE loading plugins
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
+
+-- Disable unused providers for faster startup
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -44,6 +55,14 @@ require("lazy").setup({
   'duane9/nvim-rg',
   'vinitkumar/oscura-vim',
   'vinitkumar/monokai-pro-vim',
+
+  -- Top-tier colorschemes with dark/light variants
+  { 'catppuccin/nvim', name = 'catppuccin', priority = 1000 },
+  { 'folke/tokyonight.nvim', priority = 1000 },
+  { 'rebelot/kanagawa.nvim', priority = 1000 },
+  { 'EdenEast/nightfox.nvim', priority = 1000 },
+  { 'rose-pine/neovim', name = 'rose-pine', priority = 1000 },
+  'sainnhe/gruvbox-material',
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -326,18 +345,27 @@ if vim.g.neovide then
 end
 
 
+vim.opt.belloff = 'all' -- never ring the bell for any reason
+vim.opt.emoji = false -- don't assume all emoji are double width
 vim.opt.hidden = true -- allows you to hide buffers with unsaved changes without being prompted
 vim.opt.inccommand = 'split' -- live preview of :s results
 vim.opt.ignorecase = true -- ignore case in searches
 vim.opt.joinspaces = false -- don't autoinsert two spaces after '.', '?', '!' for join command
 vim.opt.lazyredraw = true -- don't bother updating screen during macro playback
 vim.opt.linebreak = true -- wrap long lines at characters in 'breakat'
+vim.opt.list = true -- show whitespace
 vim.opt.listchars = {
   nbsp = '⦸', -- CIRCLED REVERSE SOLIDUS (U+29B8, UTF-8: E2 A6 B8)
   extends = '»', -- RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00BB, UTF-8: C2 BB)
   precedes = '«', -- LEFT-POINTING DOUBLE ANGLE QUOTATION MARK (U+00AB, UTF-8: C2 AB)
-  tab = '▷⋯', -- WHITE RIGHT-POINTING TRIANGLE (U+25B7, UTF-8: E2 96 B7) + MIDLINE HORIZONTAL ELLIPSIS (U+22EF, UTF-8: E2 8B AF)
+  tab = '▷─', -- WHITE RIGHT-POINTING TRIANGLE + BOX DRAWINGS LIGHT HORIZONTAL
   trail = '•', -- BULLET (U+2022, UTF-8: E2 80 A2)
+}
+vim.opt.fillchars = {
+  diff = '╱', -- BOX DRAWINGS LIGHT DIAGONAL UPPER RIGHT TO LOWER LEFT
+  eob = ' ', -- suppress ~ at EndOfBuffer
+  fold = '·', -- MIDDLE DOT
+  vert = '│', -- BOX DRAWINGS LIGHT VERTICAL
 }
 
 vim.opt.modelines = 5 -- scan this many lines looking for modeline
@@ -375,6 +403,8 @@ vim.opt.textwidth = 80 -- automatically hard wrap at 80 columns
 vim.opt.signcolumn = 'yes' -- always show sign column
 vim.opt.updatetime = 2000 -- CursorHold interval
 vim.opt.updatecount = 0 -- update swapfiles every 80 typed chars
+vim.opt.undofile = true -- persistent undo across sessions
+vim.opt.undodir = vim.fn.stdpath('data') .. '/undo//' -- keep undo files organized
 vim.opt.viewoptions = 'cursor,folds' -- save/restore just these (with `:{mk,load}view`)
 vim.opt.virtualedit = 'block' -- allow cursor to move where there is no text in visual block mode
 vim.opt.visualbell = true -- stop annoying beeping for non-error errors
@@ -424,6 +454,15 @@ local function macos_is_dark()
   return out == 'Dark'
 end
 
+-- Available themes (dark / light):
+--   catppuccin-mocha / catppuccin-latte
+--   tokyonight-night / tokyonight-day
+--   kanagawa-wave / kanagawa-lotus
+--   nightfox / dayfox
+--   rose-pine / rose-pine-dawn
+--   everforest / everforest (set background)
+--   gruvbox-material / gruvbox-material (set background)
+
 local function switch_background_and_colorscheme()
   local dark = macos_is_dark()
   local bg = dark and 'dark' or 'light'
@@ -432,9 +471,11 @@ local function switch_background_and_colorscheme()
 
   vim.opt.background = bg
   if dark then
-    vim.cmd.colorscheme('sorbet')
+    -- Dark mode: catppuccin-mocha (swap for tokyonight-night, kanagawa-wave, nightfox, rose-pine)
+    vim.cmd.colorscheme('catppuccin-mocha')
   else
-    vim.cmd.colorscheme('gruvbox8_soft')
+    -- Light mode: catppuccin-latte (swap for tokyonight-day, kanagawa-lotus, dayfox, rose-pine-dawn)
+    vim.cmd.colorscheme('catppuccin-latte')
   end
 end
 
