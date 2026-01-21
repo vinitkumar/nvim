@@ -75,57 +75,26 @@ require("lazy").setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
-    main = 'nvim-treesitter.configs',
-    opts = {
-      ensure_installed = {
+    config = function()
+      vim.treesitter.language.register('markdown', 'markdown_inline')
+      -- ensure parsers are installed
+      local ensure = {
         'lua', 'vim', 'vimdoc', 'javascript', 'typescript', 'tsx', 'python',
         'ruby', 'go', 'rust', 'c', 'cpp', 'json', 'yaml', 'html', 'css',
         'markdown', 'markdown_inline', 'bash', 'ocaml',
-      },
-      highlight = { enable = true },
-      indent = { enable = true },
-    },
-  },
-
-  -- Treesitter textobjects for semantic selection/movement
-  {
-    'nvim-treesitter/nvim-treesitter-textobjects',
-    event = { 'BufReadPost', 'BufNewFile' },
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    config = function()
-      require('nvim-treesitter-textobjects').setup({
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ['af'] = '@function.outer',
-            ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
-            ['aa'] = '@parameter.outer',
-            ['ia'] = '@parameter.inner',
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            [']m'] = '@function.outer',
-            [']]'] = '@class.outer',
-          },
-          goto_prev_start = {
-            ['[m'] = '@function.outer',
-            ['[['] = '@class.outer',
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = { ['<leader>a'] = '@parameter.inner' },
-          swap_previous = { ['<leader>A'] = '@parameter.inner' },
-        },
-      })
+      }
+      for _, lang in ipairs(ensure) do
+        pcall(function() vim.treesitter.start(0, lang) end)
+      end
     end,
   },
+
+  -- Treesitter textobjects - disabled until updated for new treesitter API
+  -- {
+  --   'nvim-treesitter/nvim-treesitter-textobjects',
+  --   event = { 'BufReadPost', 'BufNewFile' },
+  --   dependencies = { 'nvim-treesitter/nvim-treesitter' },
+  -- },
 
   -- nvim-ufo for better folding
   {
