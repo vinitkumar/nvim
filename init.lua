@@ -7,6 +7,26 @@ end
 vim.g.mapleader = ","
 vim.g.maplocalleader = ","
 
+-- Neovide GUI configuration
+if vim.g.neovide then
+  vim.o.guifont = "Zed Mono:h14"  -- Change font/size as needed
+  vim.g.neovide_scale_factor = 1.0
+  vim.g.neovide_padding_top = 10
+  vim.g.neovide_padding_bottom = 10
+  vim.g.neovide_padding_left = 10
+  vim.g.neovide_padding_right = 10
+  vim.g.neovide_floating_blur_amount_x = 2.0
+  vim.g.neovide_floating_blur_amount_y = 2.0
+  vim.g.neovide_floating_shadow = true
+  vim.g.neovide_floating_z_height = 10
+  vim.g.neovide_light_angle_degrees = 45
+  vim.g.neovide_light_radius = 5
+  vim.g.neovide_cursor_animation_length = 0.03
+  vim.g.neovide_cursor_trail_size = 0.8
+  vim.g.neovide_cursor_antialiasing = true
+  vim.g.neovide_confirm_quit = true
+end
+
 -- Disable unused providers for faster startup
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
@@ -38,18 +58,18 @@ require("lazy").setup({
     }
   },
   {
-		"dmmulroy/tsc.nvim",
-		lazy = true,
-		ft = { "typescript", "typescriptreact" },
-		config = function()
-			require("tsc").setup({
-				bin_name = "tsgo",
-				auto_open_qflist = true,
-				pretty_errors = false,
-				flags = "--noEmit --pretty false",
-			})
-		end,
-	},
+    "dmmulroy/tsc.nvim",
+    lazy = true,
+    ft = { "typescript", "typescriptreact" },
+    config = function()
+      require("tsc").setup({
+        bin_name = "tsgo",
+        auto_open_qflist = true,
+        pretty_errors = false,
+        flags = "--noEmit --pretty false",
+      })
+    end,
+  },
   { 'neoclide/coc.nvim', branch = 'master', build = 'npm ci', event = 'BufReadPre' },
   { 'tpope/vim-commentary', keys = { { 'gc', mode = { 'n', 'v' } } } },
   'duane9/nvim-rg',
@@ -106,6 +126,21 @@ require("lazy").setup({
         pcall(function() vim.treesitter.start(0, lang) end)
       end
     end,
+  },
+  {
+    "brenoprata10/nvim-highlight-colors",
+    event = "BufReadPre",
+    opts = {
+      render = "background",
+      enable_hex = true,
+      enable_short_hex = true,
+      enable_rgb = true,
+      enable_hsl = true,
+      enable_hsl_without_function = true,
+      enable_ansi = true,
+      enable_var_usage = true,
+      enable_tailwind = true,
+    },
   },
 
   -- Treesitter textobjects - disabled until updated for new treesitter API
@@ -169,6 +204,9 @@ require("lazy").setup({
     },
     opts = {},
   },
+  {
+    'vimwiki/vimwiki'
+  },
 
   -- Leap for fast motion
   {
@@ -194,6 +232,21 @@ require("lazy").setup({
     event = 'LspAttach',
     opts = {},
   },
+  {'zenbones-theme/zenbones.nvim'},
+    {
+      "zenbones-theme/zenbones.nvim",
+      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+      -- In Vim, compat mode is turned on as Lush only works in Neovim.
+      dependencies = "rktjmp/lush.nvim",
+      lazy = false,
+      priority = 1000,
+      -- you can set set configuration options here
+      -- config = function()
+      --     vim.g.zenbones_darken_comments = 45
+      --     vim.cmd.colorscheme('zenbones')
+      -- end
+  }
 })
 
 
@@ -332,10 +385,10 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.formatoptions = vim.opt.formatoptions + 'j' -- remove comment leader when joining comment lines
 vim.opt.formatoptions = vim.opt.formatoptions + 'n' -- smart auto-indenting inside numbered lists
-vim.opt.guifont = 'JetBrains Mono:h18'
+vim.opt.guifont = 'PragmataPro Mono:h15'
 
 if vim.g.neovide then
-  vim.o.guifont = "JetBrains Mono:h14"
+  vim.o.guifont = "PragmataPro Mono:h15"
 
   -- Optional but sensible Neovide tuning
   vim.g.neovide_scale_factor = 1.0
