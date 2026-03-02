@@ -9,7 +9,7 @@ vim.g.maplocalleader = ","
 
 -- Neovide GUI configuration
 if vim.g.neovide then
-  vim.o.guifont = "Zed Mono:h14"  -- Change font/size as needed
+  vim.o.guifont = "TX-02:h15"
   vim.g.neovide_scale_factor = 1.0
   vim.g.neovide_padding_top = 10
   vim.g.neovide_padding_bottom = 10
@@ -232,21 +232,20 @@ require("lazy").setup({
     event = 'LspAttach',
     opts = {},
   },
-  {'zenbones-theme/zenbones.nvim'},
-    {
-      "zenbones-theme/zenbones.nvim",
-      -- Optionally install Lush. Allows for more configuration or extending the colorscheme
-      -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
-      -- In Vim, compat mode is turned on as Lush only works in Neovim.
-      dependencies = "rktjmp/lush.nvim",
-      lazy = false,
-      priority = 1000,
-      -- you can set set configuration options here
-      -- config = function()
-      --     vim.g.zenbones_darken_comments = 45
-      --     vim.cmd.colorscheme('zenbones')
-      -- end
-  }
+  {
+    "zenbones-theme/zenbones.nvim",
+    -- Optionally install Lush. Allows for more configuration or extending the colorscheme
+    -- If you don't want to install lush, make sure to set g:zenbones_compat = 1
+    -- In Vim, compat mode is turned on as Lush only works in Neovim.
+    dependencies = "rktjmp/lush.nvim",
+    lazy = false,
+    priority = 1000,
+    -- you can set set configuration options here
+    -- config = function()
+    --     vim.g.zenbones_darken_comments = 45
+    --     vim.cmd.colorscheme('zenbones')
+    -- end
+}
 })
 
 
@@ -385,10 +384,10 @@ vim.opt.foldmethod = 'expr'
 vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.opt.formatoptions = vim.opt.formatoptions + 'j' -- remove comment leader when joining comment lines
 vim.opt.formatoptions = vim.opt.formatoptions + 'n' -- smart auto-indenting inside numbered lists
-vim.opt.guifont = 'PragmataPro Mono:h15'
+vim.opt.guifont = 'TX-02:h15'
 
 if vim.g.neovide then
-  vim.o.guifont = "PragmataPro Mono:h15"
+  vim.o.guifont = "TX-02:h15"
 
   -- Optional but sensible Neovide tuning
   vim.g.neovide_scale_factor = 1.0
