@@ -643,6 +643,7 @@ keymap.set('n', '<C-h>', function() require('fff').git_files() end, { desc = 'Fi
 keymap.set('n', '<C-c>', ':NvimTreeToggle<CR>')
 keymap.set('n', '<C-t>', ':tabNext<CR>')
 keymap.set('n', '<C-e>', ':CocDiagnostics<CR>')
+keymap.set('n', '<C-s>', ':GFiles<CR>')
 keymap.set('n', '<C-g>', ':LazyGit<CR>')
 keymap.set('n', '<leader>gd', '<Plug>(coc-definition)')
 keymap.set('n', '<leader>gy', '<Plug>(coc-type-definition)')
