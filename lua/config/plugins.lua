@@ -115,34 +115,27 @@ return {
     config = function()
       vim.treesitter.language.register("markdown", "markdown_inline")
 
-      local ensure = {
-        "lua",
-        "vim",
-        "vimdoc",
-        "javascript",
-        "typescript",
-        "tsx",
-        "python",
-        "ruby",
-        "go",
-        "rust",
-        "c",
-        "cpp",
-        "json",
-        "yaml",
-        "html",
-        "css",
-        "markdown",
-        "markdown_inline",
-        "bash",
-        "ocaml",
-      }
+      local group = vim.api.nvim_create_augroup("user_treesitter", { clear = true })
+      local function enable_treesitter(bufnr)
+        if not vim.api.nvim_buf_is_valid(bufnr) then
+          return
+        end
 
-      for _, lang in ipairs(ensure) do
-        pcall(function()
-          vim.treesitter.start(0, lang)
-        end)
+        if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "" then
+          return
+        end
+
+        pcall(vim.treesitter.start, bufnr)
       end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        callback = function(args)
+          enable_treesitter(args.buf)
+        end,
+      })
+
+      enable_treesitter(vim.api.nvim_get_current_buf())
     end,
   },
   {
