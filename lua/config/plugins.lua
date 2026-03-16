@@ -24,8 +24,14 @@ local bubbles_theme = {
   },
 }
 
+local is_linux = vim.uv.os_uname().sysname == "Linux"
+
 return {
-  {
+  is_linux and {
+    "ibhagwan/fzf-lua",
+    lazy = false,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  } or {
     "vinitkumar/fff.nvim",
     branch = "feat/implement-buffers-support",
     build = "cargo build --release",

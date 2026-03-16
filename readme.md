@@ -39,7 +39,8 @@ The current `lua/config/plugins.lua` declares these plugins:
 
 | Plugin | Notes |
 | --- | --- |
-| [vinitkumar/fff.nvim](https://github.com/vinitkumar/fff.nvim) | Always loaded, built with `cargo build --release`, pinned to branch `feat/implement-buffers-support` |
+| [ibhagwan/fzf-lua](https://github.com/ibhagwan/fzf-lua) | Loaded on Linux as the fuzzy finder UI, with `nvim-web-devicons` integration |
+| [vinitkumar/fff.nvim](https://github.com/vinitkumar/fff.nvim) | Loaded on non-Linux systems, built with `cargo build --release`, pinned to branch `feat/implement-buffers-support` |
 | [dmmulroy/tsc.nvim](https://github.com/dmmulroy/tsc.nvim) | Lazy-loaded for TypeScript buffers, configured to run `tsgo --noEmit --pretty false` |
 | [neoclide/coc.nvim](https://github.com/neoclide/coc.nvim) | Built with `npm ci`, loaded on `BufReadPre` |
 | [tpope/vim-commentary](https://github.com/tpope/vim-commentary) | Comment operator on `gc` |
@@ -136,9 +137,9 @@ The current custom mappings from `lua/config/keymaps.lua` are:
 
 | Mode | Mapping | Action |
 | --- | --- | --- |
-| Normal | `<C-p>` | `require("fff").find_files()` |
-| Normal | `<C-b>` | `require("fff").buffers()` |
-| Normal | `<C-h>` | `require("fff").git_files()` |
+| Normal | `<C-p>` | Linux: `require("fzf-lua").files()`, otherwise `require("fff").find_files()` |
+| Normal | `<C-b>` | Linux: `require("fzf-lua").buffers()`, otherwise `require("fff").buffers()` |
+| Normal | `<C-h>` | Linux: `require("fzf-lua").git_files()`, otherwise `require("fff").git_files()` |
 | Normal | `<C-c>` | `:NvimTreeToggle<CR>` |
 | Normal | `<C-t>` | `:tabNext<CR>` |
 | Normal | `<C-e>` | `:CocDiagnostics<CR>` |
@@ -192,7 +193,8 @@ Based on the current config, these external tools are expected:
 
 - Neovim with Lua config support and `vim.lsp.config` / `vim.lsp.enable`
 - `git` to bootstrap `lazy.nvim`
-- `cargo` to build `fff.nvim`
+- `fzf` for `fzf-lua` on Linux
+- `cargo` to build `fff.nvim` on non-Linux systems
 - `npm` to build `coc.nvim`
 - `node` to run `coc.nvim`
 - `ripgrep` for `nvim-rg`
