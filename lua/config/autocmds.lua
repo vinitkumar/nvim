@@ -20,9 +20,21 @@ local function macos_is_dark()
   return out == "Dark"
 end
 
+local function desired_background()
+  local override = vim.env.NVIM_BACKGROUND
+  if override == "dark" or override == "light" then
+    return override
+  end
+
+  if vim.g.neovide then
+    return macos_is_dark() and "dark" or "light"
+  end
+
+  return "dark"
+end
+
 local function switch_background_and_colorscheme()
-  local dark = macos_is_dark()
-  local bg = dark and "dark" or "light"
+  local bg = desired_background()
   if bg == current_bg then
     return
   end
@@ -30,7 +42,7 @@ local function switch_background_and_colorscheme()
   current_bg = bg
   vim.opt.background = bg
 
-  if dark then
+  if bg == "dark" then
     vim.cmd.colorscheme("catppuccin-mocha")
   else
     vim.cmd.colorscheme("catppuccin-latte")
@@ -43,6 +55,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
   group = user_augroup,
   callback = switch_background_and_colorscheme,
 })
+
+switch_background_and_colorscheme()
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = user_augroup,
