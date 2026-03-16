@@ -1,7 +1,9 @@
-vim.opt.guifont = vim.env.NEOVIDE_FONT or "TX-02:h15"
-
 if not vim.g.neovide then
   return
+end
+
+if vim.env.NEOVIDE_FONT and vim.env.NEOVIDE_FONT ~= "" then
+  vim.opt.guifont = vim.env.NEOVIDE_FONT
 end
 
 vim.g.neovide_scale_factor = 1.0

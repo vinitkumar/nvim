@@ -119,7 +119,7 @@ brew install --cask neovide
 NEOVIDE_FONT="JetBrainsMono Nerd Font:h15" neovide
 ```
 
-If `TX-02` is installed locally, it remains the default. If it is not, set `NEOVIDE_FONT` to any installed GUI font before launching Neovide.
+If `NEOVIDE_FONT` is unset, Neovide uses its normal default font. Set `NEOVIDE_FONT` only when you want to force a specific installed font.
 
 ## Screenshot
 
