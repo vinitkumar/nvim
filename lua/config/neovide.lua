@@ -1,8 +1,9 @@
+vim.opt.guifont = vim.env.NEOVIDE_FONT or "TX-02:h15"
+
 if not vim.g.neovide then
   return
 end
 
-vim.o.guifont = "TX-02:h15"
 vim.g.neovide_scale_factor = 1.0
 vim.g.neovide_padding_top = 10
 vim.g.neovide_padding_bottom = 10

@@ -53,3 +53,15 @@ keymap.set("i", "<CR>", function()
   end
   return "\r"
 end, opts)
+
+if vim.g.neovide then
+  keymap.set({ "n", "v" }, "<D-=>", function()
+    vim.g.neovide_scale_factor = vim.g.neovide_scale_factor + 0.1
+  end, { desc = "Increase Neovide scale" })
+  keymap.set({ "n", "v" }, "<D-->", function()
+    vim.g.neovide_scale_factor = math.max(0.5, vim.g.neovide_scale_factor - 0.1)
+  end, { desc = "Decrease Neovide scale" })
+  keymap.set({ "n", "v" }, "<D-0>", function()
+    vim.g.neovide_scale_factor = 1.0
+  end, { desc = "Reset Neovide scale" })
+end

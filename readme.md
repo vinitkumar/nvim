@@ -110,6 +110,17 @@ git clone https://github.com/vinitkumar/nvim ~/.config/nvim
 nvim  # lazy.nvim will auto-install on first launch
 ```
 
+## Neovide
+
+This config keeps GUI-specific settings in `lua/config/neovide.lua`.
+
+```bash
+brew install --cask neovide
+NEOVIDE_FONT="JetBrainsMono Nerd Font:h15" neovide
+```
+
+If `TX-02` is installed locally, it remains the default. If it is not, set `NEOVIDE_FONT` to any installed GUI font before launching Neovide.
+
 ## Screenshot
 
 The screenshot shows the setup running with a dark theme and the custom "bubbles" statusline, editing Go code.

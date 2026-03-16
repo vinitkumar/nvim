@@ -21,7 +21,6 @@ vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.formatoptions = vim.opt.formatoptions + "j"
 vim.opt.formatoptions = vim.opt.formatoptions + "n"
-vim.opt.guifont = "TX-02:h15"
 
 vim.opt.belloff = "all"
 vim.opt.emoji = false
