@@ -2,7 +2,7 @@
 
 ![nvim screenshot](./nvim-current.png)
 
-A minimal, fast, and elegant Neovim configuration built around a single `init.lua` file with a curated collection of colorschemes.
+A minimal, fast, and elegant Neovim configuration with a small `init.lua` entrypoint and focused Lua modules under `lua/config/`.
 
 ## Philosophy
 
@@ -11,6 +11,19 @@ This configuration prioritizes stability and productivity over feature bloat. It
 ## Plugin Manager
 
 Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for plugin management with lazy-loading for optimal startup time.
+
+## Layout
+
+The configuration is split into modules under `lua/config/`:
+
+- `globals.lua` - leader keys and provider toggles
+- `neovide.lua` - GUI-specific settings
+- `lazy.lua` - lazy.nvim bootstrap
+- `plugins.lua` - plugin specs and plugin-local config
+- `options.lua` - editor options
+- `autocmds.lua` - autocmd groups and callbacks
+- `keymaps.lua` - keybindings
+- `lsp.lua` - built-in LSP setup
 
 ## Plugins
 
@@ -96,6 +109,17 @@ The `colors/` directory contains 40+ hand-picked colorschemes including gruvbox,
 git clone https://github.com/vinitkumar/nvim ~/.config/nvim
 nvim  # lazy.nvim will auto-install on first launch
 ```
+
+## Neovide
+
+This config keeps GUI-specific settings in `lua/config/neovide.lua`.
+
+```bash
+brew install --cask neovide
+NEOVIDE_FONT="JetBrainsMono Nerd Font:h15" neovide
+```
+
+If `NEOVIDE_FONT` is unset, Neovide uses its normal default font. Set `NEOVIDE_FONT` only when you want to force a specific installed font.
 
 ## Screenshot
 
