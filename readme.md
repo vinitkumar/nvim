@@ -1,126 +1,212 @@
 # Neovim Configuration
 
-![nvim screenshot](./nvim-current.png)
+![nvim screenshot](./nvim.png)
 
-A minimal, fast, and elegant Neovim configuration with a small `init.lua` entrypoint and focused Lua modules under `lua/config/`.
+This repository contains a Lua-based Neovim configuration with a small `init.lua` entrypoint and focused modules under `lua/config/`.
 
-## Philosophy
+## Entry Point
 
-This configuration prioritizes stability and productivity over feature bloat. It's designed to write code efficiently without getting in your way.
+`init.lua` loads these modules in order:
 
-## Plugin Manager
-
-Uses [lazy.nvim](https://github.com/folke/lazy.nvim) for plugin management with lazy-loading for optimal startup time.
+- `config.globals`
+- `config.neovide`
+- `config.lazy`
+- `config.options`
+- `config.autocmds`
+- `config.keymaps`
+- `config.lsp`
 
 ## Layout
 
-The configuration is split into modules under `lua/config/`:
+- `init.lua` bootstraps the config
+- `lua/config/globals.lua` sets leader keys and disables built-in providers/netrw
+- `lua/config/neovide.lua` applies GUI-only Neovide settings
+- `lua/config/lazy.lua` bootstraps `lazy.nvim`
+- `lua/config/options.lua` sets core editor options
+- `lua/config/autocmds.lua` defines colorscheme switching and filetype-specific behavior
+- `lua/config/keymaps.lua` defines custom mappings
+- `lua/config/lsp.lua` enables Neovim's built-in LSP clients for Sorbet and OCaml
+- `coc-settings.json` stores CoC configuration
+- `colors/` contains local colorscheme files
 
-- `globals.lua` - leader keys and provider toggles
-- `neovide.lua` - GUI-specific settings
-- `lazy.lua` - lazy.nvim bootstrap
-- `plugins.lua` - plugin specs and plugin-local config
-- `options.lua` - editor options
-- `autocmds.lua` - autocmd groups and callbacks
-- `keymaps.lua` - keybindings
-- `lsp.lua` - built-in LSP setup
+## Plugin Manager
+
+The configuration uses [lazy.nvim](https://github.com/folke/lazy.nvim). If it is not installed, `lua/config/lazy.lua` clones the stable branch into Neovim's data directory on startup.
 
 ## Plugins
 
+The current `lua/config/plugins.lua` declares these plugins:
 
-| Plugin                                                                          | Purpose                                                 |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| [fff.nvim](https://github.com/vinitkumar/fff.nvim)                              | Blazing fast file finder & buffer switcher (Rust-based) |
-| [coc.nvim](https://github.com/neoclide/coc.nvim)                                | Intellisense engine with LSP support                    |
-| [vim-commentary](https://github.com/tpope/vim-commentary)                       | Toggle comments with `gc`                               |
-| [nvim-rg](https://github.com/duane9/nvim-rg)                                    | Ripgrep integration for searching                       |
-| [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua)                     | File explorer sidebar                                   |
-| [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)                    | Beautiful statusline with custom "bubbles" theme        |
-| [indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Indentation guides                                      |
-| [lazygit.nvim](https://github.com/kdheepak/lazygit.nvim)                        | LazyGit integration                                     |
-| [tsc.nvim](https://github.com/dmmulroy/tsc.nvim)                                | TypeScript type-checking (configured for `tsgo`)        |
+| Plugin | Notes |
+| --- | --- |
+| [vinitkumar/fff.nvim](https://github.com/vinitkumar/fff.nvim) | Always loaded, built with `cargo build --release`, pinned to branch `feat/implement-buffers-support` |
+| [dmmulroy/tsc.nvim](https://github.com/dmmulroy/tsc.nvim) | Lazy-loaded for TypeScript buffers, configured to run `tsgo --noEmit --pretty false` |
+| [neoclide/coc.nvim](https://github.com/neoclide/coc.nvim) | Built with `npm ci`, loaded on `BufReadPre` |
+| [tpope/vim-commentary](https://github.com/tpope/vim-commentary) | Comment operator on `gc` |
+| [duane9/nvim-rg](https://github.com/duane9/nvim-rg) | Ripgrep integration |
+| [vinitkumar/oscura-vim](https://github.com/vinitkumar/oscura-vim) | Colorscheme |
+| [vinitkumar/monokai-pro-vim](https://github.com/vinitkumar/monokai-pro-vim) | Colorscheme |
+| [catppuccin/nvim](https://github.com/catppuccin/nvim) | Installed as `catppuccin` |
+| [folke/tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | Colorscheme |
+| [rebelot/kanagawa.nvim](https://github.com/rebelot/kanagawa.nvim) | Colorscheme |
+| [EdenEast/nightfox.nvim](https://github.com/EdenEast/nightfox.nvim) | Colorscheme |
+| [rose-pine/neovim](https://github.com/rose-pine/neovim) | Installed as `rose-pine` |
+| [sainnhe/gruvbox-material](https://github.com/sainnhe/gruvbox-material) | Colorscheme |
+| [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Custom "bubbles" statusline theme |
+| [nvim-tree/nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | Dependency for lualine and nvim-tree |
+| [sainnhe/everforest](https://github.com/sainnhe/everforest) | Colorscheme |
+| [lukas-reineke/indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Loaded via `ibl` on `BufReadPost` |
+| [nvim-tree/nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) | `:NvimTreeToggle` file tree |
+| [kdheepak/lazygit.nvim](https://github.com/kdheepak/lazygit.nvim) | `:LazyGit` integration |
+| [sourcegraph/amp.nvim](https://github.com/sourcegraph/amp.nvim) | Always loaded with `auto_start = true` |
+| [nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) | Starts Tree-sitter on file buffers and registers `markdown_inline` as `markdown` |
+| [brenoprata10/nvim-highlight-colors](https://github.com/brenoprata10/nvim-highlight-colors) | Background color previews, including Tailwind and variable usage |
+| [kevinhwang91/nvim-ufo](https://github.com/kevinhwang91/nvim-ufo) | Folding with Tree-sitter/indent providers |
+| [kevinhwang91/promise-async](https://github.com/kevinhwang91/promise-async) | `nvim-ufo` dependency |
+| [nvim-pack/nvim-spectre](https://github.com/nvim-pack/nvim-spectre) | Search and replace UI |
+| [nvim-lua/plenary.nvim](https://github.com/nvim-lua/plenary.nvim) | `spectre` dependency |
+| [vimwiki/vimwiki](https://github.com/vimwiki/vimwiki) | Wiki and diary support |
+| [ggandor/leap.nvim](https://github.com/ggandor/leap.nvim) | Motion plugin mapped on `s`, `S`, and `gs` |
+| [kylechui/nvim-surround](https://github.com/kylechui/nvim-surround) | Surround text objects |
+| [j-hui/fidget.nvim](https://github.com/j-hui/fidget.nvim) | LSP progress UI |
+| [zenbones-theme/zenbones.nvim](https://github.com/zenbones-theme/zenbones.nvim) | Colorscheme |
+| [rktjmp/lush.nvim](https://github.com/rktjmp/lush.nvim) | `zenbones.nvim` dependency |
 
+## Colorschemes
 
-### Colorschemes (Plugin)
+Startup colors are chosen in `lua/config/autocmds.lua`:
 
-- [oscura-vim](https://github.com/vinitkumar/oscura-vim)
-- [monokai-pro-vim](https://github.com/vinitkumar/monokai-pro-vim)
-- [everforest](https://github.com/sainnhe/everforest)
+- `catppuccin-mocha` when the desired background is `dark`
+- `catppuccin-latte` when the desired background is `light`
 
-## Custom Colorschemes
+Background selection works like this:
 
-The `colors/` directory contains 40+ hand-picked colorschemes including gruvbox, kanagawa, rose-pine, nord, one, monokai, solarized, and more.
+- `NVIM_BACKGROUND=dark` or `NVIM_BACKGROUND=light` overrides everything
+- in Neovide on macOS, the config reads `AppleInterfaceStyle` and follows the system appearance
+- outside Neovide, the default is always `dark`
 
-## Key Mappings
+The repo also ships a `colors/` directory with local colorscheme files.
 
+## Options
 
-| Key                   | Action                     |
-| --------------------- | -------------------------- |
-| `<C-p>` / `ff`        | Find files                 |
-| `<C-b>` / `<leader>b` | Switch buffers             |
-| `<C-c>`               | Toggle file tree           |
-| `<C-g>`               | Open LazyGit               |
-| `<C-t>`               | Next tab                   |
-| `<C-e>`               | Show diagnostics           |
-| `gc`                  | Toggle comment             |
-| `<leader>gd`          | Go to definition           |
-| `<leader>gr`          | Find references            |
-| `<leader>gi`          | Go to implementation       |
-| `<leader>h`           | Horizontal split           |
-| `<leader>v`           | Vertical split             |
-| `<leader>t`           | New tab                    |
-| `<CR>`                | Jump to line (end of file) |
-| `<BS>`                | Jump to start of file      |
+The current defaults from `lua/config/options.lua` include:
 
+- line numbers and relative line numbers enabled
+- UTF-8 encodings
+- system clipboard via `unnamed` and `unnamedplus`
+- 2-space indentation with `expandtab`
+- `textwidth = 80`
+- `termguicolors = true`
+- Tree-sitter folding via `foldexpr`
+- persistent undo in `stdpath("data") .. "/undo//"`
+- `cursorline`, `hlsearch`, `wrap`, and `wildmenu` enabled
+- `swapfile`, `backup`, and `writebackup` disabled
+- `list` enabled by default with visible tab/trailing/extends markers
+- `splitbelow` and `splitright` enabled
+- `shell = "sh"`
 
-**Leader key:** `,`
+## Autocommands
 
-## Features
+The config defines these behaviors in `lua/config/autocmds.lua`:
 
-- **Auto dark/light mode:** Syncs with macOS appearance (sorbet for dark, gruvbox8_soft for light)
-- **Smart indentation:** 2-space tabs, auto-indent, smart tabs
-- **Relative line numbers:** Enabled by default
-- **Trailing whitespace:** Automatically stripped on save
-- **Spell checking:** Enabled for markdown, text files, and git commits
-- **System clipboard:** Integrated with unnamed and unnamedplus registers
-- **LSP support:** Built-in LSP for Sorbet (Ruby) and OCaml, plus CoC for everything else
+- strip trailing whitespace before write, except for binary buffers and diff files
+- re-evaluate background/colorscheme on `FocusGained` and `BufEnter`
+- for `~/vimwiki/diary/*.wiki`, insert a template from `~/.vim/bin/generate-vimwiki-diary-template`
+- for `*.md`, force `markdown` filetype and set `softtabstop`/`shiftwidth` to 4
+- for `*.md`, `*.txt`, and `COMMIT_EDITMSG`, enable wrap, linebreak, spell, and `kspell` completion
+- for `.html`, `*.txt`, `*.md`, and `*.adoc`, enable spelling
+- for `gitcommit`, enable spelling and set `textwidth = 72`
+- for `javascript`, `typescript`, `json`, `c`, `html`, and `htmldjango`, enforce 2-space indentation
+- for `*.tsx`, force `filetype=typescript.tsx`
+- for `*.yaml` and `*.yml`, force `filetype=yaml`
+- for `yaml`, enforce 2-space indentation
 
-## Language Support
+## LSP
 
-- TypeScript/JavaScript (CoC + tsc.nvim)
-- Python (CoC)
-- Go (CoC)
-- Ruby (native LSP via Sorbet)
-- OCaml (native LSP via ocamllsp)
-- HTML/CSS/JSON (CoC)
-- And more via CoC extensions
+`lua/config/lsp.lua` enables Neovim's built-in LSP for:
+
+- Sorbet: `srb tc --lsp` with root markers `Gemfile` and `.git`
+- OCaml: `$(opam var prefix)/bin/ocamllsp` with root markers `.opam`, `dune-project`, and `.git`
+
+This is separate from CoC, which is also installed.
+
+## Keymaps
+
+The current custom mappings from `lua/config/keymaps.lua` are:
+
+| Mode | Mapping | Action |
+| --- | --- | --- |
+| Normal | `<C-p>` | `require("fff").find_files()` |
+| Normal | `<C-b>` | `require("fff").buffers()` |
+| Normal | `<C-h>` | `require("fff").git_files()` |
+| Normal | `<C-c>` | `:NvimTreeToggle<CR>` |
+| Normal | `<C-t>` | `:tabNext<CR>` |
+| Normal | `<C-e>` | `:CocDiagnostics<CR>` |
+| Normal | `<C-s>` | `:GFiles<CR>` |
+| Normal | `<C-g>` | `:LazyGit<CR>` |
+| Normal | `<leader>gd` | CoC definition |
+| Normal | `<leader>gy` | CoC type definition |
+| Normal | `<leader>gr` | CoC references |
+| Normal | `<leader>gi` | CoC implementation |
+| Normal | `<leader>h` | horizontal split |
+| Normal | `<leader>z` | `:Goyo<CR>` |
+| Normal | `<leader>v` | vertical split |
+| Normal | `<leader>t` | new tab |
+| Normal | `<leader>dt` | insert `strftime("%c")` |
+| Normal | `<CR>` | go to end of file (`G`) |
+| Normal | `<BS>` | go to start of file (`gg`) |
+| Normal | `<j>` | display-line down (`gj`) |
+| Normal | `<k>` | display-line up (`gk`) |
+| Insert | `<Tab>` | CoC popup next item, otherwise refresh or literal tab |
+| Insert | `<S-Tab>` | CoC popup previous item |
+| Insert | `<CR>` | CoC confirm, otherwise newline |
+| Normal/Visual | `<D-=>` | increase Neovide scale |
+| Normal/Visual | `<D-->` | decrease Neovide scale |
+| Normal/Visual | `<D-0>` | reset Neovide scale |
+
+Leader is `,`.
+
+## Neovide
+
+`lua/config/neovide.lua` is only applied when `vim.g.neovide` is set.
+
+Current Neovide settings:
+
+- `guifont` is set only when `NEOVIDE_FONT` is non-empty
+- scale factor starts at `1.0`
+- padding is `10` on all sides
+- refresh rate is `120`
+- floating blur is `2.0` on both axes
+- floating shadow is enabled
+- floating z height is `10`
+- light angle is `45`
+- light radius is `5`
+- cursor animation length is `0.05`
+- cursor trail size is `0.8`
+- cursor antialiasing is enabled
+- quit confirmation is enabled
 
 ## Requirements
 
-- Neovim 0.9+
-- Node.js (for CoC)
-- Cargo/Rust (for fff.nvim)
-- [LazyGit](https://github.com/jesseduffield/lazygit) (optional, for git integration)
-- A [Nerd Font](https://www.nerdfonts.com/) (for icons)
+Based on the current config, these external tools are expected:
+
+- Neovim with Lua config support and `vim.lsp.config` / `vim.lsp.enable`
+- `git` to bootstrap `lazy.nvim`
+- `cargo` to build `fff.nvim`
+- `npm` to build `coc.nvim`
+- `node` to run `coc.nvim`
+- `ripgrep` for `nvim-rg`
+- `lazygit` for `:LazyGit`
+- `srb` for the Sorbet LSP
+- `opam` and `ocamllsp` for the OCaml LSP
+- `tsgo` for `tsc.nvim`
+- `~/.vim/bin/generate-vimwiki-diary-template` if you use vimwiki diary creation
 
 ## Installation
 
 ```bash
 git clone https://github.com/vinitkumar/nvim ~/.config/nvim
-nvim  # lazy.nvim will auto-install on first launch
+nvim
 ```
 
-## Neovide
-
-This config keeps GUI-specific settings in `lua/config/neovide.lua`.
-
-```bash
-brew install --cask neovide
-NEOVIDE_FONT="JetBrainsMono Nerd Font:h15" neovide
-```
-
-If `NEOVIDE_FONT` is unset, Neovide uses its normal default font. Set `NEOVIDE_FONT` only when you want to force a specific installed font.
-
-## Screenshot
-
-The screenshot shows the setup running with a dark theme and the custom "bubbles" statusline, editing Go code.
+On first launch, `lazy.nvim` bootstraps itself and installs the configured plugins.
