@@ -43,9 +43,9 @@ local function switch_background_and_colorscheme()
   vim.opt.background = bg
 
   if bg == "dark" then
-    vim.cmd.colorscheme("catppuccin-mocha")
+    vim.cmd.colorscheme("arctic")
   else
-    vim.cmd.colorscheme("catppuccin-latte")
+    vim.cmd.colorscheme("grb-lucius")
   end
 end
 
