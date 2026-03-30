@@ -48,6 +48,7 @@ vim.opt.fillchars = {
 vim.opt.modelines = 5
 vim.opt.number = true
 vim.opt.pumheight = 20
+vim.opt.pummaxwidth = 80
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 3
 
@@ -78,6 +79,7 @@ vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.textwidth = 80
 vim.opt.signcolumn = "yes"
+vim.opt.completeopt = { "menu", "menuone", "popup", "fuzzy", "nearest" }
 vim.opt.updatetime = 2000
 vim.opt.updatecount = 0
 vim.opt.undofile = true
@@ -103,3 +105,8 @@ vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.hlsearch = true
 vim.opt.wrap = true
 vim.opt.wildoptions = "pum"
+vim.opt.pumborder = "rounded"
+vim.opt.winborder = "rounded"
+
+vim.opt.fillchars:append({ foldinner = " " })
+vim.opt.listchars:append({ leadtab = "▷─" })
