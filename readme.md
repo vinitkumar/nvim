@@ -25,7 +25,7 @@ This repository contains a Lua-based Neovim configuration with a small `init.lua
 - `lua/config/options.lua` sets core editor options
 - `lua/config/autocmds.lua` defines colorscheme switching and filetype-specific behavior
 - `lua/config/keymaps.lua` defines custom mappings
-- `lua/config/lsp.lua` enables Neovim's built-in LSP clients for Sorbet and OCaml
+- `lua/config/lsp.lua` enables Neovim's built-in LSP clients for Sorbet and OCaml and turns on 0.12 native LSP features on attach
 - `coc-settings.json` stores CoC configuration
 - `colors/` contains local colorscheme files
 
@@ -53,7 +53,7 @@ The current `lua/config/plugins.lua` declares these plugins:
 | [EdenEast/nightfox.nvim](https://github.com/EdenEast/nightfox.nvim) | Colorscheme |
 | [rose-pine/neovim](https://github.com/rose-pine/neovim) | Installed as `rose-pine` |
 | [sainnhe/gruvbox-material](https://github.com/sainnhe/gruvbox-material) | Colorscheme |
-| [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Custom "bubbles" statusline theme |
+| [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Custom "bubbles" statusline theme with native diagnostics/progress segments |
 | [nvim-tree/nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | Dependency for lualine and nvim-tree |
 | [sainnhe/everforest](https://github.com/sainnhe/everforest) | Colorscheme |
 | [lukas-reineke/indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Loaded via `ibl` on `BufReadPost` |
@@ -99,6 +99,10 @@ The current defaults from `lua/config/options.lua` include:
 - `textwidth = 80`
 - `termguicolors = true`
 - Tree-sitter folding via `foldexpr`
+- completion popup borders via `pumborder=rounded`
+- floating window borders via `winborder=rounded`
+- native popup completion tuned with `completeopt = menu,menuone,popup,fuzzy,nearest`
+- `pummaxwidth = 80`
 - persistent undo in `stdpath("data") .. "/undo//"`
 - `cursorline`, `hlsearch`, `wrap`, and `wildmenu` enabled
 - `swapfile`, `backup`, and `writebackup` disabled
@@ -129,7 +133,14 @@ The config defines these behaviors in `lua/config/autocmds.lua`:
 - Sorbet: `srb tc --lsp` with root markers `Gemfile` and `.git`
 - OCaml: `$(opam var prefix)/bin/ocamllsp` with root markers `.opam`, `dune-project`, and `.git`
 
-This is separate from CoC, which is also installed.
+On `LspAttach`, the config also enables these Neovim 0.12 native features when the server supports them:
+
+- auto-triggered native LSP completion
+- code lens display and execution
+- linked editing ranges
+- rounded diagnostic floats
+
+CoC is still installed as a fallback for filetypes that do not have a native LSP client configured here.
 
 ## Keymaps
 
@@ -142,14 +153,16 @@ The current custom mappings from `lua/config/keymaps.lua` are:
 | Normal | `<C-h>` | Linux: `require("fzf-lua").git_files()`, otherwise `require("fff").git_files()` |
 | Normal | `<C-c>` | `:NvimTreeToggle<CR>` |
 | Normal | `<C-t>` | `:tabNext<CR>` |
-| Normal | `<C-e>` | `:CocDiagnostics<CR>` |
+| Normal | `<C-e>` | native diagnostics loclist when a built-in LSP client is attached, otherwise `:CocDiagnostics<CR>` |
 | Normal | `<C-s>` | `:GFiles<CR>` |
 | Normal | `<C-g>` | `:LazyGit<CR>` |
-| Normal | `<leader>gd` | CoC definition |
-| Normal | `<leader>gy` | CoC type definition |
-| Normal | `<leader>gr` | CoC references |
-| Normal | `<leader>gi` | CoC implementation |
+| Normal | `<leader>gd` | native LSP definition when available, otherwise CoC definition |
+| Normal | `<leader>gy` | native LSP type definition when available, otherwise CoC type definition |
+| Normal | `<leader>gr` | native LSP references when available, otherwise CoC references |
+| Normal | `<leader>gi` | native LSP implementation when available, otherwise CoC implementation |
 | Normal | `<leader>h` | horizontal split |
+| Normal | `<leader>lr` | `:lsp restart` |
+| Normal | `<leader>lw` | native workspace diagnostics |
 | Normal | `<leader>z` | `:Goyo<CR>` |
 | Normal | `<leader>v` | vertical split |
 | Normal | `<leader>t` | new tab |
@@ -158,9 +171,10 @@ The current custom mappings from `lua/config/keymaps.lua` are:
 | Normal | `<BS>` | go to start of file (`gg`) |
 | Normal | `<j>` | display-line down (`gj`) |
 | Normal | `<k>` | display-line up (`gk`) |
-| Insert | `<Tab>` | CoC popup next item, otherwise refresh or literal tab |
-| Insert | `<S-Tab>` | CoC popup previous item |
-| Insert | `<CR>` | CoC confirm, otherwise newline |
+| Normal | `grx` | run native LSP code lens |
+| Insert | `<Tab>` | CoC popup next item, otherwise native popup next item, native omni-completion trigger, or literal tab |
+| Insert | `<S-Tab>` | CoC popup previous item or native popup previous item |
+| Insert | `<CR>` | CoC confirm, otherwise native popup confirm when an item is selected, otherwise newline |
 | Normal/Visual | `<D-=>` | increase Neovide scale |
 | Normal/Visual | `<D-->` | decrease Neovide scale |
 | Normal/Visual | `<D-0>` | reset Neovide scale |

@@ -1,3 +1,31 @@
+local lsp_group = vim.api.nvim_create_augroup("user_lsp", { clear = true })
+
+vim.diagnostic.config({
+  float = { border = "rounded" },
+})
+
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = lsp_group,
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if not client then
+      return
+    end
+
+    if client:supports_method("textDocument/completion") then
+      vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+    end
+
+    if client:supports_method("textDocument/codeLens") then
+      vim.lsp.codelens.enable(true, { bufnr = args.buf, client_id = client.id })
+    end
+
+    if client:supports_method("textDocument/linkedEditingRange") then
+      vim.lsp.linked_editing_range.enable(true, { client_id = client.id })
+    end
+  end,
+})
+
 vim.lsp.config("sorbet", {
   cmd = { "srb", "tc", "--lsp" },
   filetypes = { "ruby" },
