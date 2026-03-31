@@ -1,15 +1,11 @@
 local function strip_trailing_whitespace()
-  if not vim.bo.binary and vim.bo.filetype ~= "diff" then
-    vim.cmd("normal! mz")
-    vim.cmd("normal! Hmy")
-    if vim.bo.filetype == "mail" then
-      vim.cmd([[%s/\(^--\)\@<!\s\+$//e]])
-    else
-      vim.cmd([[%s/\s\+$//e]])
-    end
-    vim.cmd([[normal! 'yz<Enter>]])
-    vim.cmd("normal! `z")
+  if vim.bo.binary or vim.bo.filetype == "diff" then
+    return
   end
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local pattern = vim.bo.filetype == "mail" and [[\(^--\)\@<!\s\+$]] or [[\s\+$]]
+  vim.cmd([[keeppatterns %s/]] .. pattern .. [[//e]])
+  pcall(vim.api.nvim_win_set_cursor, 0, cursor)
 end
 
 local current_bg
@@ -83,7 +79,7 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   group = user_augroup,
-  pattern = { "*.md", "*.txt", "COMMIT_EDITMSG" },
+  pattern = { "*.md", "*.txt", "*.adoc", "*.html", "COMMIT_EDITMSG" },
   callback = function()
     vim.wo.wrap = true
     vim.wo.linebreak = true
@@ -91,15 +87,6 @@ vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
     vim.wo.spell = true
     vim.bo.spelllang = "en_us"
     vim.opt_local.complete:append("kspell")
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-  group = user_augroup,
-  pattern = { ".html", "*.txt", "*.md", "*.adoc" },
-  callback = function()
-    vim.wo.spell = true
-    vim.bo.spelllang = "en_us"
   end,
 })
 

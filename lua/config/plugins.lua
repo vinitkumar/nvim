@@ -51,7 +51,7 @@ return {
       })
     end,
   },
-  { "neoclide/coc.nvim", branch = "master", build = "npm ci", event = "BufReadPre" },
+
   { "tpope/vim-commentary", keys = { { "gc", mode = { "n", "v" } } } },
   "duane9/nvim-rg",
   "vinitkumar/oscura-vim",
@@ -188,17 +188,16 @@ return {
     },
   },
   {
-    "nvim-pack/nvim-spectre",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    cmd = "Spectre",
+    "MagicDuck/grug-far.nvim",
+    cmd = "GrugFar",
     keys = {
-      { "<leader>S", function() require("spectre").toggle() end, desc = "Toggle Spectre" },
-      { "<leader>sw", function() require("spectre").open_visual({ select_word = true }) end, desc = "Search word" },
-      { "<leader>sw", function() require("spectre").open_visual() end, mode = "v", desc = "Search selection" },
+      { "<leader>S", function() require("grug-far").open() end, desc = "Search and replace" },
+      { "<leader>sw", function() require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } }) end, desc = "Search word" },
+      { "<leader>sw", function() require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } }) end, mode = "v", desc = "Search selection" },
     },
     opts = {},
   },
-  { "vimwiki/vimwiki" },
+  { "vimwiki/vimwiki", ft = "vimwiki", cmd = { "VimwikiIndex", "VimwikiDiaryIndex" } },
   {
     "ggandor/leap.nvim",
     keys = {
