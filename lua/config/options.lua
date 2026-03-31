@@ -1,6 +1,3 @@
-vim.wo.number = true
-vim.wo.relativenumber = true
-
 vim.scriptencoding = "utf-8"
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
@@ -12,15 +9,13 @@ vim.opt.smartindent = true
 vim.opt.breakindent = true
 vim.opt.cmdheight = 1
 vim.opt.laststatus = 2
-vim.opt.shell = "sh"
 
 vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.opt.formatoptions = vim.opt.formatoptions + "j"
-vim.opt.formatoptions = vim.opt.formatoptions + "n"
+vim.opt.formatoptions:append("jn")
 
 vim.opt.belloff = "all"
 vim.opt.emoji = false
@@ -28,7 +23,6 @@ vim.opt.hidden = true
 vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.joinspaces = false
-vim.opt.lazyredraw = true
 vim.opt.linebreak = true
 vim.opt.list = true
 vim.opt.listchars = {
@@ -54,15 +48,7 @@ vim.opt.scrolloff = 3
 
 vim.opt.shiftround = false
 vim.opt.shiftwidth = 2
-vim.opt.shortmess = vim.opt.shortmess + "A"
-vim.opt.shortmess = vim.opt.shortmess + "I"
-vim.opt.shortmess = vim.opt.shortmess + "O"
-vim.opt.shortmess = vim.opt.shortmess + "T"
-vim.opt.shortmess = vim.opt.shortmess + "W"
-vim.opt.shortmess = vim.opt.shortmess + "a"
-vim.opt.shortmess = vim.opt.shortmess + "c"
-vim.opt.shortmess = vim.opt.shortmess + "o"
-vim.opt.shortmess = vim.opt.shortmess + "t"
+vim.opt.shortmess:append("AIIOTWacot")
 vim.opt.showbreak = "↳ "
 vim.opt.showcmd = false
 vim.opt.sidescroll = 0
@@ -71,16 +57,15 @@ vim.opt.smartcase = true
 vim.opt.spellcapcheck = ""
 vim.opt.splitbelow = true
 vim.opt.splitright = true
-vim.opt.suffixes = vim.opt.suffixes - ".h"
+vim.opt.suffixes:remove(".h")
 vim.opt.swapfile = false
 vim.opt.switchbuf = "usetab"
-vim.opt.synmaxcol = 200
 vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.textwidth = 80
 vim.opt.signcolumn = "yes"
 vim.opt.completeopt = { "menu", "menuone", "popup", "fuzzy", "nearest" }
-vim.opt.updatetime = 2000
+vim.opt.updatetime = 300
 vim.opt.updatecount = 0
 vim.opt.undofile = true
 vim.opt.undodir = vim.fn.stdpath("data") .. "/undo//"
@@ -89,8 +74,7 @@ vim.opt.virtualedit = "block"
 vim.opt.visualbell = true
 vim.opt.whichwrap = "b,h,l,s,<,>,[,],~"
 vim.opt.wildcharm = 26
-vim.opt.wildignore = vim.opt.wildignore + "*.o,*.rej,*.so"
-vim.opt.wildignore:append({ "*/node_modules/*" })
+vim.opt.wildignore:append({ "*.o", "*.rej", "*.so", "*/node_modules/*" })
 vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.writebackup = false

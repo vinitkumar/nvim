@@ -31,7 +31,28 @@ vim.lsp.config("sorbet", {
   filetypes = { "ruby" },
   root_markers = { "Gemfile", ".git" },
 })
-vim.lsp.enable("sorbet")
+
+vim.lsp.config("ts_ls", {
+  cmd = { "typescript-language-server", "--stdio" },
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
+})
+
+vim.lsp.config("lua_ls", {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
+  settings = {
+    Lua = {
+      runtime = { version = "LuaJIT" },
+      workspace = {
+        checkThirdParty = false,
+        library = { vim.env.VIMRUNTIME },
+      },
+      diagnostics = { globals = { "vim" } },
+    },
+  },
+})
 
 local opam_switch_prefix = vim.fn.system("opam var prefix"):gsub("\n", "")
 local ocamllsp_bin = opam_switch_prefix .. "/bin/ocamllsp"
@@ -41,4 +62,19 @@ vim.lsp.config("ocamllsp", {
   filetypes = { "ocaml", "ocamlinterface" },
   root_markers = { ".opam", "dune-project", ".git" },
 })
-vim.lsp.enable("ocamllsp")
+
+vim.lsp.config("pyright", {
+  cmd = { "pyright-langserver", "--stdio" },
+  filetypes = { "python" },
+  root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" },
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+      },
+    },
+  },
+})
+
+vim.lsp.enable({ "sorbet", "ts_ls", "lua_ls", "ocamllsp", "pyright" })
