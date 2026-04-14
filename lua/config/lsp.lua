@@ -26,10 +26,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.config("sorbet", {
-  cmd = { "srb", "tc", "--lsp" },
-  filetypes = { "ruby" },
-  root_markers = { "Gemfile", ".git" },
+vim.lsp.config("ruby_lsp", {
+  cmd = { "ruby-lsp" },
+  filetypes = { "ruby", "eruby" },
+  root_markers = { "Gemfile", ".ruby-version", ".git" },
+  init_options = {
+    enabledFeatures = {
+      "codeActions",
+      "codeLens",
+      "completion",
+      "definition",
+      "diagnostics",
+      "documentHighlights",
+      "documentLink",
+      "documentSymbols",
+      "foldingRanges",
+      "formatting",
+      "hover",
+      "inlayHint",
+      "onTypeFormatting",
+      "selectionRanges",
+      "semanticHighlighting",
+      "signatureHelp",
+      "workspaceSymbol",
+    },
+  },
 })
 
 vim.lsp.config("ts_ls", {
@@ -77,4 +98,4 @@ vim.lsp.config("pyright", {
   },
 })
 
-vim.lsp.enable({ "sorbet", "ts_ls", "lua_ls", "ocamllsp", "pyright" })
+vim.lsp.enable({ "ruby_lsp", "ts_ls", "lua_ls", "ocamllsp", "pyright" })
