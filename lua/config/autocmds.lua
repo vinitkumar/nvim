@@ -16,7 +16,7 @@ local function apply_bg(bg)
   end
   current_bg = bg
   vim.opt.background = bg
-  vim.cmd.colorscheme("lancia")
+  vim.cmd.colorscheme("lanciabones")
 end
 
 local function override_bg()
