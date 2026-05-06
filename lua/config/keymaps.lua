@@ -1,14 +1,11 @@
 local keymap = vim.keymap
-local is_linux = vim.uv.os_uname().sysname == "Linux"
 
-if is_linux then
+-- The macOS finder bindings (<C-p>, <C-b>, <C-h>) for fff.nvim are registered
+-- lazily in config.plugins so they don't drag the plugin in at startup.
+if vim.uv.os_uname().sysname == "Linux" then
   keymap.set("n", "<C-p>", function() require("fzf-lua").files() end, { desc = "Find files" })
   keymap.set("n", "<C-b>", function() require("fzf-lua").buffers() end, { desc = "Find buffers" })
   keymap.set("n", "<C-h>", function() require("fzf-lua").git_files() end, { desc = "Find Git files" })
-else
-  keymap.set("n", "<C-p>", function() require("fff").find_files() end, { desc = "Find files" })
-  keymap.set("n", "<C-b>", function() require("fff").buffers() end, { desc = "Find buffers" })
-  keymap.set("n", "<C-h>", function() require("fff").git_files() end, { desc = "Find Git files" })
 end
 
 keymap.set("n", "<C-c>", ":NvimTreeToggle<CR>")

@@ -10,38 +10,48 @@ end
 
 local current_bg
 
-local function macos_is_dark()
-  -- `defaults read -g AppleInterfaceStyle` exits non-zero and prints nothing
-  -- when the system is in Light mode, and prints "Dark" when in Dark mode.
-  local out = vim.fn.system("defaults read -g AppleInterfaceStyle 2>/dev/null")
-  out = (out or ""):gsub("%s+", "")
-  return out == "Dark"
+local function apply_bg(bg)
+  if bg == current_bg then
+    return
+  end
+  current_bg = bg
+  vim.opt.background = bg
+  vim.cmd.colorscheme("lanciabones")
 end
 
-local function desired_background()
+local function override_bg()
   local override = vim.env.NVIM_BACKGROUND
   if override == "dark" or override == "light" then
     return override
   end
-
-  -- Honour the macOS appearance. Anywhere else we have no portable way to
-  -- detect it, so default to dark.
-  if vim.fn.has("mac") == 1 then
-    return macos_is_dark() and "dark" or "light"
-  end
-
-  return "dark"
+  return nil
 end
 
-local function switch_background_and_colorscheme()
-  local bg = desired_background()
-  if bg == current_bg then
+-- Resolve the macOS appearance asynchronously so we never block startup on
+-- `defaults read`. We apply a sensible default immediately, then refine when
+-- the subprocess returns.
+local function refresh_background_async()
+  local override = override_bg()
+  if override then
+    apply_bg(override)
     return
   end
 
-  current_bg = bg
-  vim.opt.background = bg
-  vim.cmd.colorscheme("lanciabones")
+  if vim.fn.has("mac") ~= 1 then
+    apply_bg("dark")
+    return
+  end
+
+  vim.system(
+    { "defaults", "read", "-g", "AppleInterfaceStyle" },
+    { text = true },
+    function(obj)
+      local is_dark = obj.code == 0 and (obj.stdout or ""):find("Dark") ~= nil
+      vim.schedule(function()
+        apply_bg(is_dark and "dark" or "light")
+      end)
+    end
+  )
 end
 
 local user_augroup = vim.api.nvim_create_augroup("user_autocmds", { clear = true })
@@ -50,10 +60,13 @@ local user_augroup = vim.api.nvim_create_augroup("user_autocmds", { clear = true
 -- shelling out to `defaults read` every time.
 vim.api.nvim_create_autocmd("FocusGained", {
   group = user_augroup,
-  callback = switch_background_and_colorscheme,
+  callback = refresh_background_async,
 })
 
-switch_background_and_colorscheme()
+-- Apply a default colorscheme synchronously so there is no flash, then refine
+-- with the real macOS appearance once the async probe returns.
+apply_bg(override_bg() or "dark")
+vim.schedule(refresh_background_async)
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = user_augroup,

@@ -75,13 +75,34 @@ vim.lsp.config("lua_ls", {
   },
 })
 
-local opam_switch_prefix = vim.fn.system("opam var prefix"):gsub("\n", "")
-local ocamllsp_bin = opam_switch_prefix .. "/bin/ocamllsp"
+-- Resolve the opam-managed ocamllsp lazily. Shelling out to `opam var prefix`
+-- at startup costs ~30-40ms even when we never open an OCaml file.
+local ocamllsp_resolved = false
+vim.api.nvim_create_autocmd("FileType", {
+  group = lsp_group,
+  pattern = { "ocaml", "ocamlinterface" },
+  callback = function()
+    if ocamllsp_resolved then
+      return
+    end
+    ocamllsp_resolved = true
 
-vim.lsp.config("ocamllsp", {
-  cmd = { ocamllsp_bin },
-  filetypes = { "ocaml", "ocamlinterface" },
-  root_markers = { ".opam", "dune-project", ".git" },
+    local out = vim.fn.system("opam var prefix")
+    if vim.v.shell_error ~= 0 then
+      return
+    end
+    local prefix = (out or ""):gsub("%s+$", "")
+    if prefix == "" then
+      return
+    end
+
+    vim.lsp.config("ocamllsp", {
+      cmd = { prefix .. "/bin/ocamllsp" },
+      filetypes = { "ocaml", "ocamlinterface" },
+      root_markers = { ".opam", "dune-project", ".git" },
+    })
+    vim.lsp.enable("ocamllsp")
+  end,
 })
 
 vim.lsp.config("pyright", {
@@ -98,4 +119,5 @@ vim.lsp.config("pyright", {
   },
 })
 
-vim.lsp.enable({ "ruby_lsp", "ts_ls", "lua_ls", "ocamllsp", "pyright" })
+-- ocamllsp is enabled lazily once the first OCaml buffer is opened.
+vim.lsp.enable({ "ruby_lsp", "ts_ls", "lua_ls", "pyright" })

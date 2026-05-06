@@ -29,8 +29,17 @@ return {
     "vinitkumar/fff.nvim",
     branch = "feat/implement-buffers-support",
     build = "cargo build --release",
-    lazy = false,
-    keys = {},
+    -- Load on demand. The keymaps in config.keymaps invoke `require("fff").*`,
+    -- so listing the trigger keys here lets lazy.nvim defer loading until a
+    -- finder is actually opened. Linux uses fzf-lua so we don't trigger fff.
+    cond = function()
+      return vim.uv.os_uname().sysname ~= "Linux"
+    end,
+    keys = {
+      { "<C-p>", function() require("fff").find_files() end, desc = "Find files" },
+      { "<C-b>", function() require("fff").buffers() end, desc = "Find buffers" },
+      { "<C-h>", function() require("fff").git_files() end, desc = "Find Git files" },
+    },
   },
   {
     "dmmulroy/tsc.nvim",
