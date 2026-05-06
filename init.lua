@@ -2,10 +2,15 @@ if vim.loader then
   vim.loader.enable()
 end
 
-require("config.globals")
-require("config.neovide")
-require("config.lazy")
-require("config.options")
-require("config.autocmds")
-require("config.keymaps")
-require("config.lsp")
+local modules = {
+  "config.globals",
+  "config.options",
+  "config.lazy",
+  "config.autocmds",
+  "config.keymaps",
+  "config.lsp",
+}
+
+for _, module in ipairs(modules) do
+  require(module)
+end
