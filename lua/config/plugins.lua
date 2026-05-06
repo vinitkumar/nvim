@@ -24,14 +24,8 @@ local bubbles_theme = {
   },
 }
 
-local is_linux = vim.uv.os_uname().sysname == "Linux"
-
 return {
-  is_linux and {
-    "ibhagwan/fzf-lua",
-    lazy = false,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  } or {
+  {
     "vinitkumar/fff.nvim",
     branch = "feat/implement-buffers-support",
     build = "cargo build --release",
@@ -53,15 +47,6 @@ return {
   },
 
   { "tpope/vim-commentary", keys = { { "gc", mode = { "n", "v" } } } },
-  "duane9/nvim-rg",
-  "vinitkumar/oscura-vim",
-  "vinitkumar/monokai-pro-vim",
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  { "folke/tokyonight.nvim", priority = 1000 },
-  { "rebelot/kanagawa.nvim", priority = 1000 },
-  { "EdenEast/nightfox.nvim", priority = 1000 },
-  { "rose-pine/neovim", name = "rose-pine", priority = 1000 },
-  "sainnhe/gruvbox-material",
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -101,7 +86,6 @@ return {
       })
     end,
   },
-  "sainnhe/everforest",
   {
     "lukas-reineke/indent-blankline.nvim",
     event = "BufReadPost",
@@ -115,12 +99,6 @@ return {
     opts = {},
   },
   { "kdheepak/lazygit.nvim", cmd = "LazyGit" },
-  {
-    "sourcegraph/amp.nvim",
-    branch = "main",
-    lazy = false,
-    opts = { auto_start = true, log_level = "info" },
-  },
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -218,19 +196,12 @@ return {
     opts = {},
   },
   {
-    "zenbones-theme/zenbones.nvim",
-    dependencies = "rktjmp/lush.nvim",
+    "vinitkumar/lanciabones.nvim",
+    dependencies = {
+      "rktjmp/lush.nvim",
+      "zenbones-theme/zenbones.nvim",
+    },
     lazy = false,
     priority = 1000,
   },
-  {
-    "rockyzhang24/arctic.nvim",
-    dependencies = { "rktjmp/lush.nvim" },
-    name = "arctic",
-    branch = "main",
-    priority = 1000,
-    config = function()
-      vim.cmd("colorscheme arctic")
-    end
-  }
 }

@@ -11,6 +11,8 @@ end
 local current_bg
 
 local function macos_is_dark()
+  -- `defaults read -g AppleInterfaceStyle` exits non-zero and prints nothing
+  -- when the system is in Light mode, and prints "Dark" when in Dark mode.
   local out = vim.fn.system("defaults read -g AppleInterfaceStyle 2>/dev/null")
   out = (out or ""):gsub("%s+", "")
   return out == "Dark"
@@ -22,7 +24,9 @@ local function desired_background()
     return override
   end
 
-  if vim.g.neovide then
+  -- Honour the macOS appearance. Anywhere else we have no portable way to
+  -- detect it, so default to dark.
+  if vim.fn.has("mac") == 1 then
     return macos_is_dark() and "dark" or "light"
   end
 
@@ -37,17 +41,14 @@ local function switch_background_and_colorscheme()
 
   current_bg = bg
   vim.opt.background = bg
-
-  if bg == "dark" then
-    vim.cmd.colorscheme("arctic")
-  else
-    vim.cmd.colorscheme("grb-lucius")
-  end
+  vim.cmd.colorscheme("lancia")
 end
 
 local user_augroup = vim.api.nvim_create_augroup("user_autocmds", { clear = true })
 
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+-- Only re-check on FocusGained. BufEnter fires far too often to justify
+-- shelling out to `defaults read` every time.
+vim.api.nvim_create_autocmd("FocusGained", {
   group = user_augroup,
   callback = switch_background_and_colorscheme,
 })
