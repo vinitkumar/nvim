@@ -41,7 +41,7 @@ local function switch_background_and_colorscheme()
 
   current_bg = bg
   vim.opt.background = bg
-  vim.cmd.colorscheme("lancia")
+  vim.cmd.colorscheme("lanciabones")
 end
 
 local user_augroup = vim.api.nvim_create_augroup("user_autocmds", { clear = true })
