@@ -1,13 +1,11 @@
-local function strip_trailing_whitespace()
-  if vim.bo.binary or vim.bo.filetype == "diff" then
-    return
-  end
-  local cursor = vim.api.nvim_win_get_cursor(0)
-  local pattern = vim.bo.filetype == "mail" and [[\(^--\)\@<!\s\+$]] or [[\s\+$]]
-  vim.cmd([[keeppatterns %s/]] .. pattern .. [[//e]])
-  pcall(vim.api.nvim_win_set_cursor, 0, cursor)
-end
+-- =============================================================================
+-- autocmds.lua
+-- =============================================================================
+local user_augroup = vim.api.nvim_create_augroup("user_autocmds", { clear = true })
 
+-- ---------------------------------------------------------------------------
+-- Background / colorscheme
+-- ---------------------------------------------------------------------------
 local current_bg
 
 local function apply_bg(bg)
@@ -16,7 +14,7 @@ local function apply_bg(bg)
   end
   current_bg = bg
   vim.opt.background = bg
-  vim.cmd.colorscheme("lanciabones")
+  pcall(vim.cmd.colorscheme, "lanciabones")
 end
 
 local function override_bg()
@@ -27,9 +25,6 @@ local function override_bg()
   return nil
 end
 
--- Resolve the macOS appearance asynchronously so we never block startup on
--- `defaults read`. We apply a sensible default immediately, then refine when
--- the subprocess returns.
 local function refresh_background_async()
   local override = override_bg()
   if override then
@@ -54,25 +49,47 @@ local function refresh_background_async()
   )
 end
 
-local user_augroup = vim.api.nvim_create_augroup("user_autocmds", { clear = true })
+-- Defer the initial colorscheme application to UIEnter, off the startup
+-- critical path. Lanciabones plugin still loads eagerly (priority=1000),
+-- so the only thing moved here is the actual `:colorscheme` invocation.
+vim.api.nvim_create_autocmd("UIEnter", {
+  group = user_augroup,
+  once = true,
+  callback = function()
+    -- Set a default immediately so there is no flash of default colours.
+    apply_bg(override_bg() or "dark")
+    -- Then refine with the real macOS appearance asynchronously.
+    refresh_background_async()
+  end,
+})
 
--- Only re-check on FocusGained. BufEnter fires far too often to justify
--- shelling out to `defaults read` every time.
+-- Re-check on focus; cheap because vim.system is async.
 vim.api.nvim_create_autocmd("FocusGained", {
   group = user_augroup,
   callback = refresh_background_async,
 })
 
--- Apply a default colorscheme synchronously so there is no flash, then refine
--- with the real macOS appearance once the async probe returns.
-apply_bg(override_bg() or "dark")
-vim.schedule(refresh_background_async)
+-- ---------------------------------------------------------------------------
+-- Strip trailing whitespace on save
+-- ---------------------------------------------------------------------------
+local function strip_trailing_whitespace()
+  if vim.bo.binary or vim.bo.filetype == "diff" then
+    return
+  end
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local pattern = vim.bo.filetype == "mail" and [[\(^--\)\@<!\s\+$]] or [[\s\+$]]
+  vim.cmd([[keeppatterns %s/]] .. pattern .. [[//e]])
+  pcall(vim.api.nvim_win_set_cursor, 0, cursor)
+end
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = user_augroup,
   callback = strip_trailing_whitespace,
 })
 
+-- ---------------------------------------------------------------------------
+-- Vimwiki diary template
+-- ---------------------------------------------------------------------------
 vim.api.nvim_create_autocmd("BufNewFile", {
   group = user_augroup,
   pattern = vim.fn.expand("~") .. "/vimwiki/diary/*.wiki",
@@ -81,16 +98,33 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+-- ---------------------------------------------------------------------------
+-- Filetype-specific tweaks
+-- Note: yaml and markdown filetype detection is built-in, so we don't need
+-- BufNewFile/BufRead handlers just to set vim.bo.filetype.
+-- ---------------------------------------------------------------------------
+
+-- Force *.tsx into typescript.tsx (deliberately overrides the default
+-- typescriptreact - keeps existing behaviour)
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
   group = user_augroup,
-  pattern = "*.md",
+  pattern = "*.tsx",
   callback = function()
-    vim.bo.filetype = "markdown"
+    vim.bo.filetype = "typescript.tsx"
+  end,
+})
+
+-- Markdown indent (filetype is auto-detected from extension)
+vim.api.nvim_create_autocmd("FileType", {
+  group = user_augroup,
+  pattern = "markdown",
+  callback = function()
     vim.bo.softtabstop = 4
     vim.bo.shiftwidth = 4
   end,
 })
 
+-- Prose / commit messages: wrap + spell
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   group = user_augroup,
   pattern = { "*.md", "*.txt", "*.adoc", "*.html", "COMMIT_EDITMSG" },
@@ -113,40 +147,14 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- 2-space families (yaml folded in - was previously a separate autocmd)
 vim.api.nvim_create_autocmd("FileType", {
   group = user_augroup,
-  pattern = { "javascript", "typescript", "json", "c", "html", "htmldjango" },
+  pattern = { "javascript", "typescript", "typescript.tsx", "json", "c", "html", "htmldjango", "yaml" },
   callback = function()
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
     vim.bo.tabstop = 2
     vim.bo.softtabstop = 2
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
-  group = user_augroup,
-  pattern = "*.tsx",
-  callback = function()
-    vim.bo.filetype = "typescript.tsx"
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
-  group = user_augroup,
-  pattern = { "*.yaml", "*.yml" },
-  callback = function()
-    vim.bo.filetype = "yaml"
-  end,
-})
-
-vim.api.nvim_create_autocmd("FileType", {
-  group = user_augroup,
-  pattern = "yaml",
-  callback = function()
-    vim.bo.tabstop = 2
-    vim.bo.softtabstop = 2
-    vim.bo.shiftwidth = 2
-    vim.bo.expandtab = true
   end,
 })
