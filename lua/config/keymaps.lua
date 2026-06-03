@@ -27,6 +27,17 @@ keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, { desc = "Ren
 keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code action" })
 keymap.set("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover documentation" })
 
+local function smart_delete(key)
+  local line = vim.api.nvim_get_current_line()
+  return (line:match("^%s*$") and '"_' or "") .. key
+end
+
+for _, lhs in ipairs({ "d", "dd", "x", "c", "s", "C", "X" }) do
+  keymap.set({ "n", "v" }, lhs, function()
+    return smart_delete(lhs)
+  end, { desc = "Smart delete", expr = true, noremap = true })
+end
+
 keymap.set("n", "<CR>", "G")
 keymap.set("n", "<BS>", "gg")
 keymap.set("n", "j", "gj")

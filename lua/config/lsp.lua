@@ -4,6 +4,15 @@ vim.diagnostic.config({
   float = { border = "rounded" },
 })
 
+local border = "rounded"
+local original_open_floating_preview = vim.lsp.util.open_floating_preview
+
+function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+  opts = opts or {}
+  opts.border = opts.border or border
+  return original_open_floating_preview(contents, syntax, opts, ...)
+end
+
 vim.api.nvim_create_autocmd("LspAttach", {
   group = lsp_group,
   callback = function(args)
@@ -117,6 +126,13 @@ vim.lsp.config("pyright", {
       },
     },
   },
+})
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = false
+
+vim.lsp.config("*", {
+  capabilities = capabilities,
 })
 
 -- ocamllsp is enabled lazily once the first OCaml buffer is opened.
