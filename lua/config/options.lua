@@ -13,8 +13,6 @@ vim.opt.laststatus = 2
 vim.opt.clipboard = { "unnamed", "unnamedplus" }
 
 vim.opt.foldlevelstart = 99
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 vim.opt.formatoptions:append("jn")
 
 vim.opt.belloff = "all"
@@ -24,7 +22,7 @@ vim.opt.inccommand = "split"
 vim.opt.ignorecase = true
 vim.opt.joinspaces = false
 vim.opt.linebreak = true
-vim.opt.list = true
+vim.opt.list = false
 vim.opt.listchars = {
   nbsp = "⦸",
   extends = "»",
@@ -43,7 +41,7 @@ vim.opt.modelines = 5
 vim.opt.number = true
 vim.opt.pumheight = 20
 vim.opt.pummaxwidth = 80
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.scrolloff = 3
 
 vim.opt.shiftround = false
@@ -79,7 +77,7 @@ vim.opt.wildmenu = true
 vim.opt.wildmode = "longest:full,full"
 vim.opt.writebackup = false
 
-vim.opt.cursorline = true
+vim.opt.cursorline = false
 vim.opt.backup = false
 vim.opt.showmode = true
 vim.opt.showtabline = 2
@@ -87,7 +85,7 @@ vim.opt.expandtab = true
 vim.opt.softtabstop = 2
 vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.hlsearch = true
-vim.opt.wrap = true
+vim.opt.wrap = false
 vim.opt.wildoptions = "pum"
 vim.opt.pumborder = "rounded"
 vim.opt.winborder = "rounded"
