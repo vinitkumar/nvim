@@ -26,21 +26,22 @@ local bubbles_theme = {
 
 return {
   {
-    "vinitkumar/fff.nvim",
-    branch = "feat/implement-buffers-support",
+    'vinitkumar/fff-plus.nvim',
     build = function()
-      require("fff.download").download_or_build_binary()
+      require('fff.download').download_or_build_binary()
     end,
-    -- Load on demand. The keymaps in config.keymaps invoke `require("fff").*`,
-    -- so listing the trigger keys here lets lazy.nvim defer loading until a
-    -- finder is actually opened. Linux uses fzf-lua so we don't trigger fff.
-    cond = function()
-      return vim.uv.os_uname().sysname ~= "Linux"
-    end,
+    lazy = false, -- fff-plus.nvim lazy-initializes itself
+    opts = {
+      download = {
+        github_repo = 'vinitkumar/fff-plus.nvim',
+      },
+    },
     keys = {
       { "<C-p>", function() require("fff").find_files() end, desc = "Find files" },
       { "<C-b>", function() require("fff").buffers() end, desc = "Find buffers" },
-      { "<C-h>", function() require("fff").git_files() end, desc = "Find Git files" },
+      { '<leader>g', function() require('fff').git_files() end, desc = 'FFF git files' },
+      { '<leader>c', function() require('fff').colors() end, desc = 'FFF colors' },
+      { 'fg', function() require('fff').live_grep() end, desc = 'FFF grep' },
     },
   },
   {
