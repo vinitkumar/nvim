@@ -81,11 +81,10 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+vim.api.nvim_create_autocmd("FileType", {
   group = user_augroup,
-  pattern = "*.md",
+  pattern = "markdown",
   callback = function()
-    vim.bo.filetype = "markdown"
     vim.bo.softtabstop = 4
     vim.bo.shiftwidth = 4
   end,

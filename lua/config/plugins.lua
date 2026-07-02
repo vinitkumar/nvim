@@ -26,19 +26,22 @@ local bubbles_theme = {
 
 return {
   {
-    "vinitkumar/fff.nvim",
-    branch = "feat/implement-buffers-support",
-    build = "cargo build --release",
-    -- Load on demand. The keymaps in config.keymaps invoke `require("fff").*`,
-    -- so listing the trigger keys here lets lazy.nvim defer loading until a
-    -- finder is actually opened. Linux uses fzf-lua so we don't trigger fff.
-    cond = function()
-      return vim.uv.os_uname().sysname ~= "Linux"
+    'vinitkumar/fff-plus.nvim',
+    build = function()
+      require('fff.download').download_or_build_binary()
     end,
+    lazy = false, -- fff-plus.nvim lazy-initializes itself
+    opts = {
+      download = {
+        github_repo = 'vinitkumar/fff-plus.nvim',
+      },
+    },
     keys = {
       { "<C-p>", function() require("fff").find_files() end, desc = "Find files" },
       { "<C-b>", function() require("fff").buffers() end, desc = "Find buffers" },
-      { "<C-h>", function() require("fff").git_files() end, desc = "Find Git files" },
+      { '<leader>g', function() require('fff').git_files() end, desc = 'FFF git files' },
+      { '<leader>c', function() require('fff').colors() end, desc = 'FFF colors' },
+      { 'fg', function() require('fff').live_grep() end, desc = 'FFF grep' },
     },
   },
   {
@@ -97,9 +100,28 @@ return {
   },
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPost",
+    ft = {
+      "c",
+      "css",
+      "go",
+      "html",
+      "javascript",
+      "javascriptreact",
+      "json",
+      "lua",
+      "ocaml",
+      "python",
+      "ruby",
+      "typescript",
+      "typescriptreact",
+      "yaml",
+    },
     main = "ibl",
-    opts = {},
+    opts = {
+      scope = {
+        enabled = false,
+      },
+    },
   },
   {
     "nvim-tree/nvim-tree.lua",
@@ -111,17 +133,34 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
+    ft = {
+      "c",
+      "go",
+      "html",
+      "javascript",
+      "javascriptreact",
+      "json",
+      "lua",
+      "ocaml",
+      "python",
+      "ruby",
+      "typescript",
+      "typescriptreact",
+      "yaml",
+    },
     config = function()
-      vim.treesitter.language.register("markdown", "markdown_inline")
-
       local group = vim.api.nvim_create_augroup("user_treesitter", { clear = true })
       local function enable_treesitter(bufnr)
         if not vim.api.nvim_buf_is_valid(bufnr) then
           return
         end
 
-        if vim.bo[bufnr].buftype ~= "" or vim.bo[bufnr].filetype == "" then
+        local filetype = vim.bo[bufnr].filetype
+        if vim.bo[bufnr].buftype ~= "" or filetype == "" then
+          return
+        end
+
+        if vim.api.nvim_buf_line_count(bufnr) > 5000 then
           return
         end
 
@@ -140,33 +179,52 @@ return {
   },
   {
     "brenoprata10/nvim-highlight-colors",
-    event = "BufReadPre",
+    ft = {
+      "css",
+      "html",
+      "javascript",
+      "javascriptreact",
+      "less",
+      "sass",
+      "scss",
+      "svelte",
+      "typescript",
+      "typescriptreact",
+      "vue",
+    },
     opts = {
       render = "background",
       enable_hex = true,
       enable_short_hex = true,
       enable_rgb = true,
       enable_hsl = true,
-      enable_hsl_without_function = true,
-      enable_ansi = true,
-      enable_var_usage = true,
-      enable_tailwind = true,
+      enable_hsl_without_function = false,
+      enable_ansi = false,
+      enable_var_usage = false,
+      enable_tailwind = false,
     },
   },
   {
     "kevinhwang91/nvim-ufo",
     dependencies = { "kevinhwang91/promise-async" },
-    event = "BufReadPost",
     opts = {
-      provider_selector = function()
+      provider_selector = function(_, filetype, buftype)
+        if buftype ~= "" then
+          return ""
+        end
+
+        if filetype == "markdown" or filetype == "text" or filetype == "gitcommit" then
+          return { "indent" }
+        end
+
         return { "treesitter", "indent" }
       end,
     },
     init = function()
-      vim.o.foldcolumn = "1"
+      vim.o.foldcolumn = "0"
       vim.o.foldlevel = 99
       vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
+      vim.o.foldenable = false
     end,
     keys = {
       { "zR", function() require("ufo").openAllFolds() end, desc = "Open all folds" },
