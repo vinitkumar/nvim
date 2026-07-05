@@ -26,22 +26,40 @@ local bubbles_theme = {
 
 return {
   {
-    'vinitkumar/fff-plus.nvim',
+    'dmtrKovalenko/fff.nvim',
     build = function()
       require('fff.download').download_or_build_binary()
     end,
-    lazy = false, -- fff-plus.nvim lazy-initializes itself
+    lazy = false,
     opts = {
-      download = {
-        github_repo = 'vinitkumar/fff-plus.nvim',
-      },
+      lazy_sync = true,
     },
     keys = {
       { "<C-p>", function() require("fff").find_files() end, desc = "Find files" },
+      { 'fg', function() require('fff').live_grep() end, desc = 'FFF grep' },
+    },
+  },
+  {
+    'vinitkumar/fff-plus.nvim',
+    branch = 'codex/experiment-fff-plus-extension',
+    dependencies = { 'dmtrKovalenko/fff.nvim' },
+    lazy = false,
+    opts = {
+      legacy_commands = true,
+    },
+    config = function(_, opts)
+      local plus = require('fff_plus')
+      plus.setup(opts)
+
+      local fff = require('fff')
+      fff.buffers = plus.buffers
+      fff.git_files = plus.git_files
+      fff.colors = plus.colors
+    end,
+    keys = {
       { "<C-b>", function() require("fff").buffers() end, desc = "Find buffers" },
       { '<leader>g', function() require('fff').git_files() end, desc = 'FFF git files' },
       { '<leader>c', function() require('fff').colors() end, desc = 'FFF colors' },
-      { 'fg', function() require('fff').live_grep() end, desc = 'FFF grep' },
     },
   },
   {

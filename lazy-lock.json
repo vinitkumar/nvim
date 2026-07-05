@@ -1,5 +1,6 @@
 {
-  "fff-plus.nvim": { "branch": "feat/implement-buffers-support", "commit": "a8882c31b6bb3d9800c135ac4f0986fcb03b4fc0" },
+  "fff-plus.nvim": { "branch": "codex/experiment-fff-plus-extension", "commit": "0a089c7c5b54e8ffb85829d1a5b80fbf0d6e0d10" },
+  "fff.nvim": { "branch": "main", "commit": "18f546a4fe8939d884b495a7d761f4905ad205a3" },
   "fidget.nvim": { "branch": "main", "commit": "6f793b2bcd2d35e201c09520f698bb763220908a" },
   "grug-far.nvim": { "branch": "main", "commit": "c69859c1d5427ab5fc7ed12380ab521b4e336691" },
   "indent-blankline.nvim": { "branch": "master", "commit": "d28a3f70721c79e3c5f6693057ae929f3d9c0a03" },
