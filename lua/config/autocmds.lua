@@ -9,14 +9,18 @@ local function strip_trailing_whitespace()
 end
 
 local current_bg
+local theme_ready = false
 
 local function apply_bg(bg)
-  if bg == current_bg then
-    return
+  local changed = bg ~= current_bg
+  if changed then
+    current_bg = bg
+    vim.opt.background = bg
   end
-  current_bg = bg
-  vim.opt.background = bg
-  vim.cmd.colorscheme("lanciabones")
+
+  if theme_ready and (changed or vim.g.colors_name ~= "lanciabones") then
+    vim.cmd.colorscheme("lanciabones")
+  end
 end
 
 local function override_bg()
@@ -63,10 +67,19 @@ vim.api.nvim_create_autocmd("FocusGained", {
   callback = refresh_background_async,
 })
 
--- Apply a default colorscheme synchronously so there is no flash, then refine
--- with the real macOS appearance once the async probe returns.
+-- Set the background immediately, then load the full colorscheme only after a
+-- UI attaches. Headless sessions never pay for the Lush/Zenbones stack.
 apply_bg(override_bg() or "dark")
-vim.schedule(refresh_background_async)
+
+vim.api.nvim_create_autocmd("UIEnter", {
+  group = user_augroup,
+  once = true,
+  callback = function()
+    theme_ready = true
+    apply_bg(current_bg)
+    refresh_background_async()
+  end,
+})
 
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = user_augroup,
