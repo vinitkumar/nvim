@@ -1,4 +1,5 @@
 local lsp_group = vim.api.nvim_create_augroup("user_lsp", { clear = true })
+local filetypes = require("config.lsp_filetypes")
 
 vim.diagnostic.config({
   float = { border = "rounded" },
@@ -28,7 +29,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 vim.lsp.config("ruby_lsp", {
   cmd = { "ruby-lsp" },
-  filetypes = { "ruby", "eruby" },
+  filetypes = filetypes.ruby_lsp,
   root_markers = { "Gemfile", ".ruby-version", ".git" },
   init_options = {
     enabledFeatures = {
@@ -55,13 +56,13 @@ vim.lsp.config("ruby_lsp", {
 
 vim.lsp.config("ts_ls", {
   cmd = { "typescript-language-server", "--stdio" },
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  filetypes = filetypes.ts_ls,
   root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
 })
 
 vim.lsp.config("lua_ls", {
   cmd = { "lua-language-server" },
-  filetypes = { "lua" },
+  filetypes = filetypes.lua_ls,
   root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
   settings = {
     Lua = {
@@ -78,36 +79,42 @@ vim.lsp.config("lua_ls", {
 -- Resolve the opam-managed ocamllsp lazily. Shelling out to `opam var prefix`
 -- at startup costs ~30-40ms even when we never open an OCaml file.
 local ocamllsp_resolved = false
+local function configure_ocamllsp()
+  if ocamllsp_resolved then
+    return
+  end
+  ocamllsp_resolved = true
+
+  local out = vim.fn.system("opam var prefix")
+  if vim.v.shell_error ~= 0 then
+    return
+  end
+  local prefix = (out or ""):gsub("%s+$", "")
+  if prefix == "" then
+    return
+  end
+
+  vim.lsp.config("ocamllsp", {
+    cmd = { prefix .. "/bin/ocamllsp" },
+    filetypes = filetypes.ocamllsp,
+    root_markers = { ".opam", "dune-project", ".git" },
+  })
+  vim.lsp.enable("ocamllsp")
+end
+
 vim.api.nvim_create_autocmd("FileType", {
   group = lsp_group,
-  pattern = { "ocaml", "ocamlinterface" },
-  callback = function()
-    if ocamllsp_resolved then
-      return
-    end
-    ocamllsp_resolved = true
-
-    local out = vim.fn.system("opam var prefix")
-    if vim.v.shell_error ~= 0 then
-      return
-    end
-    local prefix = (out or ""):gsub("%s+$", "")
-    if prefix == "" then
-      return
-    end
-
-    vim.lsp.config("ocamllsp", {
-      cmd = { prefix .. "/bin/ocamllsp" },
-      filetypes = { "ocaml", "ocamlinterface" },
-      root_markers = { ".opam", "dune-project", ".git" },
-    })
-    vim.lsp.enable("ocamllsp")
-  end,
+  pattern = filetypes.ocamllsp,
+  callback = configure_ocamllsp,
 })
+
+if vim.tbl_contains(filetypes.ocamllsp, vim.bo.filetype) then
+  configure_ocamllsp()
+end
 
 vim.lsp.config("pyright", {
   cmd = { "pyright-langserver", "--stdio" },
-  filetypes = { "python" },
+  filetypes = filetypes.pyright,
   root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" },
   settings = {
     python = {

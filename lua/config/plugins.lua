@@ -26,22 +26,24 @@ local bubbles_theme = {
 
 return {
   {
-    'vinitkumar/fff-plus.nvim',
+    "dmtrKovalenko/fff.nvim",
     build = function()
-      require('fff.download').download_or_build_binary()
+      require("fff.download").download_or_build_binary()
     end,
-    lazy = false, -- fff-plus.nvim lazy-initializes itself
-    opts = {
-      download = {
-        github_repo = 'vinitkumar/fff-plus.nvim',
-      },
-    },
     keys = {
       { "<C-p>", function() require("fff").find_files() end, desc = "Find files" },
-      { "<C-b>", function() require("fff").buffers() end, desc = "Find buffers" },
-      { '<leader>g', function() require('fff').git_files() end, desc = 'FFF git files' },
-      { '<leader>c', function() require('fff').colors() end, desc = 'FFF colors' },
-      { 'fg', function() require('fff').live_grep() end, desc = 'FFF grep' },
+      { "fg", function() require("fff").live_grep() end, desc = "FFF grep" },
+    },
+  },
+  {
+    "vinitkumar/fff-plus.nvim",
+    branch = "main",
+    dependencies = { "dmtrKovalenko/fff.nvim" },
+    opts = {},
+    keys = {
+      { "<C-b>", function() require("fff_plus").buffers() end, desc = "Find buffers" },
+      { "<leader>g", function() require("fff_plus").git_files() end, desc = "FFF git files" },
+      { "<leader>c", function() require("fff_plus").colors() end, desc = "FFF colors" },
     },
   },
   {
@@ -268,7 +270,7 @@ return {
       "rktjmp/lush.nvim",
       "zenbones-theme/zenbones.nvim",
     },
-    lazy = false,
+    event = "UIEnter",
     priority = 1000,
   },
   {

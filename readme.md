@@ -13,7 +13,8 @@ This repository contains a Lua-based Neovim configuration with a small `init.lua
 - `config.lazy`
 - `config.autocmds`
 - `config.keymaps`
-- `config.lsp`
+
+`config.lsp` loads on the first supported filetype instead of during startup.
 
 ## Layout
 
@@ -36,7 +37,8 @@ The current `lua/config/plugins.lua` declares these plugins:
 
 | Plugin | Notes |
 | --- | --- |
-| [vinitkumar/fff.nvim](https://github.com/vinitkumar/fff.nvim) | Lazy-loaded on non-Linux systems for files, buffers, and Git files; built with `cargo build --release`; pinned to branch `feat/implement-buffers-support` |
+| [dmtrKovalenko/fff.nvim](https://github.com/dmtrKovalenko/fff.nvim) | Lazy-loaded for file finding and live grep |
+| [vinitkumar/fff-plus.nvim](https://github.com/vinitkumar/fff-plus.nvim) | Lazy-loaded extension pickers for buffers, Git files, and colorschemes |
 | [dmmulroy/tsc.nvim](https://github.com/dmmulroy/tsc.nvim) | Lazy-loaded for TypeScript buffers, configured to run `tsgo --noEmit --pretty false` |
 | [tpope/vim-commentary](https://github.com/tpope/vim-commentary) | Comment operator on `gc` |
 | [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Custom "bubbles" statusline theme with native diagnostics/progress segments |
@@ -53,13 +55,13 @@ The current `lua/config/plugins.lua` declares these plugins:
 | [ggandor/leap.nvim](https://github.com/ggandor/leap.nvim) | Motion plugin mapped on `s`, `S`, and `gs` |
 | [kylechui/nvim-surround](https://github.com/kylechui/nvim-surround) | Surround text objects |
 | [j-hui/fidget.nvim](https://github.com/j-hui/fidget.nvim) | LSP progress UI |
-| [vinitkumar/lanciabones.nvim](https://github.com/vinitkumar/lanciabones.nvim) | Primary colorscheme, loaded eagerly with high priority |
+| [vinitkumar/lanciabones.nvim](https://github.com/vinitkumar/lanciabones.nvim) | Primary colorscheme, loaded when a UI attaches |
 | [rktjmp/lush.nvim](https://github.com/rktjmp/lush.nvim) | `lanciabones.nvim` dependency |
 | [zenbones-theme/zenbones.nvim](https://github.com/zenbones-theme/zenbones.nvim) | `lanciabones.nvim` dependency |
 
 ## Colorschemes
 
-`lua/config/autocmds.lua` loads `lanciabones`, which renders light and dark variants based on `vim.o.background`.
+`lua/config/autocmds.lua` loads `lanciabones` after a UI attaches, so headless sessions skip the Lush/Zenbones rendering cost. It renders light and dark variants based on `vim.o.background`.
 
 Background selection works like this:
 
@@ -129,9 +131,12 @@ The current custom mappings from `lua/config/keymaps.lua` are:
 
 | Mode | Mapping | Action |
 | --- | --- | --- |
-| Normal | `<C-p>` | Linux: `require("fzf-lua").files()`, otherwise lazy-load `fff.nvim` and call `require("fff").find_files()` |
-| Normal | `<C-b>` | Linux: `require("fzf-lua").buffers()`, otherwise lazy-load `fff.nvim` and call `require("fff").buffers()` |
-| Normal | `<C-h>` | Linux: `require("fzf-lua").git_files()`, otherwise lazy-load `fff.nvim` and call `require("fff").git_files()` |
+| Normal | `<C-p>` | Linux: `require("fzf-lua").files()`, otherwise lazy-load `fff.nvim` file finding |
+| Normal | `<C-b>` | Linux: `require("fzf-lua").buffers()`, otherwise lazy-load the `fff-plus.nvim` buffer picker |
+| Normal | `<C-h>` | Linux: `require("fzf-lua").git_files()` |
+| Normal | `fg` | lazy-load `fff.nvim` live grep |
+| Normal | `<leader>g` | lazy-load the `fff-plus.nvim` Git file picker |
+| Normal | `<leader>c` | lazy-load the `fff-plus.nvim` colorscheme picker |
 | Normal | `<C-c>` | `:NvimTreeToggle<CR>` |
 | Normal | `<C-t>` | `:tabNext<CR>` |
 | Normal | `<C-e>` | open buffer diagnostics in the location list |
@@ -175,7 +180,7 @@ Based on the current config, these external tools are expected:
 - Neovim with Lua config support and `vim.lsp.config` / `vim.lsp.enable`
 - `git` to bootstrap `lazy.nvim`
 - `fzf-lua` available on Linux if you use the Linux-only finder keymaps
-- `cargo` to build `fff.nvim` on non-Linux systems
+- Rust as a fallback if `fff.nvim` cannot download a prebuilt binary
 - `lazygit` for `:LazyGit`
 - `ruby-lsp` for Ruby
 - `typescript-language-server` for JavaScript and TypeScript
@@ -193,3 +198,7 @@ nvim
 ```
 
 On first launch, `lazy.nvim` bootstraps itself and installs the configured plugins.
+
+## Tests
+
+Run the headless startup, 50 ms cold-cache and 75 ms UI-ready performance budgets, key-triggered lazy-loading, and first-buffer LSP checks with `make test`. Install the locked plugins before running the integration tests.
