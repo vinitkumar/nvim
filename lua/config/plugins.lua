@@ -1,10 +1,10 @@
 local colors = {
-  blue = "#80a0ff",
-  cyan = "#79dac8",
-  black = "#080808",
-  white = "#c6c6c6",
-  red = "#ff5189",
-  violet = "#d183e8",
+  blue = "#6fb3d2",
+  cyan = "#76c7b7",
+  black = "#000000",
+  white = "#e0e0e0",
+  red = "#fb0120",
+  violet = "#d381c3",
   grey = "#303030",
 }
 
@@ -37,12 +37,12 @@ return {
   },
   {
     "vinitkumar/fff-plus.nvim",
-    branch = "main",
+    branch = "agent/fzf-vim-parity",
     dependencies = { "dmtrKovalenko/fff.nvim" },
     opts = {},
     keys = {
       { "<C-b>", function() require("fff_plus").buffers() end, desc = "Find buffers" },
-      { "<leader>g", function() require("fff_plus").git_files() end, desc = "FFF git files" },
+      { "<leader>g", function() require("fff_plus").tracked_files() end, desc = "FFF git files" },
       { "<leader>c", function() require("fff_plus").colors() end, desc = "FFF colors" },
     },
   },
