@@ -136,22 +136,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
-  group = user_augroup,
-  pattern = "*.tsx",
-  callback = function()
-    vim.bo.filetype = "typescript.tsx"
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
-  group = user_augroup,
-  pattern = { "*.yaml", "*.yml" },
-  callback = function()
-    vim.bo.filetype = "yaml"
-  end,
-})
-
 vim.api.nvim_create_autocmd("FileType", {
   group = user_augroup,
   pattern = "yaml",
