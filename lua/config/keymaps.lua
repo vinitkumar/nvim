@@ -1,13 +1,5 @@
 local keymap = vim.keymap
 
--- The macOS finder bindings (<C-p>, <C-b>, <C-h>) for fff.nvim are registered
--- lazily in config.plugins so they don't drag the plugin in at startup.
-if vim.uv.os_uname().sysname == "Linux" then
-  keymap.set("n", "<C-p>", function() require("fzf-lua").files() end, { desc = "Find files" })
-  keymap.set("n", "<C-b>", function() require("fzf-lua").buffers() end, { desc = "Find buffers" })
-  keymap.set("n", "<C-h>", function() require("fzf-lua").git_files() end, { desc = "Find Git files" })
-end
-
 keymap.set("n", "<C-c>", ":NvimTreeToggle<CR>")
 keymap.set("n", "<C-t>", ":tabNext<CR>")
 keymap.set("n", "<C-e>", function() vim.diagnostic.setloclist({ open = true }) end, { desc = "Buffer diagnostics" })
@@ -22,10 +14,8 @@ keymap.set("n", "<leader>t", ":<C-u>tabnew<CR>")
 keymap.set("n", "<leader>dt", 'i<C-r>=strftime("%c")<CR>', { noremap = true, silent = true })
 keymap.set("n", "<leader>lw", function() vim.diagnostic.setqflist() end, { desc = "Workspace diagnostics" })
 keymap.set("n", "<leader>lr", function() vim.cmd("LspRestart") end, { desc = "Restart LSP" })
-keymap.set("n", "grx", function() vim.lsp.codelens.run() end, { desc = "Run code lens" })
 keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, { desc = "Rename symbol" })
 keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code action" })
-keymap.set("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover documentation" })
 
 keymap.set("n", "<CR>", "G")
 keymap.set("n", "<BS>", "gg")

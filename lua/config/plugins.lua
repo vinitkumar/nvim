@@ -60,7 +60,6 @@ return {
     end,
   },
 
-  { "tpope/vim-commentary", keys = { { "gc", mode = { "n", "v" } } } },
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },

@@ -3,6 +3,8 @@ local filetypes = require("config.lsp_filetypes")
 
 vim.diagnostic.config({
   float = { border = "rounded" },
+  severity_sort = true,
+  virtual_lines = { current_line = true },
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {

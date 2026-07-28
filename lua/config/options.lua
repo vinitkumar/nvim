@@ -1,7 +1,3 @@
-vim.scriptencoding = "utf-8"
-vim.opt.encoding = "utf-8"
-vim.opt.fileencoding = "utf-8"
-
 vim.opt.title = true
 vim.opt.autoindent = true
 vim.opt.smarttab = true
@@ -62,7 +58,7 @@ vim.opt.tabstop = 2
 vim.opt.termguicolors = true
 vim.opt.textwidth = 80
 vim.opt.signcolumn = "yes"
-vim.opt.completeopt = { "menu", "menuone", "popup", "fuzzy", "nearest" }
+vim.opt.completeopt = { "menuone", "noselect", "popup", "fuzzy" }
 vim.opt.updatetime = 300
 vim.opt.updatecount = 0
 vim.opt.undofile = true
@@ -74,7 +70,7 @@ vim.opt.whichwrap = "b,h,l,s,<,>,[,],~"
 vim.opt.wildcharm = 26
 vim.opt.wildignore:append({ "*.o", "*.rej", "*.so", "*/node_modules/*" })
 vim.opt.wildmenu = true
-vim.opt.wildmode = "longest:full,full"
+vim.opt.wildmode = "noselect:lastused,full"
 vim.opt.writebackup = false
 
 vim.opt.cursorline = false
@@ -86,7 +82,7 @@ vim.opt.softtabstop = 2
 vim.opt.backspace = { "start", "eol", "indent" }
 vim.opt.hlsearch = true
 vim.opt.wrap = false
-vim.opt.wildoptions = "pum"
+vim.opt.wildoptions = { "pum", "fuzzy" }
 vim.opt.pumborder = "rounded"
 vim.opt.winborder = "rounded"
 

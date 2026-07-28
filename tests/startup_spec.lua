@@ -33,6 +33,12 @@ assert_mapping("<C-b>", "Find buffers")
 assert_mapping("fg", "FFF grep")
 assert_mapping("<leader>g", "FFF git files")
 assert_mapping("<leader>c", "FFF colors")
+assert_mapping("gc", "Toggle comment")
+assert_mapping("grx", "vim.lsp.codelens.run()")
+
+assert(vim.o.completeopt == "menuone,noselect,popup,fuzzy", "expected modern insert completion behavior")
+assert(vim.o.wildmode == "noselect:lastused,full", "expected non-selecting command-line completion")
+assert(vim.o.wildoptions == "pum,fuzzy", "expected fuzzy command-line completion")
 
 vim.api.nvim_exec_autocmds("UIEnter", {})
 assert(vim.g.colors_name == "lanciabones", "expected the configured colorscheme after UI startup")
@@ -54,5 +60,15 @@ assert(vim.fn.exists(":FFFPlusBuffers") == 2, "expected fff-plus commands after 
 vim.bo.filetype = "lua"
 assert(package.loaded["config.lsp"] ~= nil, "expected LSP config to load for a Lua buffer")
 assert(vim.lsp.config.lua_ls ~= nil, "expected lua_ls to remain configured after lazy loading")
+
+local diagnostic_config = vim.diagnostic.config()
+assert(diagnostic_config.severity_sort, "expected diagnostics to sort by severity")
+assert(
+  diagnostic_config.virtual_lines and diagnostic_config.virtual_lines.current_line,
+  "expected diagnostic virtual lines on the current line"
+)
+
+vim.cmd.edit("/tmp/nvim-config-startup-spec.tsx")
+assert(vim.bo.filetype == "typescriptreact", "expected Neovim's native TSX filetype")
 
 vim.cmd("quitall!")
