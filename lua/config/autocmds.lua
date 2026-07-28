@@ -18,8 +18,8 @@ local function apply_bg(bg)
     vim.opt.background = bg
   end
 
-  if theme_ready and (changed or vim.g.colors_name ~= "lanciabones") then
-    vim.cmd.colorscheme("lanciabones")
+  if theme_ready and (changed or vim.g.colors_name ~= "bright") then
+    vim.cmd.colorscheme("bright")
   end
 end
 

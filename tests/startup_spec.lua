@@ -41,7 +41,7 @@ assert(vim.o.wildmode == "noselect:lastused,full", "expected non-selecting comma
 assert(vim.o.wildoptions == "pum,fuzzy", "expected fuzzy command-line completion")
 
 vim.api.nvim_exec_autocmds("UIEnter", {})
-assert(vim.g.colors_name == "lanciabones", "expected the configured colorscheme after UI startup")
+assert(vim.g.colors_name == "bright", "expected the configured colorscheme after UI startup")
 
 local ui_ready_ms = (vim.uv.hrtime() - vim.g.config_start_time_ns) / 1e6
 assert(ui_ready_ms < 75, ("expected UI-ready startup under 75 ms, got %.1f ms"):format(ui_ready_ms))
