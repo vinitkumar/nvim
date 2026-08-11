@@ -47,6 +47,12 @@ return {
     },
   },
   {
+    "craftzdog/solarized-osaka.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
     "dmmulroy/tsc.nvim",
     lazy = true,
     ft = { "typescript", "typescriptreact" },

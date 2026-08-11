@@ -89,4 +89,4 @@ vim.opt.winborder = "rounded"
 vim.opt.fillchars:append({ foldinner = " " })
 vim.opt.listchars:append({ leadtab = "▷─" })
 
-vim.opt.guifont = "Berka Mono Focus:h14"
+vim.opt.guifont = "Berka Mono Instrument:h15"
