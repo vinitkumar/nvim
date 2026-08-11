@@ -127,7 +127,7 @@ vim.api.nvim_set_hl(0, 'TabLineSel', { fg = gui0B, bg = gui01, ctermfg = cterm0B
 -- Standard syntax highlighting
 vim.api.nvim_set_hl(0, 'Boolean', { fg = gui09, ctermfg = cterm09 })
 vim.api.nvim_set_hl(0, 'Character', { fg = gui08, ctermfg = cterm08 })
-vim.api.nvim_set_hl(0, 'Comment', { fg = gui03, ctermfg = cterm03 })
+vim.api.nvim_set_hl(0, 'Comment', { fg = gui03, ctermfg = cterm03, italic = true })
 vim.api.nvim_set_hl(0, 'Conditional', { fg = gui0E, ctermfg = cterm0E })
 vim.api.nvim_set_hl(0, 'Constant', { fg = gui09, ctermfg = cterm09 })
 vim.api.nvim_set_hl(0, 'Define', { fg = gui0E, ctermfg = cterm0E })

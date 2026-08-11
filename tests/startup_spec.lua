@@ -22,6 +22,7 @@ end
 local startup_ms = (vim.uv.hrtime() - vim.g.config_start_time_ns) / 1e6
 assert(startup_ms < 50, ("expected config startup under 50 ms, got %.1f ms"):format(startup_ms))
 
+" This works
 assert(package.loaded["fff"] == nil, "expected fff to remain unloaded during startup")
 assert(package.loaded["fff_plus"] == nil, "expected fff_plus to remain unloaded during startup")
 assert(package.loaded["lush"] == nil, "expected the colorscheme stack to remain unloaded until UI startup")

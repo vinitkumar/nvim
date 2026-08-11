@@ -16,4 +16,7 @@ assert(float_border.bg == color("#303030"), "expected FloatBorder background to 
 local float_title = vim.api.nvim_get_hl(0, { name = "FloatTitle" })
 assert(float_title.link == "Title", "expected FloatTitle to link to Title")
 
+local comment = vim.api.nvim_get_hl(0, { name = "Comment", link = false })
+assert(comment.italic, "expected comments to use the italic font face")
+
 vim.cmd("quitall!")
