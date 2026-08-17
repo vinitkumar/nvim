@@ -4,25 +4,42 @@ local colors = {
   black = "#000000",
   white = "#e0e0e0",
   red = "#fb0120",
+  yellow = "#fda331",
+  green = "#a1c659",
   violet = "#d381c3",
   grey = "#303030",
 }
 
+local function mode_theme(accent)
+  return {
+    a = { fg = colors.black, bg = accent, gui = "bold" },
+    b = { fg = accent, bg = colors.grey },
+    c = { fg = colors.white, bg = colors.black },
+  }
+end
+
 local bubbles_theme = {
-  normal = {
-    a = { fg = colors.black, bg = colors.violet },
-    b = { fg = colors.white, bg = colors.grey },
-    c = { fg = colors.white },
-  },
-  insert = { a = { fg = colors.black, bg = colors.blue } },
-  visual = { a = { fg = colors.black, bg = colors.cyan } },
-  replace = { a = { fg = colors.black, bg = colors.red } },
+  normal = mode_theme(colors.blue),
+  insert = mode_theme(colors.green),
+  visual = mode_theme(colors.violet),
+  replace = mode_theme(colors.red),
+  command = mode_theme(colors.yellow),
+  terminal = mode_theme(colors.cyan),
   inactive = {
-    a = { fg = colors.white, bg = colors.black },
-    b = { fg = colors.white, bg = colors.black },
-    c = { fg = colors.white },
+    a = { fg = colors.white, bg = colors.grey },
+    b = { fg = colors.white, bg = colors.grey },
+    c = { fg = colors.white, bg = colors.black },
   },
 }
+
+local function is_wide_window()
+  return vim.fn.winwidth(0) > 100
+end
+
+local function recording_status()
+  local register = vim.fn.reg_recording()
+  return register == "" and "" or "● @" .. register
+end
 
 return {
   {
@@ -76,32 +93,84 @@ return {
           theme = bubbles_theme,
           component_separators = "",
           section_separators = { left = "", right = "" },
+          globalstatus = true,
         },
         sections = {
           lualine_a = { { "mode", separator = { left = "" }, right_padding = 2 } },
-          lualine_b = { "filename", "branch" },
-          lualine_c = { "%=" },
+          lualine_b = {
+            { "branch", icon = "" },
+            {
+              "diff",
+              symbols = { added = " ", modified = " ", removed = " " },
+              cond = is_wide_window,
+            },
+          },
+          lualine_c = {
+            {
+              "filename",
+              path = 1,
+              symbols = { modified = " ●", readonly = " 󰌾", unnamed = "[Scratch]", newfile = " 󰎔" },
+            },
+          },
           lualine_x = {
-            function()
-              return vim.diagnostic.status()
-            end,
             function()
               return vim.ui.progress_status()
             end,
+            { recording_status, color = { fg = colors.red, gui = "bold" } },
+            { "searchcount", maxcount = 999, timeout = 100 },
+            {
+              "diagnostics",
+              symbols = { error = "󰅚 ", warn = "󰀪 ", info = "󰋽 ", hint = "󰌶 " },
+            },
           },
-          lualine_y = { "filetype", "progress" },
-          lualine_z = { { "location", separator = { right = "" }, left_padding = 2 } },
+          lualine_y = {
+            {
+              "lsp_status",
+              icon = "󰒋",
+              symbols = { done = "", separator = ", " },
+              cond = is_wide_window,
+            },
+            { "filetype", colored = false },
+          },
+          lualine_z = {
+            "progress",
+            { "location", separator = { right = "" }, left_padding = 1 },
+          },
         },
         inactive_sections = {
-          lualine_a = { "filename" },
+          lualine_a = {},
           lualine_b = {},
-          lualine_c = {},
-          lualine_x = {},
+          lualine_c = { { "filename", path = 1 } },
+          lualine_x = { "location" },
           lualine_y = {},
-          lualine_z = { "location" },
+          lualine_z = {},
         },
-        tabline = {},
-        extensions = {},
+        tabline = {
+          lualine_a = {
+            {
+              "buffers",
+              use_mode_colors = true,
+              max_length = function()
+                return math.floor(vim.o.columns * 2 / 3)
+              end,
+              symbols = { modified = " ●", alternate_file = "", directory = "" },
+            },
+          },
+          lualine_z = {
+            {
+              "tabs",
+              mode = 2,
+              max_length = function()
+                return math.floor(vim.o.columns / 3)
+              end,
+              symbols = { modified = " ●" },
+              cond = function()
+                return #vim.api.nvim_list_tabpages() > 1
+              end,
+            },
+          },
+        },
+        extensions = { "lazy", "quickfix" },
       })
     end,
   },

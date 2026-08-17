@@ -75,7 +75,7 @@ vim.opt.writebackup = false
 
 vim.opt.cursorline = false
 vim.opt.backup = false
-vim.opt.showmode = true
+vim.opt.showmode = false
 vim.opt.showtabline = 2
 vim.opt.expandtab = true
 vim.opt.softtabstop = 2

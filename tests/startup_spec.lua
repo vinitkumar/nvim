@@ -22,7 +22,7 @@ end
 local startup_ms = (vim.uv.hrtime() - vim.g.config_start_time_ns) / 1e6
 assert(startup_ms < 50, ("expected config startup under 50 ms, got %.1f ms"):format(startup_ms))
 
-" This works
+-- Lazy-loaded plugins should stay out of the startup path.
 assert(package.loaded["fff"] == nil, "expected fff to remain unloaded during startup")
 assert(package.loaded["fff_plus"] == nil, "expected fff_plus to remain unloaded during startup")
 assert(package.loaded["lush"] == nil, "expected the colorscheme stack to remain unloaded until UI startup")
@@ -43,6 +43,17 @@ assert(vim.o.wildoptions == "pum,fuzzy", "expected fuzzy command-line completion
 
 vim.api.nvim_exec_autocmds("UIEnter", {})
 assert(vim.g.colors_name == "bright", "expected the configured colorscheme after UI startup")
+
+require("lazy").load({ plugins = { "lualine.nvim" } })
+local lualine_config = require("lualine").get_config()
+assert(lualine_config.options.globalstatus, "expected one clean global statusline")
+assert(
+  lualine_config.options.theme.normal.a.bg == "#6fb3d2",
+  "expected normal mode to use the Bright blue accent"
+)
+assert(not vim.o.showmode, "expected Lualine to replace Neovim's duplicate mode prompt")
+assert(#lualine_config.tabline.lualine_a > 0, "expected the tabline to show open buffers")
+assert(#lualine_config.tabline.lualine_z > 0, "expected the tabline to show Neovim tabs")
 
 local ui_ready_ms = (vim.uv.hrtime() - vim.g.config_start_time_ns) / 1e6
 assert(ui_ready_ms < 75, ("expected UI-ready startup under 75 ms, got %.1f ms"):format(ui_ready_ms))

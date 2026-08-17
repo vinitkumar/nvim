@@ -1,8 +1,8 @@
 {
   "fff-plus.nvim": { "branch": "agent/fzf-vim-parity", "commit": "59efd2fcb44146b84a0176b48fc42cffccf22c77" },
-  "fff.nvim": { "branch": "main", "commit": "d4c416c2fcf24eeda40a540a898da12824aed18f" },
+  "fff.nvim": { "branch": "main", "commit": "cc289f0f9326e633dea2e9e12a4a18faa8ab3889" },
   "fidget.nvim": { "branch": "main", "commit": "6f793b2bcd2d35e201c09520f698bb763220908a" },
-  "grug-far.nvim": { "branch": "main", "commit": "6e05398cf6cad05b3fb46569db96b1ccfcbbd402" },
+  "grug-far.nvim": { "branch": "main", "commit": "46df5eff7c55593f43891cf521fbf3f6c2c69de8" },
   "indent-blankline.nvim": { "branch": "master", "commit": "d28a3f70721c79e3c5f6693057ae929f3d9c0a03" },
   "lanciabones.nvim": { "branch": "main", "commit": "65545cefba9d5d6d59cad047f1103de40aad16a5" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
