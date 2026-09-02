@@ -43,7 +43,7 @@ end
 
 return {
   {
-    "dmtrKovalenko/fff.nvim",
+    "dmtrKovalenko/fff",
     build = function()
       require("fff.download").download_or_build_binary()
     end,
@@ -54,14 +54,17 @@ return {
   },
   {
     "vinitkumar/fff-plus.nvim",
-    branch = "agent/fzf-vim-parity",
-    dependencies = { "dmtrKovalenko/fff.nvim" },
+    dependencies = { "dmtrKovalenko/fff" },
     opts = {},
     keys = {
       { "<C-b>", function() require("fff_plus").buffers() end, desc = "Find buffers" },
-      { "<leader>g", function() require("fff_plus").tracked_files() end, desc = "FFF git files" },
-      { "<leader>c", function() require("fff_plus").colors() end, desc = "FFF colors" },
-    },
+      { '<leader>f', function() require('fff_plus').smart() end, desc = 'FFF+ smart files' },
+      { '<leader>l', function() require('fff_plus').lines() end, desc = 'FFF+ buffer lines' },
+      { '<leader>d', function() require('fff_plus').diagnostics() end, desc = 'FFF+ diagnostics' },
+      { '<leader>c', function() require('fff_plus').colors() end, desc = 'FFF+ colors' },
+      { '<leader>g', function() require('fff_plus').tracked_files() end, desc = 'FFF+ tracked files' },
+      { '<leader>s', function() require('fff_plus').git_status() end, desc = 'FFF+ git status' },
+    }
   },
   {
     "craftzdog/solarized-osaka.nvim",
@@ -384,4 +387,6 @@ return {
       },
     },
   },
+  {"tpope/vim-fugitive"},
+  {"arcticicestudio/nord-vim"},
 }

@@ -29,3 +29,7 @@ vim.api.nvim_create_autocmd("FileType", {
     require("config.lsp")
   end,
 })
+
+-- >>> appearance-sync >>>
+pcall(dofile, vim.fn.expand("~/.config/appearance-sync/neovim.lua"))
+-- <<< appearance-sync <<<
