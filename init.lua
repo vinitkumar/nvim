@@ -16,6 +16,10 @@ for _, module in ipairs(modules) do
   require(module)
 end
 
+if vim.g.neovide then
+  require("config.neovide")
+end
+
 local lsp_filetypes = require("config.lsp_filetypes")
 
 vim.api.nvim_create_autocmd("FileType", {
