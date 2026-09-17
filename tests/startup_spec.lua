@@ -25,6 +25,7 @@ assert(startup_ms < 50, ("expected config startup under 50 ms, got %.1f ms"):for
 -- Lazy-loaded plugins should stay out of the startup path.
 assert(package.loaded["fff"] == nil, "expected fff to remain unloaded during startup")
 assert(package.loaded["fff_plus"] == nil, "expected fff_plus to remain unloaded during startup")
+assert(package.loaded["tgrep"] == nil, "expected tgrep to remain unloaded during startup")
 assert(package.loaded["lush"] == nil, "expected the colorscheme stack to remain unloaded until UI startup")
 assert(package.loaded["zenbones.util"] == nil, "expected zenbones to remain unloaded until UI startup")
 assert(package.loaded["vim.lsp"] == nil, "expected LSP to remain unloaded until an LSP filetype opens")
@@ -32,8 +33,10 @@ assert(package.loaded["vim.lsp"] == nil, "expected LSP to remain unloaded until 
 assert_mapping("<C-p>", "Find files")
 assert_mapping("<C-b>", "Find buffers")
 assert_mapping("fg", "FFF grep")
-assert_mapping("<leader>g", "FFF git files")
-assert_mapping("<leader>c", "FFF colors")
+assert_mapping("<leader>g", "FFF+ tracked files")
+assert_mapping("<leader>c", "FFF+ colors")
+assert_mapping("<leader>tg", "Tgrep project")
+assert_mapping("<leader>tw", "Tgrep word")
 assert_mapping("gc", "Toggle comment")
 assert_mapping("grx", "vim.lsp.codelens.run()")
 

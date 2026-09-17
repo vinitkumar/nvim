@@ -67,6 +67,23 @@ return {
     }
   },
   {
+    "vinitkumar/tgrep.nvim",
+    cmd = "Tgrep",
+    dependencies = {
+      "dmtrKovalenko/fff",
+      "vinitkumar/fff-plus.nvim",
+    },
+    opts = {},
+    keys = {
+      { "<leader>tg", function() require("tgrep").live_grep() end, desc = "Tgrep project" },
+      {
+        "<leader>tw",
+        function() require("tgrep").live_grep({ query = vim.fn.expand("<cword>") }) end,
+        desc = "Tgrep word",
+      },
+    },
+  },
+  {
     "craftzdog/solarized-osaka.nvim",
     lazy = false,
     priority = 1000,
