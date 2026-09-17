@@ -1,35 +1,5 @@
 local colors = {
-  blue = "#6fb3d2",
-  cyan = "#76c7b7",
-  black = "#000000",
-  white = "#e0e0e0",
   red = "#fb0120",
-  yellow = "#fda331",
-  green = "#a1c659",
-  violet = "#d381c3",
-  grey = "#303030",
-}
-
-local function mode_theme(accent)
-  return {
-    a = { fg = colors.black, bg = accent, gui = "bold" },
-    b = { fg = accent, bg = colors.grey },
-    c = { fg = colors.white, bg = colors.black },
-  }
-end
-
-local bubbles_theme = {
-  normal = mode_theme(colors.blue),
-  insert = mode_theme(colors.green),
-  visual = mode_theme(colors.violet),
-  replace = mode_theme(colors.red),
-  command = mode_theme(colors.yellow),
-  terminal = mode_theme(colors.cyan),
-  inactive = {
-    a = { fg = colors.white, bg = colors.grey },
-    b = { fg = colors.white, bg = colors.grey },
-    c = { fg = colors.white, bg = colors.black },
-  },
 }
 
 local function is_wide_window()
@@ -110,7 +80,7 @@ return {
     config = function()
       require("lualine").setup({
         options = {
-          theme = bubbles_theme,
+          theme = "auto", -- follow the colorscheme in light and dark
           component_separators = "",
           section_separators = { left = "", right = "" },
           globalstatus = true,
@@ -357,6 +327,12 @@ return {
     "j-hui/fidget.nvim",
     event = "LspAttach",
     opts = {},
+  },
+  {
+    "folke/tokyonight.nvim",
+    event = "UIEnter", -- on rtp before config.autocmds applies it
+    priority = 1000,
+    opts = { style = "night" },
   },
   {
     "vinitkumar/lanciabones.nvim",

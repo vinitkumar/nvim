@@ -41,7 +41,7 @@ The current `lua/config/plugins.lua` declares these plugins:
 | [vinitkumar/fff-plus.nvim](https://github.com/vinitkumar/fff-plus.nvim) | Lazy-loaded extension pickers for buffers, Git files, and colorschemes |
 | [dmmulroy/tsc.nvim](https://github.com/dmmulroy/tsc.nvim) | Lazy-loaded for TypeScript buffers, configured to run `tsgo --noEmit --pretty false` |
 | [tpope/vim-commentary](https://github.com/tpope/vim-commentary) | Comment operator on `gc` |
-| [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | Custom "bubbles" statusline theme with native diagnostics/progress segments |
+| [nvim-lualine/lualine.nvim](https://github.com/nvim-lualine/lualine.nvim) | "Bubbles" statusline following the colorscheme, with native diagnostics/progress segments |
 | [nvim-tree/nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) | Dependency for lualine and nvim-tree |
 | [lukas-reineke/indent-blankline.nvim](https://github.com/lukas-reineke/indent-blankline.nvim) | Loaded via `ibl` on `BufReadPost` |
 | [nvim-tree/nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) | `:NvimTreeToggle` file tree |
@@ -55,13 +55,14 @@ The current `lua/config/plugins.lua` declares these plugins:
 | [ggandor/leap.nvim](https://github.com/ggandor/leap.nvim) | Motion plugin mapped on `s`, `S`, and `gs` |
 | [kylechui/nvim-surround](https://github.com/kylechui/nvim-surround) | Surround text objects |
 | [j-hui/fidget.nvim](https://github.com/j-hui/fidget.nvim) | LSP progress UI |
-| [vinitkumar/lanciabones.nvim](https://github.com/vinitkumar/lanciabones.nvim) | Primary colorscheme, loaded when a UI attaches |
+| [folke/tokyonight.nvim](https://github.com/folke/tokyonight.nvim) | Primary colorscheme, loaded when a UI attaches |
+| [vinitkumar/lanciabones.nvim](https://github.com/vinitkumar/lanciabones.nvim) | Alternate colorscheme |
 | [rktjmp/lush.nvim](https://github.com/rktjmp/lush.nvim) | `lanciabones.nvim` dependency |
 | [zenbones-theme/zenbones.nvim](https://github.com/zenbones-theme/zenbones.nvim) | `lanciabones.nvim` dependency |
 
 ## Colorschemes
 
-`lua/config/autocmds.lua` loads `lanciabones` after a UI attaches, so headless sessions skip the Lush/Zenbones rendering cost. It renders light and dark variants based on `vim.o.background`.
+`lua/config/autocmds.lua` loads `tokyonight` after a UI attaches, so headless sessions skip the colorscheme cost. It renders `tokyonight-night` or `tokyonight-day` based on `vim.o.background`. Lualine uses the `auto` theme, so the statusline follows it.
 
 Background selection works like this:
 
@@ -78,7 +79,7 @@ The current defaults from `lua/config/options.lua` include:
 - line numbers and relative line numbers enabled
 - UTF-8 encodings
 - system clipboard via `unnamed` and `unnamedplus`
-- GUI font set to `Berka Mono Closer Narrow:h18`
+- GUI font set to `JetBrains Mono:h14`, with `Maple Mono NF` as the Nerd Font glyph fallback
 - 2-space indentation with `expandtab`
 - `textwidth = 80`
 - `termguicolors = true`

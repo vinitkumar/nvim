@@ -26,6 +26,7 @@ assert(startup_ms < 50, ("expected config startup under 50 ms, got %.1f ms"):for
 assert(package.loaded["fff"] == nil, "expected fff to remain unloaded during startup")
 assert(package.loaded["fff_plus"] == nil, "expected fff_plus to remain unloaded during startup")
 assert(package.loaded["tgrep"] == nil, "expected tgrep to remain unloaded during startup")
+assert(package.loaded["tokyonight"] == nil, "expected the colorscheme to remain unloaded until UI startup")
 assert(package.loaded["lush"] == nil, "expected the colorscheme stack to remain unloaded until UI startup")
 assert(package.loaded["zenbones.util"] == nil, "expected zenbones to remain unloaded until UI startup")
 assert(package.loaded["vim.lsp"] == nil, "expected LSP to remain unloaded until an LSP filetype opens")
@@ -45,15 +46,12 @@ assert(vim.o.wildmode == "noselect:lastused,full", "expected non-selecting comma
 assert(vim.o.wildoptions == "pum,fuzzy", "expected fuzzy command-line completion")
 
 vim.api.nvim_exec_autocmds("UIEnter", {})
-assert(vim.g.colors_name == "bright", "expected the configured colorscheme after UI startup")
+assert(vim.startswith(vim.g.colors_name or "", "tokyonight"), "expected the configured colorscheme after UI startup")
 
 require("lazy").load({ plugins = { "lualine.nvim" } })
 local lualine_config = require("lualine").get_config()
 assert(lualine_config.options.globalstatus, "expected one clean global statusline")
-assert(
-  lualine_config.options.theme.normal.a.bg == "#6fb3d2",
-  "expected normal mode to use the Bright blue accent"
-)
+assert(lualine_config.options.theme == "auto", "expected the statusline to follow the colorscheme")
 assert(not vim.o.showmode, "expected Lualine to replace Neovim's duplicate mode prompt")
 assert(#lualine_config.tabline.lualine_a > 0, "expected the tabline to show open buffers")
 assert(#lualine_config.tabline.lualine_z > 0, "expected the tabline to show Neovim tabs")

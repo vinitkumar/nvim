@@ -89,4 +89,5 @@ vim.opt.winborder = "rounded"
 vim.opt.fillchars:append({ foldinner = " " })
 vim.opt.listchars:append({ leadtab = "▷─" })
 
-vim.opt.guifont = "Source Code Pro:h15"
+-- Maple Mono NF supplies the Nerd Font glyphs JetBrains Mono lacks.
+vim.opt.guifont = "JetBrains Mono,Maple Mono NF:h14"

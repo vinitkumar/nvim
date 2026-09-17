@@ -8,6 +8,9 @@ local function strip_trailing_whitespace()
   pcall(vim.api.nvim_win_set_cursor, 0, cursor)
 end
 
+-- Family name; tokyonight reports "tokyonight-night" or "tokyonight-day".
+local THEME = "tokyonight"
+
 local current_bg
 local theme_ready = false
 
@@ -18,8 +21,9 @@ local function apply_bg(bg)
     vim.opt.background = bg
   end
 
-  if theme_ready and (changed or vim.g.colors_name ~= "bright") then
-    vim.cmd.colorscheme("bright")
+  local loaded = vim.startswith(vim.g.colors_name or "", THEME)
+  if theme_ready and (changed or not loaded) then
+    vim.cmd.colorscheme(THEME)
   end
 end
 
